@@ -10,8 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@radix-ui/themes": "^2.0.0-rc.3",
+    "@astrojs/react": "^3.0.3",
+    "@radix-ui/themes": "^2.0.0",
     "@supabase/supabase-js": "^2.36.0",
-    "astro": "^3.1.2"
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "astro": "^3.1.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
