@@ -1,0 +1,17 @@
+{
+  "name": "electrical-eclipse",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@radix-ui/themes": "^2.0.0-rc.3",
+    "@supabase/supabase-js": "^2.36.0",
+    "astro": "^3.1.2"
+  }
+}
