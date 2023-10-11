@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
-import Match from "../components/CreateMatch.jsx";
+import {CreateMatch} from "../features/Match/CreateMatch.jsx";
 
 import { getMatches } from "../actions";
 import { Box, Heading } from "@radix-ui/themes";
@@ -11,6 +11,12 @@ import { Box, Heading } from "@radix-ui/themes";
 
 <Layout title="Welcome to Astro.">
   <main>
+
+    <div>
+      <CreateMatch client:load />
+    </div>
+
+
     <svg
       class="astro-a"
       width="495"
@@ -61,9 +67,7 @@ import { Box, Heading } from "@radix-ui/themes";
       <button onclick="">Add match</button>
     </div>
 
-    <div>
-      <Match/>
-    </div>
+  
       
     <ul role="list" class="link-card-grid">
       <Card
@@ -89,3 +93,4 @@ import { Box, Heading } from "@radix-ui/themes";
     </ul>
   </main>
 </Layout>
+../features/Match/CreateMatch.jsx
