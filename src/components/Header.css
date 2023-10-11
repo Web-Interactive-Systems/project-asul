@@ -1,0 +1,15 @@
+.header-list{
+    justify-content: space-between;
+}
+
+.rt-Link:where(.rt-underline-auto):where(:hover){
+    text-decoration: none !important;
+}
+
+.None{
+    display:none
+}
+
+.white{
+    color: white;
+}
