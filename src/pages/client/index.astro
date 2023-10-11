@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { MatchNotification } from "../../features/realtime/MatchNotification.jsx";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <!-- <input type="text">
+    <button>Ajouter</button> -->
+    <MatchNotification client:load />
+  </main>
+</Layout>
+
+<script>
+  import { addMatch } from "../../actions";
+  // import {supabase} from "@lib/supabase"
+
+  // document.querySelector('button').addEventListener('click', async () => {
+  //   const input = document.querySelector('input');
+  //   const value = input.value;
+  //   input.value = '';
+  //   // await addMatch(value);
+  //   console.log('match added');
+  // });
+</script>

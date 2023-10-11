@@ -5,8 +5,26 @@ import Card from "../components/Card.astro";
 import { getMatches } from "../actions";
 import { Box, Heading } from "@radix-ui/themes";
 
-// const matches = await getMatches();
+const matches = await getMatches();
 ---
+
+<script>
+  import { supabase } from "@lib/supabase"
+
+const channel = supabase.channel('main')
+
+function messageReceived(payload) {
+  console.log('message : ', payload)
+}
+
+channel
+  .on(
+    'broadcast',
+    { event: 'test' },
+    (payload) => messageReceived(payload)
+  )
+  .subscribe()
+</script>
 
 <Layout title="Welcome to Astro.">
   <main>
@@ -53,7 +71,7 @@ import { Box, Heading } from "@radix-ui/themes";
     </p>
 
     <ul>
-      <!-- {matches.map((match) => <li>{match.title}</li>)} -->
+      {matches.map((match) => <li style="color: black;">{match.title}</li>)}
     </ul>
 
     <div>
