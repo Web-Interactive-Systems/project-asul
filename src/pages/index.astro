@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import {Landing} from "../features/landing/Landing.jsx"
 
 import { getMatches } from "../actions";
 import { Box, Heading } from "@radix-ui/themes";
@@ -10,7 +11,10 @@ import { Box, Heading } from "@radix-ui/themes";
 
 <Layout title="Welcome to Astro.">
   <main>
-    <svg
+
+    <Landing />
+
+<!--<svg
       class="astro-a"
       width="495"
       height="623"
@@ -53,7 +57,7 @@ import { Box, Heading } from "@radix-ui/themes";
     </p>
 
     <ul>
-      <!-- {matches.map((match) => <li>{match.title}</li>)} -->
+      {matches.map((match) => <li>{match.title}</li>)}
     </ul>
 
     <div>
@@ -81,7 +85,7 @@ import { Box, Heading } from "@radix-ui/themes";
         title="Community"
         body="Come say hi to our amazing Discord community. ❤️"
       />
-    </ul>
+    </ul> -->
   </main>
 </Layout>
 
