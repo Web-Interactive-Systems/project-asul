@@ -8,7 +8,6 @@ import {
 import { Flex, Text, Button, Grid, Box } from "@radix-ui/themes";
 import clsx from "clsx";
 import './Multiple.css'
-
 const getDayClassName = (
   className,
   { selected, disabled, inCurrentMonth, now, range }
