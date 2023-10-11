@@ -1,0 +1,29 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Card, Grid } from "@radix-ui/themes";
+import PlotFigure from "@components/Plot";
+import Data from "@lib/data.json";
+import * as Plot from "@observablehq/plot";
+
+const marks = [];
+
+// Data.forEach((user) => {
+const dot = Plot.dot(Data[0].scores, {
+  x: "date",
+  y: "score",
+});
+marks.push(dot);
+// });
+---
+
+<Layout title="Hello dashboard!!!">
+  <h1>Hello dashboard</h1>
+  <Card>
+    <PlotFigure
+      options={{
+        marks,
+      }}
+      client:only="react"
+    />
+  </Card>
+</Layout>
