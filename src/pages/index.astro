@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import MultipleDatePicker from "../components/MultiDatePicker.jsx";
 
 import { getMatches } from "../actions";
 import { Box, Heading } from "@radix-ui/themes";
@@ -61,6 +62,7 @@ import { Box, Heading } from "@radix-ui/themes";
     </div>
 
     <ul role="list" class="link-card-grid">
+      <MultipleDatePicker client:load />
       <Card
         href="https://docs.astro.build/"
         title="Documentation"
@@ -86,49 +88,178 @@ import { Box, Heading } from "@radix-ui/themes";
 </Layout>
 
 <style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-  }
-  .astro-a {
-    position: absolute;
-    top: -32px;
-    left: 50%;
-    transform: translatex(-50%);
-    width: 220px;
-    height: auto;
-    z-index: -1;
-  }
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-  .instructions {
-    margin-bottom: 2rem;
-    border: 1px solid rgba(var(--accent-light), 25%);
-    background: linear-gradient(
-      rgba(var(--accent-dark), 66%),
-      rgba(var(--accent-dark), 33%)
-    );
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
-  .instructions code {
-    font-size: 0.8em;
-    font-weight: bold;
-    background: rgba(var(--accent-light), 12%);
-    border-radius: 4px;
-    padding: 0.3em 0.4em;
-  }
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 2rem;
-    padding: 0;
-  }
+ .container {
+  padding: 24px;
+  border-radius: var(--border-radius);
+  background-color: var(--calendar-background);
+  display: grid;
+  grid-template-columns: repeat(3, 224px);
+  gap: 20px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-rows: min-content;
+  row-gap: 4px;
+}
+
+.calendar-header {
+  height: var(--calendar-header-button-size);
+  padding-bottom: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: grid;
+  grid-template-columns: var(--calendar-header-button-size) 1fr var(--calendar-header-button-size);
+  align-items: center;
+}
+
+.calendar-header__button {
+  width: 20px;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  color: var(--main-text-color)
+}
+
+.calendar-header__title {
+  margin: 0;
+  text-align: center;
+}
+
+.weekday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.days {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, var(--day-size));
+  row-gap: 4px;
+}
+
+.day-cell {
+  width: var(--day-size);
+  height: var(--day-size);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.day {
+  border: 0;
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--day-color);
+}
+
+.day.today {
+  color: var(--today-color);
+}
+
+.day.secondary {
+  color: var(--secondary-day-color);
+}
+
+.day.will-be-in-range,
+.day.will-be-range-end,
+.day.will-be-range-start,
+.day.in-range {
+  background-color: var(--selected-range);
+}
+
+.day.will-be-in-range,
+.day.in-range {
+  border-radius: 0;
+}
+
+.day.selected {
+  color: white;
+  background-color: var(--selected-day);
+}
+
+.day.will-be-in-range:nth-child(7n),
+.day.in-range:nth-child(7n),
+.day.range-end,
+.day.will-be-range-end {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.day.will-be-in-range:nth-child(7n+1),
+.day.in-range:nth-child(7n+1),
+.day.range-start,
+.day.will-be-range-start {
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.day.range-start:nth-child(7n),
+.day.range-end:nth-child(7n+1),
+.day.will-be-range-start:nth-child(7n),
+.day.will-be-range-end:nth-child(7n+1),
+.day.range-end.range-start {
+  border-radius: var(--border-radius);
+}
+
+.day.secondary {
+  visibility: hidden;
+}
+
+.day.secondary.visible {
+  visibility: visible;
+}
+
+.months,
+.years {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  align-items: center;
+}
+
+.month,
+.year {
+  font-size: 0.75rem;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  height: var(--day-size);
+  color: var(--day-color);
+
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 250ms linear 0ms;
+}
+
+.month:hover,
+.year:hover {
+  background-color: var(--selected-range);
+}
+
+.month.active,
+.year.active {
+  background-color: var(--selected-range);
+}
+
+.month.selected,
+.year.selected {
+  color: white;
+  background-color: var(--selected-day);
+}
+
+.day:disabled,
+.month:disabled,
+.year:disabled,
+.calendar-header__button:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+.day.now,
+.month.now,
+.year.now {
+  font-weight: 600;
+}
 </style>
+../components/MultiDatePicker.jsx

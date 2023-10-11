@@ -1273,6 +1273,11 @@
     "@radix-ui/react-visually-hidden" "^1.0.3"
     classnames "^2.3.2"
 
+"@rehookify/datepicker@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@rehookify/datepicker/-/datepicker-6.2.0.tgz#97b6ef12179fc4b7a5a5712188e2a5e3b0a23c3c"
+  integrity sha512-rwcBkzHcmbivu1Un+8uqbdgP72eVJyrNZxnVAoYZDHHMrEM1ZpzKOiMi4M6YYTpsjlwCvUwf+aA9YnmjGmh+CQ==
+
 "@supabase/functions-js@^2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@supabase/functions-js/-/functions-js-2.1.5.tgz#ed1b85f499dfda21d40fe39b86ab923117cb572b"
