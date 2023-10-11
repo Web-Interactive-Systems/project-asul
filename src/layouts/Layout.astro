@@ -3,8 +3,7 @@ interface Props {
   title: string;
 }
 
-import { Theme } from "@radix-ui/themes";
-
+import Themes from "./Themes";
 import "@radix-ui/themes/styles.css";
 
 const { title } = Astro.props;
@@ -21,11 +20,12 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Theme radius="full" accentColor="indigo">
+    <Themes client:only="react">
       <slot />
-    </Theme>
+    </Themes>
   </body>
 </html>
+
 <style is:global>
   :root {
     --accent: 136, 58, 234;
@@ -40,7 +40,6 @@ const { title } = Astro.props;
   }
   html {
     font-family: system-ui, sans-serif;
-    background: #13151a;
     background-size: 224px;
   }
   code {
