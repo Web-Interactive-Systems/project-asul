@@ -10,8 +10,8 @@ import { Box, Heading } from "@radix-ui/themes";
 ---
 
 <Layout title="Welcome to Astro.">
-  <main>
-    <Score />
+  <main style={{ position: "relative" }}>
+    <Score client:load />
     <!-- <svg
       class="astro-a"
       width="495"
