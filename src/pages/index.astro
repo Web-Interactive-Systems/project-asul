@@ -11,7 +11,8 @@ import { Box, Heading } from "@radix-ui/themes";
 
 <Layout title="Welcome to Astro.">
   <main>
-    <svg
+    <Score />
+    <!-- <svg
       class="astro-a"
       width="495"
       height="623"
@@ -45,7 +46,6 @@ import { Box, Heading } from "@radix-ui/themes";
     </svg>
 
     <h1>Welcome to <span class="text-gradient">Astro</span></h1>
-    <Score>
     <p class="instructions">
       To get started, open the directory <code>src/pages</code> in your project.<br
       />
@@ -74,7 +74,7 @@ import { Box, Heading } from "@radix-ui/themes";
     </p>
 
     <ul>
-      <!-- {matches.map((match) => <li>{match.title}</li>)} -->
+    {matches.map((match) => <li>{match.title}</li>)}
     </ul>
 
     <div>
@@ -105,11 +105,11 @@ import { Box, Heading } from "@radix-ui/themes";
         title="Community"
         body="Come say hi to our amazing Discord community. ❤️"
       />
-    </ul>
+    </ul> -->
   </main>
 </Layout>
 
-<style>
+<!-- <style>
   main {
     margin: auto;
     padding: 1rem;
@@ -155,4 +155,4 @@ import { Box, Heading } from "@radix-ui/themes";
     gap: 2rem;
     padding: 0;
   }
-</style>
+</style> -->

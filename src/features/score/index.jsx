@@ -1,52 +1,55 @@
-import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
-import * as Form from "@radix-ui/react-form";
+import { Button, Flex, Separator, Strong, TextField } from "@radix-ui/themes";
 
-export function Score({}) {
+export function Score({ J2 = { nom: "J2" } }) {
+  const handleClick = (event) => {
+    console.log(event);
+  };
   return (
-    <Form.Root className="FormRoot">
-      <Form.Field className="FormField" name="email">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-          }}
+    <Flex
+      direction="column"
+      align="center"
+      gap="5"
+    >
+      <Flex
+        direction="column"
+        align="center"
+        gap="3"
+      >
+        <TextField.Root radius="large">
+          <TextField.Slot>J1</TextField.Slot>
+          <TextField.Input
+            type="number"
+            min="0"
+            onKeyDownCapture={(event) => {
+              (event.charCode != 8 && event.charCode == 0) ||
+                (event.charCode >= 48 && event.charCode <= 57);
+            }}
+            placeholder="Score de J1"
+          />
+        </TextField.Root>
+        <Flex
+          gap="2"
+          align="center"
         >
-          <Form.Label className="FormLabel">Email</Form.Label>
-          <Form.Message className="FormMessage" match="valueMissing">
-            Please enter your email
-          </Form.Message>
-          <Form.Message className="FormMessage" match="typeMismatch">
-            Please provide a valid email
-          </Form.Message>
-        </div>
-        <Form.Control asChild>
-          <input className="Input" type="email" required />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field className="FormField" name="question">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-          }}
-        >
-          <Form.Label className="FormLabel">Question</Form.Label>
-          <Form.Message className="FormMessage" match="valueMissing">
-            Please enter a question
-          </Form.Message>
-        </div>
-        <Form.Control asChild>
-          <textarea className="Textarea" required />
-        </Form.Control>
-      </Form.Field>
-      <Form.Submit asChild>
-        <button className="Button" style={{ marginTop: 10 }}>
-          Post question
-        </button>
-      </Form.Submit>
-    </Form.Root>
+          <Separator size="2" />
+          <Strong>Vs</Strong>
+          <Separator size="2" />
+        </Flex>
+        <TextField.Root radius="large">
+          <TextField.Slot>{J2.nom}</TextField.Slot>
+          <TextField.Input
+            type="number"
+            placeholder={`Score de ${J2.nom}`}
+          />
+        </TextField.Root>
+      </Flex>
+      <Button
+        radius="large"
+        color="grass"
+        onClick={handleClick}
+      >
+        Valider le score
+      </Button>
+    </Flex>
   );
 }
