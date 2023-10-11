@@ -20,7 +20,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Themes client:only="react">
+    <Themes client:load>
       <slot />
     </Themes>
   </body>
@@ -54,4 +54,3 @@ const { title } = Astro.props;
       monospace;
   }
 </style>
- ../features/Theme/Themes
