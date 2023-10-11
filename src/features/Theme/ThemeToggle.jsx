@@ -1,5 +1,4 @@
 import { Box, Button, IconButton, Switch } from "@radix-ui/themes";
-import { useTheme } from "next-themes";
 import Moon from "./moon";
 import Sun from "./sun";
 import { useCurrentTheme } from "@/lib/hooks";
