@@ -1,18 +1,22 @@
 import { Heading, Flex, Box} from "@radix-ui/themes";
-import Link from "./ItemMenu.jsx";
+import {Link} from "@/components/ItemMenu.jsx";
+import ThemeToggle from "@/features/Theme/ThemeToggle";
 
 
 export function Header(){
     return(
-        <Flex direction="row" gap="3">
-            <Box>
-                <Heading size="6"><Link></Link></Heading>
-                <Heading size="6"><a href="#">Match</a></Heading>
-                <Heading size="6"><a href="#">Profil</a></Heading>
-            </Box>
-            <Heading size="6"><a href="#">Connexion</a></Heading>
-            <Heading size="6"><a href="#">Déconnexion</a></Heading>
-            <Heading size="6"><a href="#">Inscription</a></Heading>
+        <Flex direction="row" >
+            <Flex direction="row" gap="3">
+                <Heading size="6"><Link title="Dashboard"></Link></Heading>
+                <Heading size="6"><Link title="Match"></Link></Heading>
+                <Heading size="6"><Link title="Profil"></Link></Heading>
+            </Flex>
+            <Flex direction="row" gap="3">
+                <ThemeToggle />
+                <Heading size="6"><Link title="Connexion"></Link></Heading>
+                <Heading size="6"><Link title="Déconnexion"></Link></Heading>
+                <Heading size="6"><Link title="Inscription"></Link></Heading>
+            </Flex>
         </Flex>
     )
 }
