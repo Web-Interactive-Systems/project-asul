@@ -5,21 +5,17 @@ import {
   useContextCalendars,
   useContextDatePickerOffsetPropGetters,
 } from "@rehookify/datepicker";
-import { Flex, Text, Button, Grid, Box } from "@radix-ui/themes";
+import { Flex, Button, Grid, Box } from "@radix-ui/themes";
 import clsx from "clsx";
 import "./Multiple.css";
-const getDayClassName = (
-  className,
-  { selected}
-) =>
-  clsx('dayNumber',{ "active-date": selected });
+
+const getDayClassName = (className, { selected }) =>
+  clsx("dayNumber", { "active-date": selected });
 
 const DatePicker = ({
   prevButton,
   nextButton,
-  calendar,
-  selectedDates,
-  onDatesChange,
+  calendar
 }) => {
   const { weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
@@ -29,7 +25,7 @@ const DatePicker = ({
       <Flex
         direction="column"
         gap="3"
-        style={{ maxWidth: 300,height: 300 }}
+        style={{ maxWidth: 300, height: 300 }}
         className="calendarPopup"
         align="center"
         justify="center"
@@ -43,7 +39,12 @@ const DatePicker = ({
         </Flex>
         <Grid columns="7" gap="1">
           {weekDays.map((day) => (
-            <Flex key={`${month}-${day}`} className="dateLibelle" align="center" justify="center">
+            <Flex
+              key={`${month}-${day}`}
+              className="dateLibelle"
+              align="center"
+              justify="center"
+            >
               {day}
             </Flex>
           ))}
@@ -62,7 +63,6 @@ const DatePicker = ({
           })}
         </Grid>
       </Flex>
-      <style></style>
     </section>
   );
 };
@@ -73,8 +73,16 @@ const Root = () => {
   return (
     <section>
       <DatePicker
-        prevButton={<Button className="monthBtn" {...subtractOffset({ months: 1 })}>‹</Button>}
-        nextButton={<Button className="monthBtn" {...addOffset({ months: 1 })}>›</Button>}
+        prevButton={
+          <Button className="monthBtn" {...subtractOffset({ months: 1 })}>
+            ‹
+          </Button>
+        }
+        nextButton={
+          <Button className="monthBtn" {...addOffset({ months: 1 })}>
+            ›
+          </Button>
+        }
         calendar={calendars[0]}
       />
     </section>
@@ -83,8 +91,6 @@ const Root = () => {
 
 const MultipleDatePicker = () => {
   const [selectedDates, onDatesChange] = useState([]);
-  console.log(selectedDates);
-
   return (
     <DatePickerStateProvider
       config={{
