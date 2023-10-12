@@ -25,6 +25,7 @@ class PostgresChannel {
    * Subscribe to events on this channel.
    * @param {string} event - The event name to subscribe to (e.g., 'INSERT', 'UPDATE', 'DELETE', '*').
    * @param {function} callback - The callback function to execute when an event occurs.
+   * @returns {void}
    */
   on(event, callback) {
     if (!subscribers.hasOwnProperty('schema-db-changes')) {
@@ -36,6 +37,35 @@ class PostgresChannel {
       event,
       callback,
     });
+  }
+
+  /**
+   * Unsubscribe from events on this channel.
+   * @param {string} event - The event name to unsubscribe from (e.g., 'INSERT', 'UPDATE', 'DELETE', '*').
+   * @param {function} callback - The callback function to unsubscribe.
+   * @returns {boolean} True if the callback was found and unsubscribed; otherwise, false.
+   */
+  off(event, callback) {
+    if (subscribers.hasOwnProperty('schema-db-changes')) {
+      const listener = subscribers['schema-db-changes'].find((subscriber) => {
+        return (
+          subscriber.table === this.name &&
+          subscriber.event === event &&
+          subscriber.callback === callback
+        );
+      });
+
+      if (listener) {
+        subscribers['schema-db-changes'].splice(
+          subscribers['schema-db-changes'].indexOf(listener),
+          1
+        );
+
+        return true;
+      }
+
+      return false;
+    }
   }
 }
 
@@ -56,6 +86,7 @@ class BroadcastChannel {
    * Subscribe to events on this broadcast channel.
    * @param {string} event - The event name to subscribe to (e.g., 'message', 'notification').
    * @param {function} callback - The callback function to execute when an event is received.
+   * @returns {void}
    */
   on(event, callback) {
     if (!subscribers.hasOwnProperty(this.name)) {
@@ -66,6 +97,31 @@ class BroadcastChannel {
       event,
       callback,
     });
+  }
+
+  /**
+   * Unsubscribe from events on this channel.
+   * @param {string} event - The event name to unsubscribe from (e.g., 'message', 'notification').
+   * @param {function} callback - The callback function to unsubscribe.
+   * @returns {boolean} True if the callback was found and unsubscribed; otherwise, false.
+   */
+  off(event, callback) {
+    if (subscribers.hasOwnProperty(this.name)) {
+      const listener = subscribers[this.name].find((subscriber) => {
+        return subscriber.event === event && subscriber.callback === callback;
+      });
+
+      if (listener) {
+        subscribers[this.name].splice(
+          subscribers[this.name].indexOf(listener),
+          1
+        );
+
+        return true;
+      }
+
+      return false;
+    }
   }
 
   /**
