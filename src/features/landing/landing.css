@@ -19,3 +19,7 @@ a:hover{
     margin: 0 300px 0 300px;
     width: 350;
 } */
+
+body{
+    margin: 0;
+}
