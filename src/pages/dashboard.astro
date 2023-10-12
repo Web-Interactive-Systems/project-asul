@@ -1,8 +1,8 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Card, Grid } from "@radix-ui/themes";
-import PlotFigure from "@/components/Plot";
-import mockData from "@lib/data.json";
+import PlotFigure from "@/features/dashboard/Plot";
+import mockData from "@/features/dashboard/data.json";
 
 const Data = mockData.map((d) => {
   return {
@@ -15,7 +15,7 @@ const Data = mockData.map((d) => {
 <Layout title="Hello dashboard!!!">
   <h1>Hello dashboard</h1>
   <Card>
-    <Grid rows="2" columns="2">
+    <Grid rows="2" columns="2" gap="2">
       <PlotFigure
         client:only="react"
         type="dot"
@@ -28,7 +28,7 @@ const Data = mockData.map((d) => {
         plotOptions={{
           color: { scheme: "burd" },
           x: {
-            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            tickFormat: "%d/%m/%Y",
             ticks: 5,
           },
         }}
@@ -45,7 +45,7 @@ const Data = mockData.map((d) => {
         plotOptions={{
           color: { scheme: "burd" },
           x: {
-            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            tickFormat: "%d/%m/%Y",
             ticks: 5,
           },
         }}
@@ -56,7 +56,7 @@ const Data = mockData.map((d) => {
           color: { scheme: "burd" },
           x: {
             type: "band",
-            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            tickFormat: "%d/%m/%Y",
             ticks: 5,
           },
         }}
