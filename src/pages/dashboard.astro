@@ -2,18 +2,72 @@
 import Layout from "@/layouts/Layout.astro";
 import { Card, Grid } from "@radix-ui/themes";
 import PlotFigure from "@/components/Plot";
+import mockData from "@lib/data.json";
 
-// });
+const Data = mockData.map((d) => {
+  return {
+    ...d,
+    date: new Date(d.date),
+  };
+});
 ---
 
 <Layout title="Hello dashboard!!!">
   <h1>Hello dashboard</h1>
   <Card>
-    <PlotFigure
-      options={{
-        color: { scheme: "burd" },
-      }}
-      client:only="react"
-    />
+    <Grid rows="2" columns="2">
+      <PlotFigure
+        client:only="react"
+        type="dot"
+        data={Data}
+        marksOptions={{
+          x: "date",
+          y: "score",
+          stroke: "username",
+        }}
+        plotOptions={{
+          color: { scheme: "burd" },
+          x: {
+            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            ticks: 5,
+          },
+        }}
+      />
+      <PlotFigure
+        client:only="react"
+        type="line"
+        data={Data}
+        marksOptions={{
+          x: "date",
+          y: "score",
+          stroke: "username",
+        }}
+        plotOptions={{
+          color: { scheme: "burd" },
+          x: {
+            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            ticks: 5,
+          },
+        }}
+      />
+      <PlotFigure
+        client:only="react"
+        plotOptions={{
+          color: { scheme: "burd" },
+          x: {
+            type: "band",
+            tickFormat: (date) => date.toLocaleDateString("fr-FR"),
+            ticks: 5,
+          },
+        }}
+        type="barY"
+        data={Data}
+        marksOptions={{
+          x: "date",
+          y: "score",
+          stroke: "username",
+        }}
+      />
+    </Grid>
   </Card>
 </Layout>
