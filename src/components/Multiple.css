@@ -1,3 +1,42 @@
 .active-date{
-    color: red;
+    background-color: #2AC6F1;
+    color: white;
+}
+.dayNumber{
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.dayNumber:hover{
+    background-color: #3eccef83;
+    color: white;
+}
+.calendarPopup{
+    box-shadow: 3px 5px 7px #bcbcbc;
+    border-radius: 8px;
+}
+.dateLibelle{
+    color: #bcbcbc;
+}
+.datePickerHeader{
+    width: 100%;
+}
+
+.changeMonth{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+
+.monthDisplay{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.monthBtn{
+    font-size: 20px;
+    background-color:#2AC6F1 ;
 }

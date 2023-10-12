@@ -3,97 +3,97 @@ import {
   DatePickerStateProvider,
   useContextDaysPropGetters,
   useContextCalendars,
-  useContextDatePickerOffsetPropGetters
+  useContextDatePickerOffsetPropGetters,
 } from "@rehookify/datepicker";
 import { Flex, Text, Button, Grid, Box } from "@radix-ui/themes";
 import clsx from "clsx";
-import './Multiple.css'
+import "./Multiple.css";
 const getDayClassName = (
   className,
-  { selected, disabled, inCurrentMonth, now, range }
-) => 
-  clsx(
-     {'active-date': selected}
-  );
+  { selected}
+) =>
+  clsx('dayNumber',{ "active-date": selected });
 
-const DatePicker = ({ prevButton, nextButton, calendar }) => {
-
+const DatePicker = ({
+  prevButton,
+  nextButton,
+  calendar,
+  selectedDates,
+  onDatesChange,
+}) => {
   const { weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
-
   const { month, year, days } = calendar;
   return (
     <section>
       <Flex
         direction="column"
         gap="3"
-        style={{ maxWidth: 400 }}
+        style={{ maxWidth: 300,height: 300 }}
+        className="calendarPopup"
         align="center"
         justify="center"
       >
-        <Flex gap="3" align="center" justify="center">
-        {prevButton}
-          <Box>
+        <Flex className="datePickerHeader">
+          <Box className="changeMonth">{prevButton}</Box>
+          <Box className="monthDisplay">
             {month} {year}
           </Box>
-          {nextButton}
+          <Box className="changeMonth">{nextButton}</Box>
         </Flex>
         <Grid columns="7" gap="1">
           {weekDays.map((day) => (
-            <Flex key={`${month}-${day}`} align="center" justify="center">
+            <Flex key={`${month}-${day}`} className="dateLibelle" align="center" justify="center">
               {day}
             </Flex>
           ))}
           {days.map((dpDay) => {
-            return(
-              <Box
-              key={dpDay.$date.toDateString()}
-              className={getDayClassName("", dpDay)}
-              {...dayButton(dpDay)}
+            return (
+              <Flex
+                align="center"
+                justify="center"
+                key={dpDay.$date.toDateString()}
+                className={getDayClassName("dateCase", dpDay)}
+                {...dayButton(dpDay)}
               >
-              {dpDay.day}
-            </Box>
-            )
+                {dpDay.day}
+              </Flex>
+            );
           })}
         </Grid>
       </Flex>
-      <style>
-        
-      </style>
+      <style></style>
     </section>
   );
 };
 
 const Root = () => {
-  const { subtractOffset, addOffset } = useContextDatePickerOffsetPropGetters()
+  const { subtractOffset, addOffset } = useContextDatePickerOffsetPropGetters();
   const { calendars } = useContextCalendars();
   return (
-      <section>
-        <DatePicker 
-          prevButton={
-            <button {...subtractOffset({ months: 1 })}>‹</button>
-              }
-          nextButton={
-            <button {...addOffset({ months: 1 })}>›</button>
-          }
-          calendar={calendars[0]}
-        />
-      </section>
+    <section>
+      <DatePicker
+        prevButton={<Button className="monthBtn" {...subtractOffset({ months: 1 })}>‹</Button>}
+        nextButton={<Button className="monthBtn" {...addOffset({ months: 1 })}>›</Button>}
+        calendar={calendars[0]}
+      />
+    </section>
   );
 };
+
 const MultipleDatePicker = () => {
   const [selectedDates, onDatesChange] = useState([]);
-  console.log(selectedDates)
+  console.log(selectedDates);
 
   return (
     <DatePickerStateProvider
       config={{
         selectedDates,
         onDatesChange,
-        dates: { mode: "multiple" },
+        dates: { mode: "multiple", toggle: true },
       }}
-      >    
-      <Root/>
+    >
+      <Root />
     </DatePickerStateProvider>
   );
 };
