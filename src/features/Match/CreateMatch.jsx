@@ -45,15 +45,16 @@ function InuputSelect({ placeholder = "input select", onSelect }) {
 
 
 export function CreateMatch() {
-  const [DisableButton, setDisableButton] = useState(false);
+  const [DisableButton, setDisableButton] = useState(true);
 
   const handleSelect = (selection) => {
     if (selection == ""){
-      setDisableButton(false)
-    }
-    else{
       setDisableButton(true)
     }
+    else{
+      setDisableButton(false)
+    }
+    console.log(selection)
   }
   
   return (
