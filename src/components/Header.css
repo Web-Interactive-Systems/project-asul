@@ -6,8 +6,12 @@
     text-decoration: none !important;
 }
 
-.None{
+.none{
     display:none
+}
+
+.block{
+    display: block;
 }
 
 .white{
