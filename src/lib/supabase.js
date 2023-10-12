@@ -61,7 +61,7 @@ export const broadcast = {
 
 export const postgres = {
   // new PostgresChannel('Nom de la table')
-  // test: new PostgresChannel('Test'),
+  test: new PostgresChannel('Test'),
   match: new PostgresChannel('Match'),
 };
 
