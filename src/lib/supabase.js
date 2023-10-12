@@ -8,12 +8,24 @@ export const supabase = createClient(
 const POSTGRES_CHANNEL = supabase.channel('schema-db-changes');
 const subscribers = {};
 
+/**
+ * Represents a channel for subscribing to PostgreSQL database changes using Supabase.
+ */
 class PostgresChannel {
+  /**
+   * Create a new PostgresChannel instance.
+   * @param {string} name - The name of the database table to subscribe to changes.
+   */
   constructor(name) {
-    this.name = name;
-    this.channel = POSTGRES_CHANNEL;
+    this.name = name; // The name of the database table.
+    this.channel = POSTGRES_CHANNEL; // The Supabase channel for database changes.
   }
 
+  /**
+   * Subscribe to events on this channel.
+   * @param {string} event - The event name to subscribe to (e.g., 'INSERT', 'UPDATE', 'DELETE', '*').
+   * @param {function} callback - The callback function to execute when an event occurs.
+   */
   on(event, callback) {
     if (!subscribers.hasOwnProperty('schema-db-changes')) {
       subscribers['schema-db-changes'] = [];
@@ -27,12 +39,24 @@ class PostgresChannel {
   }
 }
 
+/**
+ * Represents a broadcast channel for sending and receiving real-time messages using Supabase.
+ */
 class BroadcastChannel {
+  /**
+   * Create a new BroadcastChannel instance.
+   * @param {string} name - The name of the broadcast channel.
+   */
   constructor(name) {
-    this.name = name;
-    this.channel = supabase.channel(name);
+    this.name = name; // The name of the broadcast channel.
+    this.channel = supabase.channel(name); // The Supabase channel for broadcasting messages.
   }
 
+  /**
+   * Subscribe to events on this broadcast channel.
+   * @param {string} event - The event name to subscribe to (e.g., 'message', 'notification').
+   * @param {function} callback - The callback function to execute when an event is received.
+   */
   on(event, callback) {
     if (!subscribers.hasOwnProperty(this.name)) {
       subscribers[this.name] = [];
@@ -44,11 +68,19 @@ class BroadcastChannel {
     });
   }
 
-  send(event, userId, data) {
+  /**
+   * Send a message through the broadcast channel.
+   * @param {string} event - The event name for the message (e.g., 'message', 'notification').
+   * @param {string} from - The user ID of the sender.
+   * @param {string} to - The user ID of the recipient.
+   * @param {any} data - The data payload to send with the message.
+   * @returns {Promise} A Promise that resolves when the message is sent.
+   */
+  send(event, from, to, data) {
     return this.channel.send({
       type: 'broadcast',
       event,
-      payload: { userId, data },
+      payload: { sender: from, recipient: to, data },
     });
   }
 }
