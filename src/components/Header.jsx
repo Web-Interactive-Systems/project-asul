@@ -11,13 +11,13 @@ export function Header(){
             <Logo />
 
             <Flex direction="row" gap="3" align="center" display={{initial:'none', md: 'flex' }}>
-                <ThemeToggle client:load/>
                 <Heading size="4" className='none'><Link href="#">DashBoard</Link></Heading>
                 <Heading size="4" className='none'><Link href="#">Match</Link></Heading>
                 <Heading size="4" className='none'><Link href="#">Profil</Link></Heading>
                 <Button className='none'><Link href="#" className="white">Déconnexion</Link></Button>
                 <Button><Link href="#" className="white">Connexion</Link></Button>
                 <Button variant="outline"><Link href="#">Inscription</Link></Button>
+                <ThemeToggle client:load/>
             </Flex>
 
             <Flex align="center" gap="5" display={{ md: 'none' }}>
