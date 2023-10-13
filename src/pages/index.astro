@@ -4,11 +4,13 @@ import Card from '../components/Card.astro';
 
 import { getMatches } from '../actions';
 import { Box, Heading } from '@radix-ui/themes';
+import { RealtimeChangeTest } from '@/features/realtime/RealtimeChangeTest';
 
 const matches = await getMatches();
 ---
 
 <Layout title="Welcome to Astro.">
+  <RealtimeChangeTest client:load />
   <main>
     <svg
       class="astro-a"
@@ -132,3 +134,4 @@ const matches = await getMatches();
     padding: 0;
   }
 </style>
+@/features/realtime/RealtimeChange@/features/realtime/RealtimeChangeTest
