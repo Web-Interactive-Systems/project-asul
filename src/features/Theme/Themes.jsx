@@ -5,7 +5,6 @@ export default function Themes({ children }) {
   return (
     <ThemeProvider attribute="class">
       <Theme radius="full" accentColor="indigo">
-
         {children}
       </Theme>
     </ThemeProvider>

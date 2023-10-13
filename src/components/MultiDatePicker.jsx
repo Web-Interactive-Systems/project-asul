@@ -1,22 +1,17 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   DatePickerStateProvider,
   useContextDaysPropGetters,
   useContextCalendars,
   useContextDatePickerOffsetPropGetters,
-} from "@rehookify/datepicker";
-import { Flex, Button, Grid, Box } from "@radix-ui/themes";
-import clsx from "clsx";
-import "./Multiple.css";
+} from '@rehookify/datepicker';
+import { Flex, Button, Grid, Box } from '@radix-ui/themes';
+import clsx from 'clsx';
+import './Multiple.css';
 
-const getDayClassName = (className, { selected }) =>
-  clsx("dayNumber", { "active-date": selected });
+const getDayClassName = (className, { selected }) => clsx('dayNumber', { 'active-date': selected });
 
-const DatePicker = ({
-  prevButton,
-  nextButton,
-  calendar
-}) => {
+const DatePicker = ({ prevButton, nextButton, calendar }) => {
   const { weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
   const { month, year, days } = calendar;
@@ -39,12 +34,7 @@ const DatePicker = ({
         </Flex>
         <Grid columns="7" gap="1">
           {weekDays.map((day) => (
-            <Flex
-              key={`${month}-${day}`}
-              className="dateLibelle"
-              align="center"
-              justify="center"
-            >
+            <Flex key={`${month}-${day}`} className="dateLibelle" align="center" justify="center">
               {day}
             </Flex>
           ))}
@@ -54,7 +44,7 @@ const DatePicker = ({
                 align="center"
                 justify="center"
                 key={dpDay.$date.toDateString()}
-                className={getDayClassName("dateCase", dpDay)}
+                className={getDayClassName('dateCase', dpDay)}
                 {...dayButton(dpDay)}
               >
                 {dpDay.day}
@@ -96,7 +86,7 @@ const MultipleDatePicker = () => {
       config={{
         selectedDates,
         onDatesChange,
-        dates: { mode: "multiple", toggle: true },
+        dates: { mode: 'multiple', toggle: true },
       }}
     >
       <Root />

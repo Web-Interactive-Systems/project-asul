@@ -1,6 +1,6 @@
-import { Grid } from "@radix-ui/themes";
-import Plot from "@/features/dashboard/Plot";
-import mockData from "@/features/dashboard/data.json";
+import { Grid } from '@radix-ui/themes';
+import Plot from '@/features/dashboard/Plot';
+import mockData from '@/features/dashboard/data.json';
 
 const Data = mockData.map((d) => {
   return {
@@ -9,59 +9,59 @@ const Data = mockData.map((d) => {
   };
 });
 
-export default function App() {
+export function Dashboard() {
   return (
     <Grid rows="2" columns="2" gap="2">
       <Plot.root
         data={Data}
         plotOptions={{
-          color: { scheme: "burd" },
+          color: { scheme: 'burd' },
           x: {
-            tickFormat: "%d/%m/%Y",
+            tickFormat: '%d/%m/%Y',
             ticks: 5,
           },
         }}
       >
         <Plot.dot
           options={{
-            x: "date",
-            y: "score",
-            stroke: "username",
+            x: 'date',
+            y: 'score',
+            stroke: 'username',
             r: 5,
           }}
         />
         <Plot.line
           options={{
-            x: "date",
-            y: "score",
-            stroke: "username",
+            x: 'date',
+            y: 'score',
+            stroke: 'username',
           }}
         />
       </Plot.root>
       <Plot.root
         data={Data}
         plotOptions={{
-          color: { scheme: "burd" },
+          color: { scheme: 'burd' },
           x: {
-            tickFormat: "%d/%m/%Y",
+            tickFormat: '%d/%m/%Y',
             ticks: 5,
           },
         }}
       >
         <Plot.line
           options={{
-            x: "date",
-            y: "score",
-            stroke: "username",
+            x: 'date',
+            y: 'score',
+            stroke: 'username',
           }}
         />
       </Plot.root>
       <Plot.root
         plotOptions={{
-          color: { scheme: "burd" },
+          color: { scheme: 'burd' },
           x: {
-            type: "band",
-            tickFormat: "%d/%m/%Y",
+            type: 'band',
+            tickFormat: '%d/%m/%Y',
             ticks: 5,
           },
         }}
@@ -69,23 +69,23 @@ export default function App() {
       >
         <Plot.barY
           options={{
-            x: "date",
-            y: "score",
-            stroke: "username",
+            x: 'date',
+            y: 'score',
+            stroke: 'username',
           }}
         />
       </Plot.root>
       <Plot.root
         plotOptions={{
-          color: { scheme: "burd" },
+          color: { scheme: 'burd' },
         }}
         data={Data}
       >
         <Plot.auto
           options={{
-            x: "date",
-            y: "score",
-            stroke: "username",
+            x: 'date',
+            y: 'score',
+            stroke: 'username',
           }}
         />
       </Plot.root>

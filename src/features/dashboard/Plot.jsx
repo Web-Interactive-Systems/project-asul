@@ -1,6 +1,7 @@
-import * as Plot from "@observablehq/plot";
-import { createContext, useContext, useEffect, useState } from "react";
-const marksContext = createContext([[], () => {}]);
+import * as Plot from '@observablehq/plot';
+import { createContext, useContext, useEffect, useState } from 'react';
+
+const MarksContext = createContext([[], () => {}]);
 const DataContext = createContext([[], () => {}]);
 
 export function root({ children, plotOptions, data }) {
@@ -8,9 +9,9 @@ export function root({ children, plotOptions, data }) {
 
   if (marks.length === 0) {
     return (
-      <marksContext.Provider value={[marks, setMarks]}>
+      <MarksContext.Provider value={[marks, setMarks]}>
         <DataContext.Provider value={data}>{children}</DataContext.Provider>
-      </marksContext.Provider>
+      </MarksContext.Provider>
     );
   }
 
@@ -20,19 +21,19 @@ export function root({ children, plotOptions, data }) {
   });
 
   return (
-    <marksContext.Provider value={[marks, setMarks]}>
+    <MarksContext.Provider value={[marks, setMarks]}>
       <DataContext.Provider value={data}>
         {children}
         {plot && (
           <div
             style={{
-              color: "black",
+              color: 'black',
             }}
             dangerouslySetInnerHTML={{ __html: plot.outerHTML }}
           ></div>
         )}
       </DataContext.Provider>
-    </marksContext.Provider>
+    </MarksContext.Provider>
   );
 }
 
@@ -40,15 +41,17 @@ export default new Proxy(
   {},
   {
     get: function (_, name) {
-      if (name === "root") return root;
-      if (!(name in Plot)) throw new Error("Plot does not have " + name);
+      if (name === 'root') return root;
+      if (!(name in Plot)) throw new Error('Plot does not have ' + name);
 
       const DefaultComp = ({ options }) => {
-        const [_, setMarks] = useContext(marksContext);
+        const [_, setMarks] = useContext(MarksContext);
         const data = useContext(DataContext);
+
         useEffect(() => {
           setMarks((prev) => [...prev, Plot[name](data, options)]);
         }, [data]);
+
         return null;
       };
 
