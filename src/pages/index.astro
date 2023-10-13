@@ -1,15 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import {Header} from "../components/Header.jsx";
 
 import { getMatches } from "../actions";
-import { Box, Heading } from "@radix-ui/themes";
+import { Box, Heading} from "@radix-ui/themes";
 
-// const matches = await getMatches();
+
+//const matches = await getMatches();
 ---
 
 <Layout title="Welcome to Astro.">
-  <main>
+
+
+  <!-- <main>
     <svg
       class="astro-a"
       width="495"
@@ -53,7 +57,7 @@ import { Box, Heading } from "@radix-ui/themes";
     </p>
 
     <ul>
-      <!-- {matches.map((match) => <li>{match.title}</li>)} -->
+      matches.map((match) => <li>{match.title}</li>)}
     </ul>
 
     <div>
@@ -82,7 +86,7 @@ import { Box, Heading } from "@radix-ui/themes";
         body="Come say hi to our amazing Discord community. ❤️"
       />
     </ul>
-  </main>
+  </main> -->
 </Layout>
 
 <style>
@@ -91,6 +95,9 @@ import { Box, Heading } from "@radix-ui/themes";
     padding: 1rem;
     width: 800px;
     max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
   }
   .astro-a {
     position: absolute;
@@ -100,6 +107,13 @@ import { Box, Heading } from "@radix-ui/themes";
     width: 220px;
     height: auto;
     z-index: -1;
+  }
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
   }
   .text-gradient {
     background-image: var(--accent-gradient);
@@ -122,8 +136,12 @@ import { Box, Heading } from "@radix-ui/themes";
     font-size: 0.8em;
     font-weight: bold;
     background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
     border-radius: 4px;
     padding: 0.3em 0.4em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent-light));
   }
   .link-card-grid {
     display: grid;
@@ -131,4 +149,5 @@ import { Box, Heading } from "@radix-ui/themes";
     gap: 2rem;
     padding: 0;
   }
+
 </style>
