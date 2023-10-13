@@ -1,1 +1,3 @@
-export function MatchCard() {}
+export function MatchCard({ match = { state: "created" } }) {
+  return;
+}
