@@ -6,8 +6,8 @@ export default function Logo(){
 
     return(
         <Flex gap="1" align="center">
-            <img src={logo.src} alt="" width="32" height="32"/>
-            <Text>Asul</Text>
+            <img src={logo.src} alt="Logo ASUL" width="32" height="32"/>
+            <Text>ASUL</Text>
         </Flex>
     )
 }

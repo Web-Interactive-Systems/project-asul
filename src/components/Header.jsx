@@ -1,4 +1,4 @@
-import { Heading, Flex, Link, Button, Text, DropdownMenu} from "@radix-ui/themes";
+import { Heading, Flex, Link, Button, DropdownMenu} from "@radix-ui/themes";
 import ThemeToggle from "@/features/Theme/ThemeToggle";
 import Logo from "./Logo.jsx";
 import Menu from "./Menu.jsx";
@@ -12,7 +12,10 @@ export function Header(){
 
             <Flex direction="row" gap="3" align="center" display={{initial:'none', md: 'flex' }}>
                 <ThemeToggle client:load/>
+                <Heading size="4" className='none'><Link href="#">DashBoard</Link></Heading>
+                <Heading size="4" className='none'><Link href="#">Match</Link></Heading>
                 <Heading size="4" className='none'><Link href="#">Profil</Link></Heading>
+                <Button className='none'><Link href="#" className="white">Déconnexion</Link></Button>
                 <Button><Link href="#" className="white">Connexion</Link></Button>
                 <Button variant="outline"><Link href="#">Inscription</Link></Button>
             </Flex>
@@ -28,6 +31,10 @@ export function Header(){
                     <DropdownMenu.Content>
                         <DropdownMenu.Item>Connexion</DropdownMenu.Item>
                         <DropdownMenu.Item>Inscription</DropdownMenu.Item>
+                        <DropdownMenu.Item className='none'>Déconnexion</DropdownMenu.Item>
+                        <DropdownMenu.Item className='none'>DashBoard</DropdownMenu.Item>
+                        <DropdownMenu.Item className='none'>Match</DropdownMenu.Item>
+                        <DropdownMenu.Item className='none'>Profil</DropdownMenu.Item>
                     </DropdownMenu.Content>
                 </DropdownMenu.Root>
             </Flex>

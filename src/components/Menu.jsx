@@ -1,5 +1,3 @@
-import {Heading} from "@radix-ui/themes";
-import { useEffect, useState } from "react";
 import "@/components/Header.css";
 
 
@@ -11,12 +9,6 @@ const BurgerIcon = () => (
 
 
 export default function Menu(){
-
-    const[Burger, setBurger] = useState(false);
-
-    function Handler() {
-        setBurger(Burger === false ? true : false );
-    }
 
     return(
         <BurgerIcon />
