@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { MatchList } from '../../features/matchlist/MatchList.jsx';
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <MatchList client:load />
+  </main>
+</Layout>
