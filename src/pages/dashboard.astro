@@ -1,85 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { Card, Grid } from "@radix-ui/themes";
-import PlotFigure from "@/features/dashboard/Plot";
-import mockData from "@/features/dashboard/data.json";
+import { Card } from "@radix-ui/themes";
 
-const Data = mockData.map((d) => {
-  return {
-    ...d,
-    date: new Date(d.date),
-  };
-});
+import Dashboard from "@/features/dashboard/Dashboard.jsx";
+
+
 ---
 
 <Layout title="Hello dashboard!!!">
   <h1>Hello dashboard</h1>
   <Card>
-    <Grid rows="2" columns="2" gap="2">
-      <PlotFigure
-        client:only="react"
-        types={["dot", "line"]}
-        data={Data}
-        marksOptions={{
-          "dot": {
-            x: "date",
-            y: "score",
-            stroke: "username",
-            r: 5,
-          },
-          "line": {
-            x: "date",
-            y: "score",
-            stroke: "username",
-          }
-        }}
-        plotOptions={{
-          color: { scheme: "burd" },
-          x: {
-            tickFormat: "%d/%m/%Y",
-            ticks: 5,
-          },
-        }}
-      />
-      <PlotFigure
-        client:only="react"
-        types={["line"]}
-        data={Data}
-        marksOptions={{
-          "line": {
-            x: "date",
-            y: "score",
-            stroke: "username",
-          }
-        }}
-        plotOptions={{
-          color: { scheme: "burd" },
-          x: {
-            tickFormat: "%d/%m/%Y",
-            ticks: 5,
-          },
-        }}
-      />
-      <PlotFigure
-        client:only="react"
-        plotOptions={{
-          color: { scheme: "burd" },
-          x: {
-            type: "band",
-            tickFormat: "%d/%m/%Y",
-            ticks: 5,
-          },
-        }}
-        types={["barY"]}
-        data={Data}
-        marksOptions={{
-          "barY": {
-            x: "date",
-            y: "score",
-            stroke: "username",
-          }
-        }}
-      />
-    </Grid>
+    <Dashboard client:only="react" />
   </Card>
 </Layout>
