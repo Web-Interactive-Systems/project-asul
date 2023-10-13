@@ -4,14 +4,14 @@ export async function getMatches() {
   //
   const { data, error } = await supabase.from("Match").select();
 
-  console.log("getMatches", data, error);
+  // console.log("getMatches", data, error);
 
   if (error) {
     console.error("error", error);
     throw Error(error.message);
   }
 
-  console.log("success", data);
+  // console.log("success", data);
 
   return data;
 }
