@@ -1,22 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
-import {CreateMatch} from "../features/Match/CreateMatch.jsx";
+import { Component1 } from "../components/Component1.jsx";
 
 import { getMatches } from "../actions";
-import { Box, Heading } from "@radix-ui/themes";
+import { Box, Heading, Button } from "@radix-ui/themes";
 
-// const matches = await getMatches();
+const matches = await getMatches();
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
-
-    <div>
-      <CreateMatch client:load />
-    </div>
-
-
+    <Component1 client:load />
     <svg
       class="astro-a"
       width="495"
@@ -53,22 +48,25 @@ import { Box, Heading } from "@radix-ui/themes";
       <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message
       above.
       <Box>
-        <Heading size="1">The quick brown fox jumps over the lazy dog.</Heading>
-        <Heading size="2">The quick brown fox jumps over the lazy dog.</Heading>
-        <Heading size="3">The quick brown fox jumps over the lazy dog.</Heading>
+        <Button>Hello</Button>
+        <Heading size="1">The quick brown fox jumps over the lazy dog</Heading>
+        <Heading color="yellow" size="2">
+          The quick brown fox jumps over the lazy dog
+        </Heading>
+        <Heading color="indigo" size="9">
+          The quick brown fox jumps over the lazy dog
+        </Heading>
       </Box>
     </p>
 
-    <ul>
-      <!-- {matches.map((match) => <li>{match.title}</li>)} -->
+    <ul style="background: red">
+      {matches.map((match) => <li>{match.title}</li>)}
     </ul>
 
     <div>
       <button onclick="">Add match</button>
     </div>
 
-  
-      
     <ul role="list" class="link-card-grid">
       <Card
         href="https://docs.astro.build/"
@@ -93,4 +91,9 @@ import { Box, Heading } from "@radix-ui/themes";
     </ul>
   </main>
 </Layout>
-../features/Match/CreateMatch.jsx
+
+<style>
+  :root {
+    theme: "light";
+  }
+</style>
