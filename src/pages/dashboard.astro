@@ -1,0 +1,15 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Card } from "@radix-ui/themes";
+
+import Dashboard from "@/features/dashboard/Dashboard.jsx";
+
+
+---
+
+<Layout title="Hello dashboard!!!">
+  <h1>Hello dashboard</h1>
+  <Card>
+    <Dashboard client:only="react" />
+  </Card>
+</Layout>
