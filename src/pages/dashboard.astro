@@ -18,12 +18,20 @@ const Data = mockData.map((d) => {
     <Grid rows="2" columns="2" gap="2">
       <PlotFigure
         client:only="react"
-        type="dot"
+        types={["dot", "line"]}
         data={Data}
         marksOptions={{
-          x: "date",
-          y: "score",
-          stroke: "username",
+          "dot": {
+            x: "date",
+            y: "score",
+            stroke: "username",
+            r: 5,
+          },
+          "line": {
+            x: "date",
+            y: "score",
+            stroke: "username",
+          }
         }}
         plotOptions={{
           color: { scheme: "burd" },
@@ -35,12 +43,14 @@ const Data = mockData.map((d) => {
       />
       <PlotFigure
         client:only="react"
-        type="line"
+        types={["line"]}
         data={Data}
         marksOptions={{
-          x: "date",
-          y: "score",
-          stroke: "username",
+          "line": {
+            x: "date",
+            y: "score",
+            stroke: "username",
+          }
         }}
         plotOptions={{
           color: { scheme: "burd" },
@@ -60,12 +70,14 @@ const Data = mockData.map((d) => {
             ticks: 5,
           },
         }}
-        type="barY"
+        types={["barY"]}
         data={Data}
         marksOptions={{
-          x: "date",
-          y: "score",
-          stroke: "username",
+          "barY": {
+            x: "date",
+            y: "score",
+            stroke: "username",
+          }
         }}
       />
     </Grid>
