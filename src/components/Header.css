@@ -1,0 +1,25 @@
+body{
+    margin:0
+}
+
+.header-list{
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 5px 2px -2px rgba(0, 0, 0, 0.2); 
+}
+
+.rt-Link:where(.rt-underline-auto):where(:hover){
+    text-decoration: none !important;
+}
+
+.none{
+    display:none
+}
+
+.block{
+    display: block;
+}
+
+.white{
+    color: white;
+}

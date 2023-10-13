@@ -1,20 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
-import {Landing} from "../features/landing/Landing.jsx"
+import { Component1 } from "../components/Component1.jsx";
 
 import { getMatches } from "../actions";
-import { Box, Heading } from "@radix-ui/themes";
+import { Box, Heading, Button } from "@radix-ui/themes";
 
-// const matches = await getMatches();
+const matches = await getMatches();
 ---
 
 <Layout title="Welcome to Astro.">
-
-  <Landing />
   <main>
-  
-<!--<svg
+    <Component1 client:load />
+    <svg
       class="astro-a"
       width="495"
       height="623"
@@ -50,13 +48,18 @@ import { Box, Heading } from "@radix-ui/themes";
       <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message
       above.
       <Box>
-        <Heading size="1">The quick brown fox jumps over the lazy dog.</Heading>
-        <Heading size="2">The quick brown fox jumps over the lazy dog.</Heading>
-        <Heading size="3">The quick brown fox jumps over the lazy dog.</Heading>
+        <Button>Hello</Button>
+        <Heading size="1">The quick brown fox jumps over the lazy dog</Heading>
+        <Heading color="yellow" size="2">
+          The quick brown fox jumps over the lazy dog
+        </Heading>
+        <Heading color="indigo" size="9">
+          The quick brown fox jumps over the lazy dog
+        </Heading>
       </Box>
     </p>
 
-    <ul>
+    <ul style="background: red">
       {matches.map((match) => <li>{match.title}</li>)}
     </ul>
 
@@ -85,54 +88,12 @@ import { Box, Heading } from "@radix-ui/themes";
         title="Community"
         body="Come say hi to our amazing Discord community. ❤️"
       />
-    </ul> -->
+    </ul>
   </main>
 </Layout>
 
 <style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-  }
-  .astro-a {
-    position: absolute;
-    top: -32px;
-    left: 50%;
-    transform: translatex(-50%);
-    width: 220px;
-    height: auto;
-    z-index: -1;
-  }
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-  .instructions {
-    margin-bottom: 2rem;
-    border: 1px solid rgba(var(--accent-light), 25%);
-    background: linear-gradient(
-      rgba(var(--accent-dark), 66%),
-      rgba(var(--accent-dark), 33%)
-    );
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
-  .instructions code {
-    font-size: 0.8em;
-    font-weight: bold;
-    background: rgba(var(--accent-light), 12%);
-    border-radius: 4px;
-    padding: 0.3em 0.4em;
-  }
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 2rem;
-    padding: 0;
+  :root {
+    theme: "light";
   }
 </style>
