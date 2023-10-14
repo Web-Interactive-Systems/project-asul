@@ -1,3 +1,4 @@
+import { getAuthUser } from '@/actions';
 import { createClient } from '@supabase/supabase-js';
 
 export const supabase = createClient(
@@ -112,10 +113,7 @@ class BroadcastChannel {
       });
 
       if (listener) {
-        subscribers[this.name].splice(
-          subscribers[this.name].indexOf(listener),
-          1
-        );
+        subscribers[this.name].splice(subscribers[this.name].indexOf(listener), 1);
 
         return true;
       }
@@ -127,16 +125,21 @@ class BroadcastChannel {
   /**
    * Send a message through the broadcast channel.
    * @param {string} event - The event name for the message (e.g., 'message', 'notification').
-   * @param {string} from - The user ID of the sender.
-   * @param {string} to - The user ID of the recipient.
+   * @param {string|string[]} recipient - The recipient of the message (e.g., '*', 'user-id', ['user-id-1', 'user-id-2']).
    * @param {any} data - The data payload to send with the message.
    * @returns {Promise} A Promise that resolves when the message is sent.
    */
-  send(event, from, to, data) {
+  send(event, recipient, data) {
+    const authUser = getAuthUser();
+
+    if (!authUser) {
+      return Promise.reject(new Error('User needs to be authenticated to send a message'));
+    }
+
     return this.channel.send({
       type: 'broadcast',
       event,
-      payload: { sender: from, recipient: to, data },
+      payload: { sender: getAuthUser(), recipient, data },
     });
   }
 }
@@ -163,9 +166,12 @@ POSTGRES_CHANNEL.on(
   },
   (data) => {
     subscribers['schema-db-changes']?.forEach((subscriber) => {
+      const authUser = getAuthUser();
+
       if (
+        authUser &&
         subscriber.table === data.table &&
-        (subscriber.event === data.eventType || subscriber.event === '*')
+        (subscriber.event === '*' || subscriber.event === data.eventType)
       ) {
         subscriber.callback(data);
       }
@@ -177,7 +183,15 @@ for (const chname in broadcast) {
   broadcast[chname].channel
     .on('broadcast', { event: '*' }, (data) => {
       subscribers[broadcast[chname].name]?.forEach((subscriber) => {
-        if (subscriber.event === data.event || subscriber.event === '*') {
+        const authUser = getAuthUser();
+
+        if (
+          authUser &&
+          (data.payload.recipient === '*' ||
+            data.payload.recipient === authUser ||
+            (Array.isArray(data.payload.recipient) && data.payload.recipient.includes(authUser))) &&
+          (subscriber.event === '*' || subscriber.event === data.event)
+        ) {
           subscriber.callback(data);
         }
       });
