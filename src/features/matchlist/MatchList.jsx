@@ -1,13 +1,13 @@
 import { getMatches } from "@/actions"
-import { Grid, Card, Heading, Flex, Text, Strong, Link, Button } from "@radix-ui/themes"
+import { Grid, Card, Flex, Text, Strong, Link, Button, Heading } from "@radix-ui/themes"
 import { RxPlusCircled, RxArrowLeft } from 'react-icons/rx';
 import { GiSwordsEmblem } from "react-icons/gi"
 import { useState, useEffect } from "react"
 import { formatDistanceToNow, format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { postgres, supabase } from "@/lib/supabase";
+import { postgres } from "@/lib/supabase";
 
-export function MatchList() {
+export function MatchList({onClose, session}) {
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
@@ -30,31 +30,26 @@ export function MatchList() {
   }, []);
 
   return <>
-    <Flex align={"center"} style={{marginBottom: '1rem'}} gap="3">
-      <Button variant="soft">
-        <Link href="#">
+    <Heading style={{fontSize: '1rem', marginBottom: 'var(--space-3)'}}>Session du {format(new Date(session.created_at), 'dd/LL/Y')}</Heading>
+    <Flex align={"center"} style={{marginBottom: 'var(--space-3)'}} gap="3">
+      <Button variant="soft" onClick={onClose} style={{cursor: 'pointer'}} >
+        <Flex justify={"center"} align={"center"} gap="2">
+          <RxArrowLeft />
+          <Text>Changer de session</Text>
+        </Flex>
+      </Button>
+      <Button variant="soft" >
+        <Link href="#" style={{color: 'inherit', textDecoration: 'none'}}>
           <Flex justify={"center"} align={"center"} gap="2">
-            <RxArrowLeft />
-            <Text>Sessions</Text>
+            <Text>Nouveau matche</Text>
+            <RxPlusCircled />
           </Flex>
         </Link>
       </Button>
-      <Heading size={{initial: "3", xs: "5", sm: "7"}}>Mes matches <Text weight={'light'}>- {format(new Date(), 'dd/LL/Y')}</Text></Heading>
     </Flex>
     <Grid columns={{initial: '1', xs: '2', sm: '3', md: '4', lg: '5'}} gap="3">
-      {[
-        <Link key={-1} href="#" style={{color: 'inherit', textDecoration: 'none'}}>
-          <Card >
-          <Flex justify={"center"} align={"center"} height={"100%"}>
-              <Flex justify={"center"} align={"center"} gap="2">
-                <Text>Nouveau matche</Text>
-                <RxPlusCircled />
-              </Flex>
-          </Flex>
-        </Card>
-        </Link>,
-      ...matches.map((match, i) => {
-        return <Link key={i} href="#" style={{gridColumnStart: !i && 1, color: 'inherit', textDecoration: 'none'}}>
+      {matches.map((match, i) => {
+        return <Link key={i} href="#" style={{color: 'inherit', textDecoration: 'none'}}>
           <Card>
           <Flex justify={"center"} align={"center"} direction={"column"} height={"100%"}>
               <small style={{opacity: 0.5}}>Il y a {formatDistanceToNow(new Date(match.created_at), {locale: fr})}</small>
@@ -66,7 +61,7 @@ export function MatchList() {
           </Flex>
         </Card>
         </Link>
-      })]}
+      })}
     </Grid>
   </>
 }

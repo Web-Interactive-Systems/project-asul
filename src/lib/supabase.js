@@ -154,6 +154,7 @@ export const postgres = {
   // new PostgresChannel('Nom de la table')
   test: new PostgresChannel('Test'),
   match: new PostgresChannel('Match'),
+  session: new PostgresChannel('Session'),
 };
 
 /* ------------------------------ */
