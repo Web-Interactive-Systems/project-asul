@@ -11,7 +11,7 @@ export function usePlayerMatch(term){
 		() =>
 			term.trim() === ""
 				? players
-				:matchSorter(players, term, {
+				: matchSorter(players, term, {
 						keys: ['name'],
 				  }),
 		// eslint-disable-next-line react-hooks/exhaustive-deps

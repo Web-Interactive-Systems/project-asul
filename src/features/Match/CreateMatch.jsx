@@ -36,10 +36,11 @@ export function CreateMatch() {
   const [DisableButton, setDisableButton] = useState(true);
 
   const handleSelect = (selection) => {
-    if (selection == '') {
-      setDisableButton(true);
-    } else {
-      setDisableButton(false);
+    if (selection === ""){
+      setDisableButton(true)
+    }
+    else{
+      setDisableButton(false)
     }
     console.log(selection);
   };
