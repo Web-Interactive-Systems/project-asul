@@ -7,6 +7,7 @@ import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
 
 export function Header() {
+  const [session, loading] = useSession();
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
       <Flex direction="row" width="100%" align="center" className={styles.HeaderList}>
