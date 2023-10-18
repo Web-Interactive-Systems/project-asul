@@ -1,11 +1,14 @@
 import { Flex, Box, Button, DropdownMenu, IconButton, Separator } from '@radix-ui/themes';
 import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon } from '@radix-ui/react-icons';
-import ThemeToggle from '@/features/theme/ThemeToggle.jsx';
+import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
 
 import styles from './Header.module.css';
+import useSession from '@/hooks/useSession';
+import NeedAuth from './NeedAuth.jsx';
 
 export function Header() {
+  const [session, loading] = useSession();
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
       <Flex direction="row" width="100%" align="center" className={styles.HeaderList}>
@@ -16,12 +19,16 @@ export function Header() {
         </Button>
 
         <Flex direction="row" gap="3" align="center" display={{ initial: 'none', md: 'flex' }}>
-          <Button asChild>
-            <a href="/auth">
-              Se connecter
-              <ArrowRightIcon style={{ opacity: 1, marginRight: -3 }} />
-            </a>
-          </Button>
+          <NeedAuth
+            fallback={
+              <Button asChild>
+                <a href="/auth">
+                  Se connecter
+                  <ArrowRightIcon style={{ opacity: 1, marginRight: -3 }} />
+                </a>
+            }
+              </Button>
+          >
           <Button asChild variant="soft">
             <a href="/account">
               Mon Espace
@@ -40,6 +47,7 @@ export function Header() {
               <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
             </a>
           </Button>
+          </NeedAuth>
           <ThemeToggle client:load />
         </Flex>
 
@@ -52,18 +60,22 @@ export function Header() {
               </IconButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
-              <DropdownMenu.Item>
-                <a href="/auth" className={styles.HeaderLink}>
-                  <RocketIcon style={{ marginRight: 4 }} />
-                  Se connecter
-                </a>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <a href="/account" className={styles.HeaderLink}>
-                  <ArrowRightIcon style={{ marginRight: 4 }} />
-                  Mon Espace
-                </a>
-              </DropdownMenu.Item>
+              <NeedAuth
+                fallback={
+                  <DropdownMenu.Item>
+                    <a href="/auth" className={styles.HeaderLink}>
+                      <RocketIcon style={{ marginRight: 4 }} />
+                      Se connecter
+                    </a>
+                  </DropdownMenu.Item>
+                }
+              >
+                <DropdownMenu.Item>
+                  <a href="/account" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Mon Espace
+                  </a>
+                </DropdownMenu.Item>
 
               <DropdownMenu.Item>
                 <a href="/admin" className={styles.HeaderLink}>
@@ -84,7 +96,8 @@ export function Header() {
                   Barem
                 </a>
               </DropdownMenu.Item>
-              </DropdownMenu.Content>
+              </NeedAuth>
+            </DropdownMenu.Content>
           </DropdownMenu.Root>
         </Flex>
       </Flex>
