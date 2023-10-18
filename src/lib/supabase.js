@@ -2,7 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 
 export const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_KEY
+  import.meta.env.PUBLIC_SUPABASE_KEY,
+  {
+    auth: {
+      flowType: 'pkce',
+    },
+  }
 );
 
 const POSTGRES_CHANNEL = supabase.channel('schema-db-changes');
@@ -112,10 +117,7 @@ class BroadcastChannel {
       });
 
       if (listener) {
-        subscribers[this.name].splice(
-          subscribers[this.name].indexOf(listener),
-          1
-        );
+        subscribers[this.name].splice(subscribers[this.name].indexOf(listener), 1);
 
         return true;
       }
