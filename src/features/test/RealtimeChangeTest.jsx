@@ -1,19 +1,19 @@
-import { broadcast, postgres } from "@/lib/supabase"
+import { broadcast, postgres, supabase } from '@/lib/supabase';
 
-export function RealtimeChangeTest () {
+export function RealtimeChangeTest() {
   broadcast.notifications.on('edt-change', (payload) => {
-    console.log('edt-change', payload)
-  })
+    console.log('edt-change', payload);
+  });
   broadcast.notifications.on('info', (payload) => {
-    console.log('info', payload)
-  })
+    console.log('info', payload);
+  });
   postgres.match.on('INSERT', (payload) => {
-    console.log('match insert', payload)
-  })
+    console.log('match insert', payload);
+  });
   postgres.test.on('INSERT', (payload) => {
-    console.log('test insert', payload)
-  })
+    console.log('test insert', payload);
+  });
   postgres.test.on('DELETE', (payload) => {
-    console.log('test delete', payload)
-  })
+    console.log('test delete', payload);
+  });
 }

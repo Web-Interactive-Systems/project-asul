@@ -1,8 +1,9 @@
-import { atom, task, onMount } from 'nanostores';
+import { atom, map, task, onMount } from 'nanostores';
 import { getPlayers } from '@/actions/getPlayers';
 
 export const $matchContent = atom('session');
 export const $matchSession = atom({});
+export const $userSession = map(null);
 export const $players = atom([]);
 
 onMount($players, () => {
