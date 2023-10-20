@@ -1,0 +1,16 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { Card, Heading } from '@radix-ui/themes';
+
+import { Barem } from '@/features/barem/Barem';
+---
+
+<Layout title="Barem administrateur">
+  <main>
+    <Heading>Barem admin</Heading>
+
+    <Card>
+      <Barem />
+    </Card>
+  </main>
+</Layout>

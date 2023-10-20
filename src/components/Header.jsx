@@ -34,6 +34,12 @@ export function Header() {
               <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
             </a>
           </Button>
+          <Button asChild variant="soft">
+            <a href="/barem">
+              Barem
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
           <ThemeToggle client:load />
         </Flex>
 
@@ -72,7 +78,13 @@ export function Header() {
                   Dashboard
                 </a>
               </DropdownMenu.Item>
-            </DropdownMenu.Content>
+              <DropdownMenu.Item>
+                <a href="/barem" className={styles.HeaderLink}>
+                  <ArrowRightIcon style={{ marginRight: 4 }} />
+                  Barem
+                </a>
+              </DropdownMenu.Item>
+              </DropdownMenu.Content>
           </DropdownMenu.Root>
         </Flex>
       </Flex>
