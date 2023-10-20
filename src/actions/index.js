@@ -1,3 +1,3 @@
 export { getMatches } from './getMatches';
 export { getAuthUser } from './getAuthUser';
-export { getNbMatchById } from './getNbMatchById';
+export { getNbMatchGagneById } from './getNbMatchGagneById';
