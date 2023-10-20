@@ -1,6 +1,7 @@
 import { Tabs, Box, Text } from '@radix-ui/themes';
 import { SessionList } from '../matchlist/SessionList';
 import { SessionSelector } from '../session/sessionSelect';
+import { Barem } from '../barem/Barem';
 
 export function Admin() {
   return (
@@ -21,7 +22,7 @@ export function Admin() {
         </Tabs.Content>
 
         <Tabs.Content value="grad">
-          <Text size="2">Edit your profile or update contact information.</Text>
+          <Barem />
         </Tabs.Content>
       </Box>
     </Tabs.Root>

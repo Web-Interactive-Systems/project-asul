@@ -3,12 +3,16 @@ import { createClient } from '@supabase/supabase-js';
 
 export const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_KEY
+  import.meta.env.PUBLIC_SUPABASE_KEY,
+  {
+    auth: {
+      flowType: 'pkce',
+    },
+  }
 );
 
 const POSTGRES_CHANNEL = supabase.channel('schema-db-changes');
 const subscribers = {};
-
 /**
  * Represents a channel for subscribing to PostgreSQL database changes using Supabase.
  */
@@ -26,7 +30,7 @@ class PostgresChannel {
    * Subscribe to events on this channel.
    * @param {string} event - The event name to subscribe to (e.g., 'INSERT', 'UPDATE', 'DELETE', '*').
    * @param {function} callback - The callback function to execute when an event occurs.
-   * @returns {void}
+   * @returns {{unsubscribe: function}}
    */
   on(event, callback) {
     if (!subscribers.hasOwnProperty('schema-db-changes')) {
@@ -38,6 +42,12 @@ class PostgresChannel {
       event,
       callback,
     });
+
+    return {
+      unsubscribe: () => {
+        this.off(event, callback);
+      },
+    };
   }
 
   /**
@@ -129,14 +139,12 @@ class BroadcastChannel {
    * @param {any} data - The data payload to send with the message.
    * @returns {Promise} A Promise that resolves when the message is sent.
    */
-  send(event, recipient, data) {
-    const authUser = getAuthUser();
-
-    if (!authUser) {
+  async send(event, recipient, data) {
+    const authUser = await getAuthUser();
+    if (!authUser.data) {
       return Promise.reject(new Error('User needs to be authenticated to send a message'));
     }
-
-    return this.channel.send({
+    return await this.channel.send({
       type: 'broadcast',
       event,
       payload: { sender: getAuthUser(), recipient, data },
@@ -155,6 +163,7 @@ export const postgres = {
   test: new PostgresChannel('Test'),
   match: new PostgresChannel('Match'),
   session: new PostgresChannel('Session'),
+  player: new PostgresChannel('Player'),
 };
 
 /* ------------------------------ */
@@ -167,34 +176,46 @@ POSTGRES_CHANNEL.on(
   },
   (data) => {
     subscribers['schema-db-changes']?.forEach((subscriber) => {
-      const authUser = getAuthUser();
-
-      if (
-        authUser &&
-        subscriber.table === data.table &&
-        (subscriber.event === '*' || subscriber.event === data.eventType)
-      ) {
-        subscriber.callback(data);
-      }
+      getAuthUser()
+        .then((authUser) => {
+          if (
+            authUser &&
+            subscriber.table === data.table &&
+            (subscriber.event === '*' || subscriber.event === data.eventType)
+          ) {
+            subscriber.callback(data);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     });
   }
-).subscribe();
+).subscribe((status, err) => {
+  if (err) console.error(err);
+  console.log(`PostgreSQL channel status: ${status}`);
+});
 
 for (const chname in broadcast) {
   broadcast[chname].channel
     .on('broadcast', { event: '*' }, (data) => {
       subscribers[broadcast[chname].name]?.forEach((subscriber) => {
-        const authUser = getAuthUser();
-
-        if (
-          authUser &&
-          (data.payload.recipient === '*' ||
-            data.payload.recipient === authUser ||
-            (Array.isArray(data.payload.recipient) && data.payload.recipient.includes(authUser))) &&
-          (subscriber.event === '*' || subscriber.event === data.event)
-        ) {
-          subscriber.callback(data);
-        }
+        getAuthUser()
+          .then((authUser) => {
+            if (
+              authUser &&
+              (data.payload.recipient === '*' ||
+                data.payload.recipient === authUser ||
+                (Array.isArray(data.payload.recipient) &&
+                  data.payload.recipient.includes(authUser))) &&
+              (subscriber.event === '*' || subscriber.event === data.event)
+            ) {
+              subscriber.callback(data);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       });
     })
     .subscribe();
