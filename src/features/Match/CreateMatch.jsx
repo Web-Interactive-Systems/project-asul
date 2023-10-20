@@ -24,9 +24,9 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
   return (
     <Combobox aria-labelledby="demo" onSelect={onSelect} openOnFocus={true}>
       <ComboboxInput placeholder={placeholder} autocomplete onChange={handleChange} />
-      <ComboboxPopover style={{background:"white", border:"solid", color:"black"}}>
+      <ComboboxPopover openOnFocus style={{background:"white", border:"solid", color:"black", pointerEvents: 'all', cursor: 'pointer'}}>
         <Box>
-          <ComboboxList>
+          <ComboboxList style={{listStyle:"none"}}>
             {results.map((data) => (
               <ComboboxOption key={data.name} value={data.name} />
             ))}
