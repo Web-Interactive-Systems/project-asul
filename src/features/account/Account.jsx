@@ -4,15 +4,13 @@ import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
-
 import { useState } from 'react';
-import { useStore } from '@nanostores/react';
+
 import { $matchContent, $matchSession } from '@/store/store';
-import sessionStore from '@/store/session';
 export function Account() {
   const matchContent = useStore($matchContent);
-  const session = useStore(sessionStore);
   const [session, setSession] = useState(null);
+  const session = useStore(sessionStore);
   console.log('matchContent', matchContent);
   const params = new URLSearchParams(window.location.search);
   return (
