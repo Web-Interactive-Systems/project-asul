@@ -26,7 +26,6 @@ export function Account() {
             setSession(s);
             setIsMatchList(true);
           }} />}
-          <SessionSelector></SessionSelector>
         </Tabs.Content>
 
         <Tabs.Content value="dashboard">  
