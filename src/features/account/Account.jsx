@@ -4,7 +4,6 @@ import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionList } from '../matchlist/SessionList';
 import { useState } from 'react';
-import { useStore } from '@nanostores/react';
 
 import { $matchContent, $matchSession } from '@/store/store';
 
