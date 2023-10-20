@@ -14,6 +14,9 @@ export default function LoginForm() {
         provider: 'google',
         options: {
           redirectTo: `${location.origin}/auth`,
+          queryParams: {
+            prompt: 'consent',
+          },
         },
       });
       if (error) {
