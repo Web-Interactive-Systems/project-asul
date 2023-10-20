@@ -10,7 +10,7 @@ import NeedAuth from '@/components/NeedAuth';
   <main>
     <Heading size={{ initial: '2', xs: '4', md: '6' }}>Mon Espace</Heading>
     <NeedAuth client:load>
-      <Account client:load />
+      <Account client:only="react" />
     </NeedAuth>
   </main>
 </Layout>
