@@ -1,1 +1,2 @@
-export { getMatches } from "./getMatches";
+export { getMatches } from './getMatches';
+export { getAuthUser } from './getAuthUser';

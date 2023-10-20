@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     ssr: {
-      noExternal: ["@radix-ui/themes"],
+      noExternal: ["@radix-ui/themes", "@radix-ui/react-icons"],
     },
   },
 });

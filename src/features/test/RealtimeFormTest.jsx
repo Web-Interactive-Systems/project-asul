@@ -22,10 +22,10 @@ export function RealtimeFormTest () {
   }
 
   return <>
-    <button onClick={() => broadcast.notifications.send('info', 'user01', [1, 2, 3])}>
+    <button onClick={() => broadcast.notifications.send('info', '*', [1, 2, 3])}>
         Send notif
     </button>
-    <button onClick={() => broadcast.notifications.send('edt-change', 'user01', [1, 2, 3])}>
+    <button onClick={() => broadcast.notifications.send('edt-change', '*', [1, 2, 3])}>
         Send edt change
     </button>
     <br/>
