@@ -1,18 +1,19 @@
 import { supabase } from '@/lib/supabase';
 import { Button } from '@radix-ui/themes';
 import { useState } from 'react';
-import useSession from '@/hooks/useSession';
+import sessionStore from '@/Stores/session';
+import { useStore } from '@nanostores/react';
 
 export default function LoginForm() {
   const [err, setErr] = useState(null);
-  const [session, loading] = useSession();
+  const session = useStore(sessionStore);
 
   async function signin() {
-    if (!(await supabase.auth.getSession()).data.session) {
+    if (!session) {
       const { _, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'http://localhost:4321/auth',
+          redirectTo: `${location.origin}/auth`,
         },
       });
       if (error) {
@@ -34,15 +35,14 @@ export default function LoginForm() {
     <>
       <Button onClick={signin}>Login</Button>
       <Button onClick={logout}>Logout</Button>
-      {loading && <p>Loading ...</p>}
       {err && <p>{err.message}</p>}
-      {!loading && session && (
+      {session && (
         <>
           <p>{session.user.email}</p>
           <p>{session.user.id}</p>
         </>
       )}
-      {!loading && !session && (
+      {!session && (
         <>
           <p>Not signed in</p>
         </>

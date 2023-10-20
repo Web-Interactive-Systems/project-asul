@@ -1,11 +1,17 @@
-import useSession from '@/hooks/useSession';
+import { useState, useEffect } from 'react';
+import sessionStore from '@/Stores/session';
+import { useStore } from '@nanostores/react';
 
 export default function NeedAuth({ children, fallback = <p>You are not logged in</p> }) {
-  const [session, loading] = useSession();
-  console.log(session);
+  const [mounted, setMounted] = useState(false);
+  const session = useStore(sessionStore);
 
-  if (loading) {
-    return <p>Loading ...</p>;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
   }
 
   if (!session) {

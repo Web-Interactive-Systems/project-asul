@@ -4,6 +4,7 @@ interface Props {
 }
 
 import { LayoutTheme } from './LayoutTheme.jsx';
+import UserManager from '@/features/auth/UserManager.jsx';
 import '@radix-ui/themes/styles.css';
 
 const { title } = Astro.props;
@@ -20,7 +21,8 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <LayoutTheme client:only="react">
+    <UserManager client:load />
+    <LayoutTheme client:load>
       <slot />
     </LayoutTheme>
   </body>
