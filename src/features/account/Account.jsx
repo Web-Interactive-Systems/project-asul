@@ -10,9 +10,12 @@ import { $matchContent, $matchSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
 
 export function Account() {
+  const [session, setSession] = useState(null);
   const matchContent = useStore($matchContent);
   const userSession = useStore(sessionStore);
   const params = new URLSearchParams(window.location.search);
+  const throttled = useMemo(() => throttle(handleNameChange, 500), []);
+
   const throttled = useMemo(() => throttle(handleNameChange, 500), []);
 
   console.log('matchContent', matchContent);
