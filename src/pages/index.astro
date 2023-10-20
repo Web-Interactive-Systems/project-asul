@@ -6,6 +6,7 @@ import { Component1 } from '../components/Component1.jsx';
 import { getMatches } from '../actions';
 import { Box, Heading, Button } from '@radix-ui/themes';
 import { Landing } from '@/features/landing/Landing';
+import { Footer } from '../components/Footer';
 
 const matches = await getMatches();
 ---
@@ -13,6 +14,7 @@ const matches = await getMatches();
 <Layout title="Sport Badminton — IUT Lannion">
   <main>
     <Landing />
+    <Footer />
     <!-- <svg
       class="astro-a"
       width="495"
