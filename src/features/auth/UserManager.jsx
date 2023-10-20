@@ -1,11 +1,8 @@
 import { supabase } from '@/lib/supabase';
-import SessionStore from '@/Stores/session';
+import SessionStore from '@/store/session';
 import { useEffect } from 'react';
 
-export default function UserLayout() {
-  const $session = SessionStore.get();
-  console.log($session);
-
+export default function UserManager() {
   useEffect(() => {
     const { data: Listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN') {
@@ -18,7 +15,6 @@ export default function UserLayout() {
 
         if (!data) {
           const user = session.user;
-          console.log('user: ', user);
           const { data: player } = await supabase
             .from('Player')
             .insert({

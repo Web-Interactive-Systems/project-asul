@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { Button } from '@radix-ui/themes';
 import { useState } from 'react';
-import sessionStore from '@/Stores/session';
+import sessionStore from '@/store/session';
 import { useStore } from '@nanostores/react';
 
 export default function LoginForm() {
