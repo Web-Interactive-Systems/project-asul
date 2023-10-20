@@ -4,9 +4,9 @@ import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
 import { useState } from 'react';
 import { useStore } from '@nanostores/react';
-import sessionStore from '@/Stores/session';
 import { $matchContent, $matchSession } from '@/store/store';
 
+import sessionStore from '@/store/session';
 export function Account() {
   const matchContent = useStore($matchContent);
   const session = useStore(sessionStore);

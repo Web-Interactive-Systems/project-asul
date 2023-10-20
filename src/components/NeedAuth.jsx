@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import sessionStore from '@/Stores/session';
+import sessionStore from '@/store/session';
 import { useStore } from '@nanostores/react';
 
 export default function NeedAuth({ children, fallback = <p>You are not logged in</p> }) {
