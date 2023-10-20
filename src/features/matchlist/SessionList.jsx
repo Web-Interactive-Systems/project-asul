@@ -6,7 +6,9 @@ import { postgres } from '@/lib/supabase';
 import { SessionCalendar } from './SessionCalender';
 import { CreateMatchDialog } from '../match/CreateMatchDialog';
 
-export function SessionList({ onClose }) {
+import { $matchSession } from '@/store/store';
+
+export function SessionList() {
   const [open, setOpen] = useState(false);
   const [openMatch, setOpenMatch] = useState(false);
   const [sessions, setSessions] = useState([]);
@@ -46,7 +48,12 @@ export function SessionList({ onClose }) {
           <Flex height="9" justify={'center'} align={'center'}>
             <Dialog.Root open={open}>
               <Dialog.Trigger>
-                <Button size="4" onClick={() => setOpen(true)}>
+                <Button
+                  size="4"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
                   <PlusIcon />
                   Ajouter un match
                 </Button>
@@ -90,7 +97,7 @@ export function SessionList({ onClose }) {
             key={i}
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              onClose(session);
+              $matchSession.set(session);
             }}
           >
             <Flex height="9" justify={'center'} align={'center'}>

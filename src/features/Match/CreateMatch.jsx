@@ -9,6 +9,9 @@ import {
 } from '@reach/combobox';
 import { usePlayerMatch } from '@/hooks/usePlayerMatch';
 
+import { $matchContent } from '@/store/store';
+import { addMatch } from '@/actions/addMatch';
+
 function InuputSelect({ placeholder = 'input select', onSelect }) {
   const [term, setTerm] = useState('');
 
@@ -44,6 +47,22 @@ export function CreateMatch() {
     console.log(selection);
   };
 
+  const handleAddMatch = async () => {
+    // set 'match', use in Account component
+    $matchContent.set('match');
+
+    const { data, error } = await addMatch({
+      // payload
+    });
+
+    if (error) {
+      //
+    } else {
+      // Send a realtime notification
+      // Todo
+    }
+  };
+
   return (
     <Flex direction="column" align="center" gap="3">
       <Heading>Create Match</Heading>
@@ -57,9 +76,8 @@ export function CreateMatch() {
         <Separator orientation="horizontal" size="3" />
       </Flex>
       <InuputSelect placeholder="Player 1" onSelect={handleSelect} />
-      <Button radius="large" color="blue" variant="solid" disabled={DisableButton}>
-        Envoyer une demande de Match
-      </Button>
+      {/* disabled={DisableButton} */}
+      <Button onClick={handleAddMatch}>Envoyer une demande de Match</Button>
     </Flex>
   );
 }

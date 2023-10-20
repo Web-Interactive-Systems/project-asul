@@ -2,10 +2,15 @@ import { Tabs, Box, Text } from '@radix-ui/themes';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionList } from '../matchlist/SessionList';
 import { useState } from 'react';
+import { useStore } from '@nanostores/react';
+
+import { $matchContent, $matchSession } from '@/store/store';
 
 export function Account() {
-  const [isMatchList, setIsMatchList] = useState(false)
-  const [session, setSession] = useState(null)
+  const matchContent = useStore($matchContent);
+  const [session, setSession] = useState(null);
+
+  console.log('matchContent', matchContent);
 
   return (
     <Tabs.Root defaultValue="match">
@@ -17,17 +22,19 @@ export function Account() {
 
       <Box px="4" pt="3" pb="2">
         <Tabs.Content value="match">
-          {isMatchList &&
-          <MatchList onClose={() => {
-            setIsMatchList(false)
-          }} session={session} /> ||
-          <SessionList onClose={(s) => {
-            setSession(s);
-            setIsMatchList(true);
-          }} />}
+          {matchContent === 'session' && <SessionList />}
+
+          {matchContent === 'match' && (
+            <MatchList
+              onClose={() => {
+                //
+              }}
+              session={session}
+            />
+          )}
         </Tabs.Content>
 
-        <Tabs.Content value="dashboard">  
+        <Tabs.Content value="dashboard">
           <Text size="2">Access and update your documents.</Text>
         </Tabs.Content>
 

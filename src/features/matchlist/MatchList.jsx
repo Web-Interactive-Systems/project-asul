@@ -1,12 +1,20 @@
-import { getMatches } from '@/actions';
+import { getUserMatchs } from '@/actions/getUserMatchs';
 import { Box, Grid, Card, Flex, Text, Strong, Link, Button, Heading } from '@radix-ui/themes';
 import { SewingPinIcon, PlusCircledIcon, ArrowLeftIcon, PlusIcon } from '@radix-ui/react-icons';
 import { useState, useEffect } from 'react';
-import { format, formatDistanceToNow } from 'date-fns';
+import { useStore } from '@nanostores/react';
 import { fr } from 'date-fns/locale';
+import { format, formatDistanceToNow } from 'date-fns';
 import { postgres } from '@/lib/supabase';
+import { MatchCardDialog } from '../MatchCard/MatchCardDialog';
 
-export function MatchList({ onClose, session }) {
+import { $matchSession } from '@/store/store';
+
+export function MatchList({ onClose }) {
+  const matchSession = useStore($matchSession);
+
+  console.log('matchsession', matchSession);
+
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
@@ -17,7 +25,7 @@ export function MatchList({ onClose, session }) {
     postgres.match.on('INSERT', matchInsertHandler);
 
     const fetchData = async () => {
-      const data = await getMatches();
+      const data = await getUserMatchs();
       setMatches(data);
     };
 
@@ -28,10 +36,16 @@ export function MatchList({ onClose, session }) {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      // clean up
+    };
+  }, []);
+
   return (
     <Box>
       <Heading style={{ fontSize: '1rem', marginBottom: 'var(--space-3)' }}>
-        Session du {format(new Date(session.created_at), 'dd/LL/Y')}
+        Session du {format(new Date(matchSession.created_at), 'dd/LL/Y')}
       </Heading>
       <Flex align={'center'} style={{ marginBottom: 'var(--space-3)' }} gap="3">
         <Button variant="soft" onClick={onClose} style={{ cursor: 'pointer' }}>
@@ -53,18 +67,14 @@ export function MatchList({ onClose, session }) {
 
         {matches.map((match, i) => {
           return (
-            <Link
-              key={i}
-              href={`/match/${match}`}
-              style={{ color: 'inherit', textDecoration: 'none' }}
-            >
+            <MatchCardDialog key={match.id}>
               <Card>
                 <Flex justify={'center'} align="center" direction="column" height="100%">
                   <Text>Il y a</Text>
                   <Flex justify={'center'} align={'center'} gap="2">
                     <SewingPinIcon />
                     <Text>
-                      Matche contre <Strong>{'Adversaire'}</Strong>
+                      Match contre <Strong>{'Adversaire'}</Strong>
                     </Text>
                   </Flex>
                   <Strong>
@@ -72,7 +82,7 @@ export function MatchList({ onClose, session }) {
                   </Strong>
                 </Flex>
               </Card>
-            </Link>
+            </MatchCardDialog>
           );
         })}
       </Grid>
