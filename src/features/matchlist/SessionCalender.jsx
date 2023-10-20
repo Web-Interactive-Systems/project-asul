@@ -2,7 +2,8 @@ import { Grid, Box, Card, Flex, Text, Strong, Dialog } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { postgres } from '@/lib/supabase';
-import { CreateMatchDialog } from '../match/CreateMatchDialog';
+
+import { $matchSession } from '@/store/store';
 
 export function SessionCalendar({ open, onSelect }) {
   const [sessions, setSessions] = useState([]);
@@ -36,11 +37,10 @@ export function SessionCalendar({ open, onSelect }) {
   }, []);
 
   const handleSelectSession = (session) => {
-    ///
+    console.log('matchSession.set', session);
+    $matchSession.set(session);
+
     onSelect();
-    // setTimeout(() => {
-    //   setOpen(true);
-    // }, 1000);
   };
 
   return (

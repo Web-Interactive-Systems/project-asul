@@ -4,12 +4,17 @@ import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionList } from '../matchlist/SessionList';
 import { useState } from 'react';
+import { useStore } from '@nanostores/react';
+
+import { $matchContent, $matchSession } from '@/store/store';
 
 export function Account() {
-  const userSession = useStore(sessionStore);
-  const [isMatchList, setIsMatchList] = useState(false);
   const [session, setSession] = useState(null);
+  const matchContent = useStore($matchContent);
+  const userSession = useStore(sessionStore);
   const params = new URLSearchParams(window.location.search);
+
+  console.log('matchContent', matchContent);
 
   return (
     <Tabs.Root defaultValue={params.get('init') ? 'profile' : 'match'}>
@@ -21,19 +26,14 @@ export function Account() {
 
       <Box px="4" pt="3" pb="2">
         <Tabs.Content value="match">
-          {(isMatchList && (
+          {matchContent === 'session' && <SessionList />}
+
+          {matchContent === 'match' && (
             <MatchList
               onClose={() => {
-                setIsMatchList(false);
+                //
               }}
               session={session}
-            />
-          )) || (
-            <SessionList
-              onClose={(s) => {
-                setSession(s);
-                setIsMatchList(true);
-              }}
             />
           )}
         </Tabs.Content>
