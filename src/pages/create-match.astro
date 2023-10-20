@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { Heading } from '@radix-ui/themes';
+import { CreateMatch } from "@/features/Match/CreateMatch.jsx";
+---
+
+
+
+<Layout title="Create Match — IUT Lannion">
+  <main>
+    <Heading size={{ initial: '2', xs: '4', md: '6' }}>Create Match</Heading>
+
+    <CreateMatch client:load />
+  </main>
+</Layout>

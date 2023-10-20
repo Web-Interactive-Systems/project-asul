@@ -14,8 +14,8 @@
   color: white;
 }
 .calendarPopup {
-  box-shadow: 3px 5px 7px #bcbcbc;
-  border-radius: 8px;
+  /* box-shadow: 3px 5px 7px #bcbcbc; */
+  border-radius: 8px 8px 8px 8px;
 }
 .dateLibelle {
   color: #bcbcbc;
@@ -39,4 +39,10 @@
 .monthBtn {
   font-size: 20px;
   background-color: #2ac6f1;
+}
+
+.selected-date {
+  /* padding: 8px 10px 4px 20px; */
+  overflow-y: scroll;
+  background-color: #fcfcfc;
 }

@@ -1,14 +1,19 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { Heading } from '@radix-ui/themes';
-
 import { Account } from '@/features/account/Account';
----
+import NeedAuth from '@/components/NeedAuth';
+// import { $getPlayers } from '@/store/store';
 
+// Populate store
+// await $getPlayers();
+---
+  
 <Layout title="Mon Espace - Sport Badminton — IUT Lannion">
   <main>
     <Heading size={{ initial: '2', xs: '4', md: '6' }}>Mon Espace</Heading>
-
-    <Account client:load />
+    <NeedAuth client:load>
+      <Account client:only="react" />
+    </NeedAuth>
   </main>
 </Layout>

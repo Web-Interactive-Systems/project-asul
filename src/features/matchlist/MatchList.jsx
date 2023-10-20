@@ -1,67 +1,93 @@
-import { getMatches } from "@/actions"
-import { Grid, Card, Flex, Text, Strong, Link, Button, Heading } from "@radix-ui/themes"
-import { RxPlusCircled, RxArrowLeft } from 'react-icons/rx';
-import { GiSwordsEmblem } from "react-icons/gi"
-import { useState, useEffect } from "react"
-import { formatDistanceToNow, format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { postgres } from "@/lib/supabase";
+import { getUserMatchs } from '@/actions/getUserMatchs';
+import { Box, Grid, Card, Flex, Text, Strong, Link, Button, Heading } from '@radix-ui/themes';
+import { SewingPinIcon, PlusCircledIcon, ArrowLeftIcon, PlusIcon } from '@radix-ui/react-icons';
+import { useState, useEffect } from 'react';
 
-export function MatchList({onClose, session}) {
+import { useStore } from '@nanostores/react';
+
+import { fr } from 'date-fns/locale';
+import { format, formatDistanceToNow } from 'date-fns';
+import { postgres } from '@/lib/supabase';
+import { MatchCardDialog } from '../MatchCard/MatchCardDialog';
+
+import { $matchSession } from '@/store/store';
+
+export function MatchList({ onClose }) {
+  const matchSession = useStore($matchSession);
+
+  console.log('matchsession', matchSession);
+
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
     const matchInsertHandler = (data) => {
-      setMatches(matches => [data.new, ...matches])
-    }
+      setMatches((matches) => [data.new, ...matches]);
+    };
 
-    postgres.match.on('INSERT', matchInsertHandler)
+    postgres.match.on('INSERT', matchInsertHandler);
 
     const fetchData = async () => {
-        const data = await getMatches();
-        setMatches(data);
+      const data = await getUserMatchs();
+      setMatches(data);
     };
 
     fetchData();
 
     return () => {
-      postgres.match.off('INSERT', matchInsertHandler)
-    }
+      postgres.match.off('INSERT', matchInsertHandler);
+    };
   }, []);
 
-  return <>
-    <Heading style={{fontSize: '1rem', marginBottom: 'var(--space-3)'}}>Session du {format(new Date(session.created_at), 'dd/LL/Y')}</Heading>
-    <Flex align={"center"} style={{marginBottom: 'var(--space-3)'}} gap="3">
-      <Button variant="soft" onClick={onClose} style={{cursor: 'pointer'}} >
-        <Flex justify={"center"} align={"center"} gap="2">
-          <RxArrowLeft />
-          <Text>Changer de session</Text>
-        </Flex>
-      </Button>
-      <Button variant="soft" >
-        <Link href="#" style={{color: 'inherit', textDecoration: 'none'}}>
-          <Flex justify={"center"} align={"center"} gap="2">
-            <Text>Nouveau matche</Text>
-            <RxPlusCircled />
+  useEffect(() => {
+    return () => {
+      // clean up
+    };
+  }, []);
+
+  return (
+    <Box>
+      <Heading style={{ fontSize: '1rem', marginBottom: 'var(--space-3)' }}>
+        Session du {format(new Date(matchSession.created_at), 'dd/LL/Y')}
+      </Heading>
+      <Flex align={'center'} style={{ marginBottom: 'var(--space-3)' }} gap="3">
+        <Button variant="soft" onClick={onClose} style={{ cursor: 'pointer' }}>
+          <Flex justify={'center'} align={'center'} gap="2">
+            <ArrowLeftIcon />
+            <Text>Précédent</Text>
           </Flex>
-        </Link>
-      </Button>
-    </Flex>
-    <Grid columns={{initial: '1', xs: '2', sm: '3', md: '4', lg: '5'}} gap="3">
-      {matches.map((match, i) => {
-        return <Link key={i} href="#" style={{color: 'inherit', textDecoration: 'none'}}>
-          <Card>
-          <Flex justify={"center"} align={"center"} direction={"column"} height={"100%"}>
-              <small style={{opacity: 0.5}}>Il y a {formatDistanceToNow(new Date(match.created_at), {locale: fr})}</small>
-              <Flex justify={"center"} align={"center"} gap="2">
-                <GiSwordsEmblem />
-                <Text>Matche contre <Strong>{ "Adversaire" }</Strong></Text>
-              </Flex>
-              <Strong style={{fontSize: '1.5rem', color: `var(--${Math.round(Math.random()) && 'red' || 'green'}-10)`}}>{"2"} - {"0"}</Strong>
+        </Button>
+      </Flex>
+      <Grid columns={{ initial: '1', xs: '2', sm: '3', md: '4', lg: '5' }} gap="3">
+        <Card>
+          <Flex height="9" justify={'center'} align={'center'}>
+            <Button size="4" onClick={null}>
+              <PlusIcon />
+              Ajouter un match
+            </Button>
           </Flex>
         </Card>
-        </Link>
-      })}
-    </Grid>
-  </>
+
+        {matches.map((match, i) => {
+          return (
+            <MatchCardDialog key={match.id}>
+              <Card>
+                <Flex justify={'center'} align="center" direction="column" height="100%">
+                  <Text>Il y a</Text>
+                  <Flex justify={'center'} align={'center'} gap="2">
+                    <SewingPinIcon />
+                    <Text>
+                      Match contre <Strong>{'Adversaire'}</Strong>
+                    </Text>
+                  </Flex>
+                  <Strong>
+                    {'2'} - {'0'}
+                  </Strong>
+                </Flex>
+              </Card>
+            </MatchCardDialog>
+          );
+        })}
+      </Grid>
+    </Box>
+  );
 }
