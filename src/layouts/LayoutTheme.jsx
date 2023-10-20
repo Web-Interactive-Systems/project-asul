@@ -10,7 +10,7 @@ export function LayoutTheme({ children }) {
         <Header />
       </Box>
       <Box m="2">{children}</Box>
-      <Footer />
+      
     </Themes>
   );
 }
