@@ -46,11 +46,11 @@ export function Header() {
               </a>
             </Button>
           </NeedAuth>
-          <ThemeToggle client:load />
+          <ThemeToggle />
         </Flex>
 
         <Flex align="center" gap="5" display={{ md: 'none' }}>
-          <ThemeToggle client:load />
+          <ThemeToggle />
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <IconButton size="3" variant="ghost" color="gray">
@@ -88,6 +88,7 @@ export function Header() {
                     Dashboard
                   </a>
                 </DropdownMenu.Item>
+
                 <DropdownMenu.Item>
                   <a href="/barem" className={styles.HeaderLink}>
                     <ArrowRightIcon style={{ marginRight: 4 }} />
