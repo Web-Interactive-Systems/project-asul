@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Flex } from '@radix-ui/themes';
+import { Button, Flex } from '@radix-ui/themes';
 import { MultipleDatePicker } from '../../components/MultiDatePicker';
 import { getSessions } from '@/actions/getSessions';
+import { addSession } from '@/actions/addSession';
+import { format } from 'date-fns';
 
 export function SessionSelector() {
   const [selectedDates, onDatesChange] = useState([]);
@@ -10,12 +12,25 @@ export function SessionSelector() {
     const newDates = selectedDates.filter((_, i) => i !== index);
     onDatesChange(newDates);
   };
+  const handleAddSessions = async (sessions) => {
+    sessions = sessions.map(session_date => ({ session_date: format(session_date, 'yyyy-MM-dd', { local: { code: 'fr-FR' } }) }));
+    const { data, error } = await addSession({ sessions });
+    console.log(error)
+    onDatesChange([]);
+  }
 
   return (
-    <MultipleDatePicker
-      selectedDates={selectedDates}
-      onDatesChange={onDatesChange}
-      handleSupprClick={handleSupprClick}
-    />
+    <Flex justify="center">
+      <Flex direction="column" gap="4" width="max-content">
+        <MultipleDatePicker
+          selectedDates={selectedDates}
+          onDatesChange={onDatesChange}
+          handleSupprClick={handleSupprClick}
+        />
+        <Button disabled={selectedDates.length === 0} onClick={() => handleAddSessions(selectedDates)}>
+          Créer les sessions
+        </Button>
+      </Flex>
+    </Flex>
   );
 }
