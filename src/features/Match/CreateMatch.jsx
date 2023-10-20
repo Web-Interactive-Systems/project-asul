@@ -54,19 +54,23 @@ export function CreateMatch() {
   const handleAddMatch = () => {
     (async () => {
 
-      const creator_id = 1;
+      const creator_id = 3;
 
-      const player_id = 3;
+      const player_id = 5;
   
-      const {err1} = await supabase.from("Match").insert({
-          title:"match test match creator Louen", creator_id, player_id, status:"en attente"
+      let { error} = await supabase
+      .from("Match")
+
+      .insert({
+           title:"match test match creator Louen", creator_id, player_id, status:"en attente"
       })
 
-      if (err1) {
-          console.error('ahhh match ')
+      if (error) {
+          console.error('ahhh match ', error)
       } else {
           console.log('match créer')
       }
+      window.location.replace("http://localhost:4321");
 })()
   }
   return (
