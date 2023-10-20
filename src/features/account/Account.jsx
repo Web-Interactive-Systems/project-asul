@@ -1,8 +1,20 @@
 import { Tabs, Box, Text } from '@radix-ui/themes';
+import { MatchList } from '../matchlist/MatchList';
+import { SessionSelector } from '../session/sessionSelect';
+import { SessionList } from '../matchlist/SessionList';
+import { useState } from 'react';
+import { useStore } from '@nanostores/react';
+
+import { $matchContent, $matchSession } from '@/store/store';
 
 export function Account() {
+  const matchContent = useStore($matchContent);
+  const [session, setSession] = useState(null);
+
+  console.log('matchContent', matchContent);
+
   return (
-    <Tabs.Root defaultValue="session">
+    <Tabs.Root defaultValue="match">
       <Tabs.List>
         <Tabs.Trigger value="match">Match</Tabs.Trigger>
         <Tabs.Trigger value="dashboard">Dashboard</Tabs.Trigger>
@@ -11,7 +23,16 @@ export function Account() {
 
       <Box px="4" pt="3" pb="2">
         <Tabs.Content value="match">
-          <Text size="2">Make changes to your account.</Text>
+          {matchContent === 'session' && <SessionList />}
+
+          {matchContent === 'match' && (
+            <MatchList
+              onClose={() => {
+                //
+              }}
+              session={session}
+            />
+          )}
         </Tabs.Content>
 
         <Tabs.Content value="dashboard">

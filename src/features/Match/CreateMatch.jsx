@@ -11,6 +11,9 @@ import { usePlayerMatch } from '@/hooks/usePlayerMatch';
 
 import {supabase} from '@/lib/supabase.js'; 
 
+import { $matchContent } from '@/store/store';
+import { addMatch } from '@/actions/addMatch';
+
 function InuputSelect({ placeholder = 'input select', onSelect }) {
   const [term, setTerm] = useState('');
 
@@ -48,7 +51,7 @@ export function CreateMatch() {
     }
     console.log(selection);
   };
-  const commitMatch = () => {
+  const handleAddMatch = () => {
     (async () => {
 
       const creator_id = 1;
@@ -79,7 +82,7 @@ export function CreateMatch() {
         <Separator orientation="horizontal" size="3" />
       </Flex>
       <InuputSelect placeholder="Player 1"  onSelect={handleSelect} />
-      <Button radius="large" color="blue" variant="solid" onClick={commitMatch} disabled={DisableButton}>
+      <Button radius="large" color="blue" variant="solid" onClick={handleAddMatch} disabled={DisableButton}>
         Envoyer une demande de Match
       </Button>
     </Flex>
