@@ -1,12 +1,20 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { Card, Heading } from '@radix-ui/themes';
+import { Card, Grid, Heading } from '@radix-ui/themes';
 
 import { DashboardEtudiant } from '@/features/dashboard/DashboardEtudiant';
+import { NbMatchGagnes } from '@/features/dashboardEtudiant/MatchGagnes.jsx';
 ---
 
 <Layout title="Hello dashboard!!!">
-  <Heading>Hello dashboard</Heading>
+  <Heading>Hello XXXX</Heading>
+
+  <Grid rows="1" columns="4" gap="4" style={{marginBottom: '10px', marginTop: '10px'}}>
+    
+    <NbMatchGagnes client:load/>
+
+    
+  </Grid>
 
   <Card>
     <DashboardEtudiant client:only="react" />
