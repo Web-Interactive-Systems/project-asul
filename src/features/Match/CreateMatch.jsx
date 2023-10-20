@@ -24,9 +24,9 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
   return (
     <Combobox aria-labelledby="demo" onSelect={onSelect} openOnFocus={true}>
       <ComboboxInput placeholder={placeholder} autocomplete onChange={handleChange} />
-      <ComboboxPopover style={{background:"white", border:"solid", color:"black"}}>
+      <ComboboxPopover openOnFocus style={{background:"white", border:"solid", color:"black", pointerEvents: 'all', cursor: 'pointer'}}>
         <Box>
-          <ComboboxList>
+          <ComboboxList style={{listStyle:"none"}}>
             {results.map((data) => (
               <ComboboxOption key={data.name} value={data.name} />
             ))}
@@ -54,19 +54,23 @@ export function CreateMatch() {
   const handleAddMatch = () => {
     (async () => {
 
-      const creator_id = 1;
+      const creator_id = 3;
 
-      const player_id = 3;
+      const player_id = 5;
   
-      const {err1} = await supabase.from("Match").insert({
-          title:"match test match creator Louen", creator_id, player_id, status:"en attente"
+      let { error} = await supabase
+      .from("Match")
+
+      .insert({
+           title:"match test match creator Louen", creator_id, player_id, status:"en attente"
       })
 
-      if (err1) {
-          console.error('ahhh match ')
+      if (error) {
+          console.error('ahhh match ', error)
       } else {
           console.log('match créer')
       }
+      window.location.replace("http://localhost:4321");
 })()
   }
   return (
