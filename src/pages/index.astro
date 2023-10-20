@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import { Component1 } from '../components/Component1.jsx';
-import { MatchCard } from '@/features/MatchCard';
 
 import { getMatches } from '../actions';
 import { Box, Heading, Button } from '@radix-ui/themes';
@@ -14,7 +13,6 @@ const matches = await getMatches();
 <Layout title="Sport Badminton — IUT Lannion">
   <main>
     <Landing />
-    <MatchCard client:only />
     <!-- <svg
       class="astro-a"
       width="495"
