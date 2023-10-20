@@ -1,20 +1,26 @@
-import React from "react";
+import React from 'react';
 
-import { matchSorter } from "match-sorter";
-import { useThrottle } from "./useThrottle";
+import { matchSorter } from 'match-sorter';
+import { useThrottle } from './useThrottle';
+import { $players } from '@/store/store';
+import { useStore } from '@nanostores/react';
 
-const players = [{name:"Toto"},{name:"Foo"},{name:"Bar"}]
+// const players = $players; //[{name:"Toto"},{name:"Foo"},{name:"Bar"}]
 
-export function usePlayerMatch(term){
-	let throttledTerm = useThrottle(term, 100);
-	return React.useMemo(
-		() =>
-			term.trim() === ""
-				? players
-				:matchSorter(players, term, {
-						keys: ['name'],
-				  }),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[throttledTerm]
-	);
+export function usePlayerMatch(term) {
+  let players = useStore($players);
+  let throttledTerm = useThrottle(term, 100);
+
+  console.log('pplayers __', players, $players.get());
+
+  return React.useMemo(
+    () =>
+      term.trim() === ''
+        ? players
+        : matchSorter(players, term, {
+            keys: ['username'],
+          }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [throttledTerm, players]
+  );
 }
