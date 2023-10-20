@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import Cross from "../../src/features/Theme/cross";
+import {format} from "date-fns"
 import {
   DatePickerStateProvider,
   useContextDaysPropGetters,
   useContextCalendars,
   useContextDatePickerOffsetPropGetters,
 } from '@rehookify/datepicker';
-import { Flex, Button, Grid, Box } from '@radix-ui/themes';
+import { Flex, Button, Grid, Box, Text, Badge } from '@radix-ui/themes';
 import clsx from 'clsx';
 import './Multiple.css';
 
@@ -15,6 +16,17 @@ const DatePicker = ({ prevButton, nextButton, calendar }) => {
   const { weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
   const { month, year, days } = calendar;
+  weekDays.forEach((element, index) => {
+    switch (element) {
+      case "Sun": weekDays[index] = "Dim";break;
+      case "Mon": weekDays[index] = "Lun";break;
+      case "Tue": weekDays[index] = "Mar";break;
+      case "Wed": weekDays[index] = "Mer";break;
+      case "Thu": weekDays[index] = "Jeu";break;
+      case "Fri": weekDays[index] = "Ven";break;
+      case "Sat": weekDays[index] = "Sam";break;
+    }
+  });
   return (
     <section>
       <Flex
@@ -79,8 +91,7 @@ const Root = () => {
   );
 };
 
-const MultipleDatePicker = () => {
-  const [selectedDates, onDatesChange] = useState([]);
+export const MultipleDatePicker = ({selectedDates,onDatesChange,handleSupprClick}) => {
   return (
     <DatePickerStateProvider
       config={{
@@ -89,9 +100,16 @@ const MultipleDatePicker = () => {
         dates: { mode: 'multiple', toggle: true },
       }}
     >
-      <Root />
+      <Flex direction="row-reverse">
+        <Flex direction="column" className="selected-date" gap="2" style={{ width: 200, height: 300 }}>
+          <Text>Dates Sélectionnées:</Text>
+              {selectedDates.sort((a,b)=>{return a-b}).map((date,index) => (    
+              <Button color="indigo" variant="soft" key={index} onClick={()=>{handleSupprClick(index)}}>{format(date,"dd MMM yyyy")}<Badge color="crimson">{<Cross></Cross>}</Badge></Button>))
+          }
+        </Flex>
+        <Root />
+      </Flex>
     </DatePickerStateProvider>
+    
   );
 };
-
-export default MultipleDatePicker;
