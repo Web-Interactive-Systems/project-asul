@@ -2,13 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 import { Card, Heading } from '@radix-ui/themes';
 
-import { Dashboard } from '@/features/dashboard/Dashboard';
+import { DashboardEtudiant } from '@/features/dashboard/DashboardEtudiant';
 ---
 
 <Layout title="Hello dashboard!!!">
   <Heading>Hello dashboard</Heading>
 
   <Card>
-    <Dashboard client:only="react" />
+    <DashboardEtudiant client:only="react" />
   </Card>
 </Layout>
