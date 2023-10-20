@@ -74,7 +74,19 @@ export function Header() {
               <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
             </a>
           </Button>
-          <ThemeToggle />
+          <Button asChild variant="soft">
+            <a href="/dashboard">
+              Dashboard
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
+          <Button asChild variant="soft">
+            <a href="/dashboardEtudiant">
+              Dashboard Étudiant
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
+          <ThemeToggle client:load />
         </Flex>
 
         <Flex align="center" gap="5" display={{ md: 'none' }}>
