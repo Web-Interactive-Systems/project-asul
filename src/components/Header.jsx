@@ -24,27 +24,27 @@ export function Header() {
                   Se connecter
                   <ArrowRightIcon style={{ opacity: 1, marginRight: -3 }} />
                 </a>
-            }
               </Button>
+            }
           >
-          <Button asChild variant="soft">
-            <a href="/account">
-              Mon Espace
-              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
-            </a>
-          </Button>
-          <Button asChild variant="soft">
-            <a href="/dashboard">
-              Dashboard
-              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
-            </a>
-          </Button>
-          <Button asChild variant="soft">
-            <a href="/barem">
-              Barem
-              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
-            </a>
-          </Button>
+            <Button asChild variant="soft">
+              <a href="/account">
+                Mon Espace
+                <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+              </a>
+            </Button>
+            <Button asChild variant="soft">
+              <a href="/dashboard">
+                Dashboard
+                <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+              </a>
+            </Button>
+            <Button asChild variant="soft">
+              <a href="/barem">
+                Barem
+                <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+              </a>
+            </Button>
           </NeedAuth>
           <ThemeToggle client:load />
         </Flex>
@@ -75,25 +75,25 @@ export function Header() {
                   </a>
                 </DropdownMenu.Item>
 
-              <DropdownMenu.Item>
-                <a href="/admin" className={styles.HeaderLink}>
-                  <ArrowRightIcon style={{ marginRight: 4 }} />
-                  Admin
-                </a>
-              </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <a href="/admin" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Admin
+                  </a>
+                </DropdownMenu.Item>
 
-              <DropdownMenu.Item>
-                <a href="/dashboard" className={styles.HeaderLink}>
-                  <ArrowRightIcon style={{ marginRight: 4 }} />
-                  Dashboard
-                </a>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <a href="/barem" className={styles.HeaderLink}>
-                  <ArrowRightIcon style={{ marginRight: 4 }} />
-                  Barem
-                </a>
-              </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <a href="/dashboard" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Dashboard
+                  </a>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <a href="/barem" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Barem
+                  </a>
+                </DropdownMenu.Item>
               </NeedAuth>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
