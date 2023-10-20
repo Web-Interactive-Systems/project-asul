@@ -16,8 +16,6 @@ export function Account() {
   const params = new URLSearchParams(window.location.search);
   const throttled = useMemo(() => throttle(handleNameChange, 500), []);
 
-  const throttled = useMemo(() => throttle(handleNameChange, 500), []);
-
   console.log('matchContent', matchContent);
 
   async function handleNameChange(e) {
