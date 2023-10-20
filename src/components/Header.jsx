@@ -60,6 +60,13 @@ export function Header() {
               </DropdownMenu.Item>
 
               <DropdownMenu.Item>
+                <a href="/admin" className={styles.HeaderLink}>
+                  <ArrowRightIcon style={{ marginRight: 4 }} />
+                  Admin
+                </a>
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Item>
                 <a href="/dashboard" className={styles.HeaderLink}>
                   <ArrowRightIcon style={{ marginRight: 4 }} />
                   Dashboard
