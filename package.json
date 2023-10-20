@@ -20,8 +20,10 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "astro": "^3.1.2",
+    "dotenv": "^16.3.1",
     "match-sorter": "^6.3.1",
     "next-themes": "^0.2.1",
+    "radix-ui": "^1.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
