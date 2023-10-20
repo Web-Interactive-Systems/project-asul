@@ -1,18 +1,17 @@
 import { Tabs, Box, Text, Card, Avatar, TextFieldInput } from '@radix-ui/themes';
-import sessionStore from '@/store/session';
 import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
 import { useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { $matchContent, $matchSession } from '@/store/store';
+import { $matchContent, $userSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
 
 export function Account() {
   const [session, setSession] = useState(null);
   const matchContent = useStore($matchContent);
-  const userSession = useStore(sessionStore);
+  const userSession = useStore($userSession);
   const params = new URLSearchParams(window.location.search);
   const throttled = useMemo(() => throttle(handleNameChange, 500), []);
 

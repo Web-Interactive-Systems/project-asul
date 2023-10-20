@@ -1,6 +1,6 @@
 import { supabase, postgres } from '@/lib/supabase';
-import SessionStore from '@/store/session';
 import { useEffect } from 'react';
+import { $userSession } from '@/store/store';
 
 export default function UserManager() {
   useEffect(() => {
@@ -26,11 +26,11 @@ export default function UserManager() {
           session.player = player[0];
         } else {
           function sessionHandler(payload) {
-            const currSess = SessionStore.get();
+            const currSess = $userSession.get();
             if (currSess.player.id === payload.new.id) {
               console.log('new session', payload.new);
 
-              SessionStore.set({
+              $userSession.set({
                 ...currSess,
                 player: payload.new,
               });
@@ -42,7 +42,7 @@ export default function UserManager() {
           session.player = data[0];
         }
       }
-      SessionStore.set(session);
+      $userSession.set(session);
     });
 
     return () => {

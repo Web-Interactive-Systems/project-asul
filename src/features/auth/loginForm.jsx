@@ -1,12 +1,12 @@
 import { supabase } from '@/lib/supabase';
 import { Button } from '@radix-ui/themes';
 import { useState } from 'react';
-import sessionStore from '@/store/session';
+import { $userSession } from '@/store/store';
 import { useStore } from '@nanostores/react';
 
 export default function LoginForm() {
   const [err, setErr] = useState(null);
-  const session = useStore(sessionStore);
+  const session = useStore($userSession);
 
   async function signin() {
     if (!session) {
