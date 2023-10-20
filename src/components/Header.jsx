@@ -4,11 +4,9 @@ import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
 
 import styles from './Header.module.css';
-import useSession from '@/hooks/useSession';
 import NeedAuth from './NeedAuth.jsx';
 
 export function Header() {
-  const [session, loading] = useSession();
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
       <Flex direction="row" width="100%" align="center" className={styles.HeaderList}>
