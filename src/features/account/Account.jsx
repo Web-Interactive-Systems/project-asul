@@ -10,6 +10,7 @@ export function Account() {
   const [isMatchList, setIsMatchList] = useState(false);
   const [session, setSession] = useState(null);
   const params = new URLSearchParams(window.location.search);
+
   return (
     <Tabs.Root defaultValue={params.get('init') ? 'profile' : 'match'}>
       <Tabs.List>
