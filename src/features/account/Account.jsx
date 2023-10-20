@@ -2,10 +2,10 @@ import { Tabs, Box, Text, Card, Avatar } from '@radix-ui/themes';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
+
 import { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { $matchContent, $matchSession } from '@/store/store';
-
 import sessionStore from '@/store/session';
 export function Account() {
   const matchContent = useStore($matchContent);
@@ -13,7 +13,6 @@ export function Account() {
   const [session, setSession] = useState(null);
   console.log('matchContent', matchContent);
   const params = new URLSearchParams(window.location.search);
-
   return (
     <Tabs.Root defaultValue={params.get('init') ? 'profile' : 'match'}>
       <Tabs.List>
