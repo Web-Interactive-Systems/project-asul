@@ -5,7 +5,6 @@ import { MatchList } from '../matchlist/MatchList';
 import { SessionList } from '../matchlist/SessionList';
 import { useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-
 import { $matchContent, $matchSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
 
