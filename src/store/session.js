@@ -1,3 +1,5 @@
 import { map } from 'nanostores';
 
-export default map(null);
+const session = map(null);
+
+export default session;

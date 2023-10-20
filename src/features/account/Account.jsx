@@ -1,11 +1,13 @@
-import { Tabs, Box, Text, Card, Avatar } from '@radix-ui/themes';
+import { Tabs, Box, Text, Card, Avatar, TextFieldInput } from '@radix-ui/themes';
 import sessionStore from '@/store/session';
 import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionList } from '../matchlist/SessionList';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 import { $matchContent, $matchSession } from '@/store/store';
+import { throttle } from '@/lib/utils';
 
 export function Account() {
   const [session, setSession] = useState(null);
@@ -13,7 +15,16 @@ export function Account() {
   const userSession = useStore(sessionStore);
   const params = new URLSearchParams(window.location.search);
 
+  const throttled = useMemo(() => throttle(handleNameChange, 500), []);
+
   console.log('matchContent', matchContent);
+
+  async function handleNameChange(e) {
+    await supabase
+      .from('Player')
+      .update({ username: e.target.value })
+      .eq('id', userSession.player.id);
+  }
 
   return (
     <Tabs.Root defaultValue={params.get('init') ? 'profile' : 'match'}>
@@ -44,7 +55,15 @@ export function Account() {
         <Tabs.Content value="profile">
           <Text size="2">Edit your profile or update contact information.</Text>
           <Card>
-            <Avatar src={userSession.player.avatar} fallback="A" />
+            <Avatar
+              src={userSession.player.avatar}
+              fallback={userSession.player.username.charAt(0)}
+            />
+            <TextFieldInput
+              label="Username"
+              defaultValue={userSession.player.username}
+              onChange={throttled}
+            ></TextFieldInput>
           </Card>
         </Tabs.Content>
       </Box>

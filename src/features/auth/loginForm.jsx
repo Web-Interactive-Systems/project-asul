@@ -38,6 +38,7 @@ export default function LoginForm() {
       {err && <p>{err.message}</p>}
       {session && (
         <>
+          <p>{session?.player?.username}</p>
           <p>{session.user.email}</p>
           <p>{session.user.id}</p>
         </>

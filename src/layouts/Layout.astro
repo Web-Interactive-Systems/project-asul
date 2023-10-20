@@ -21,7 +21,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <UserManager client:load />
+    <UserManager client:only="react" />
     <LayoutTheme client:load>
       <slot />
     </LayoutTheme>
