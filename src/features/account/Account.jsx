@@ -1,4 +1,6 @@
 import { Tabs, Box, Text, Card, Avatar } from '@radix-ui/themes';
+import sessionStore from '@/Stores/session';
+import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
