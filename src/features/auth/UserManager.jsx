@@ -28,6 +28,8 @@ export default function UserManager() {
           function sessionHandler(payload) {
             const currSess = SessionStore.get();
             if (currSess.player.id === payload.new.id) {
+              console.log('new session', payload.new);
+
               SessionStore.set({
                 ...currSess,
                 player: payload.new,
