@@ -1,19 +1,19 @@
-import { supabase } from '@/lib/supabase';
+import { supabase, postgres } from '@/lib/supabase';
 import SessionStore from '@/store/session';
 import { useEffect } from 'react';
 
 export default function UserManager() {
   useEffect(() => {
+    let postgresListener = null;
     const { data: Listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN') {
-        location.href = '/account?init=true';
-        return;
-      }
-
       if (session) {
+        if (event === 'SIGNED_IN') {
+          location.href = '/account?init=true';
+          return;
+        }
         const { data } = await supabase.from('Player').select('*').eq('id', session.user.id);
 
-        if (!data) {
+        if (data.length === 0) {
           const user = session.user;
           const { data: player } = await supabase
             .from('Player')
@@ -25,13 +25,28 @@ export default function UserManager() {
             .select();
           session.player = player[0];
         } else {
+          function sessionHandler(payload) {
+            const currSess = SessionStore.get();
+            if (currSess.player.id === payload.new.id) {
+              SessionStore.set({
+                ...currSess,
+                player: payload.new,
+              });
+            }
+          }
+
+          postgresListener = postgres.player.on('UPDATE', sessionHandler);
+
           session.player = data[0];
         }
       }
       SessionStore.set(session);
     });
 
-    return Listener.subscription.unsubscribe;
+    return () => {
+      postgresListener.unsubscribe('*');
+      Listener.subscription.unsubscribe();
+    };
   }, []);
 
   return null;

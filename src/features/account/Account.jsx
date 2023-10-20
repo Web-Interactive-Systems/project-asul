@@ -1,18 +1,30 @@
-import { Tabs, Box, Text, Card, Avatar } from '@radix-ui/themes';
-import sessionStore from '@/Stores/session';
+import { Tabs, Box, Text, Card, Avatar, TextFieldInput } from '@radix-ui/themes';
+import sessionStore from '@/store/session';
 import { useStore } from '@nanostores/react';
 import { MatchList } from '../matchlist/MatchList';
 import { SessionSelector } from '../session/sessionSelect';
 import { SessionList } from '../matchlist/SessionList';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 import { $matchContent, $matchSession } from '@/store/store';
+import { throttle } from '@/lib/utils';
+
 export function Account() {
   const matchContent = useStore($matchContent);
-  const [session, setSession] = useState(null);
-  const session = useStore(sessionStore);
-  console.log('matchContent', matchContent);
+  const userSession = useStore(sessionStore);
   const params = new URLSearchParams(window.location.search);
+  const throttled = useMemo(() => throttle(handleNameChange, 500), []);
+
+  console.log('matchContent', matchContent);
+
+  async function handleNameChange(e) {
+    await supabase
+      .from('Player')
+      .update({ username: e.target.value })
+      .eq('id', userSession.player.id);
+  }
+
   return (
     <Tabs.Root defaultValue={params.get('init') ? 'profile' : 'match'}>
       <Tabs.List>
@@ -42,7 +54,15 @@ export function Account() {
         <Tabs.Content value="profile">
           <Text size="2">Edit your profile or update contact information.</Text>
           <Card>
-            <Avatar src={session.player.avatar} fallback="A" />
+            <Avatar
+              src={userSession.player.avatar}
+              fallback={userSession.player.username.charAt(0)}
+            />
+            <TextFieldInput
+              label="Username"
+              defaultValue={userSession.player.username}
+              onChange={throttled}
+            ></TextFieldInput>
           </Card>
         </Tabs.Content>
       </Box>

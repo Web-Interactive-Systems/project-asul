@@ -1,10 +1,10 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { RealtimeChangeTest } from "@/features/test/RealtimeChangeTest";
+import Layout from '@/layouts/Layout.astro';
+import { RealtimeChangeTest } from '@/features/test/RealtimeChangeTest';
 ---
 
 <Layout title="Client 2">
   <main>
-    <RealtimeChangeTest client:load />
+    <RealtimeChangeTest client:only="react" />
   </main>
 </Layout>
