@@ -2,6 +2,7 @@ import Themes from '@/features/theme/Themes';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Box, Separator } from '@radix-ui/themes';
+import { MatchAskPopup } from '@/features/popup/MatchAskPopup';
 
 
 export function LayoutTheme({ children }) {
@@ -10,7 +11,10 @@ export function LayoutTheme({ children }) {
       <Box pb="8" >
         <Header />
       </Box>
-      <Box style={{ margin: 0 }}>{children}</Box>
+      <Box style={{ margin: 0 }}>
+        {children}
+        <MatchAskPopup />
+      </Box>
       <Footer />
     </Themes>
   );

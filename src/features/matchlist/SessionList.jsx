@@ -6,7 +6,8 @@ import { postgres } from '@/lib/supabase';
 import { SessionCalendar } from './SessionCalender';
 import { CreateMatchDialog } from '../match/CreateMatchDialog';
 
-import { $matchSession } from '@/store/store';
+import { $matchContent, $matchSession } from '@/store/store';
+import { getSessions } from '@/actions/getSessions';
 
 export function SessionList() {
   const [open, setOpen] = useState(false);
@@ -21,11 +22,8 @@ export function SessionList() {
     postgres.session.on('INSERT', sessionInsertHandler);
 
     const fetchData = async () => {
-      const data = await Promise.resolve([
-        { id: 1, created_at: new Date() },
-        { id: 2, created_at: new Date() },
-        { id: 3, created_at: new Date() },
-      ]);
+      const data = await getSessions();
+
       setSessions(data);
     };
 
@@ -92,21 +90,24 @@ export function SessionList() {
             <CreateMatchDialog open={openMatch} onCancel={() => setOpenMatch(false)} />
           </Flex>
         </Card>
-        {sessions.map((session, i) => (
-          <Card
+        {sessions.sort((a, b) => new Date(b.session_date) - new Date(a.session_date)).map((session, i) => {
+          return <Card
             key={i}
             style={{ cursor: 'pointer' }}
             onClick={() => {
               $matchSession.set(session);
             }}
           >
-            <Flex height="9" justify={'center'} align={'center'}>
+            <Flex height="9" justify={'center'} align={'center'} onClick={() => {
+              $matchSession.set(session);
+              $matchContent.set('match');
+            }}>
               <Text>
-                Session du <Strong>{format(new Date(session.created_at), 'dd/LL/Y')}</Strong>
+                Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
               </Text>
             </Flex>
           </Card>
-        ))}
+        })}
       </Grid>
     </Box>
   );
