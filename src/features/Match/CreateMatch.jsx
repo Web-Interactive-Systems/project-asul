@@ -22,7 +22,7 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
   const handleChange = (event) => setTerm(event.target.value);
 
   return (
-    <Combobox aria-labelledby="demo" onSelect={onSelect} openOnFocus={true}>
+    <Combobox aria-labelledby="demo"  openOnFocus={true}>
       <ComboboxInput placeholder={placeholder} autocomplete onChange={handleChange} />
       <ComboboxPopover
         style={{
@@ -36,8 +36,7 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
         <Box>
           <ComboboxList style={{ listStyle: 'none' }}>
             {results.map((data) => (
-              
-              <ComboboxOption key={data.id} value={data.username} data-id={data.id} class={data.username}>{data.username}</ComboboxOption>
+              <ComboboxOption onClick={onSelect.bind(null, data.id)} key={data.id} value={data.username} >{data.username}</ComboboxOption>
             ))}
           </ComboboxList>
         </Box>
@@ -47,17 +46,13 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
 }
 
 export function CreateMatch() {
-  const [DisableButton, setDisableButton] = useState(true);
   const [CurrentUserID, setCurrentUserID] = useState("");
 
-  const handleSelect = (selection) => {
-    if (selection == '') {
-      setDisableButton(true);
-    } else {
-      setCurrentUserID(document.querySelector("."+selection).dataset.id)
-      console.log("id",CurrentUserID)
-       setDisableButton(false);
-    }
+  const handleSelect = (id) => {
+
+    console.log("id user", id);
+
+    setCurrentUserID(id);
     
   };
   const handleAddMatch = () => {
@@ -102,7 +97,7 @@ export function CreateMatch() {
         color="blue"
         variant="solid"
         onClick={handleAddMatch}
-        disabled={DisableButton}
+        disabled={!!!CurrentUserID}
       >
         Envoyer une demande de Match
       </Button>
