@@ -1,19 +1,23 @@
+import React from "react";
+
 import { useEffect, useState, useCallback } from 'react';
-import { Button, Flex, Separator, Box, Text, Card, Heading, IconButton, ScrollArea } from '@radix-ui/themes';
+import { Button, Flex, Separator, Box, Text, Card, Heading, IconButton, ScrollArea, DropdownMenu, TextField } from '@radix-ui/themes';
 import { MultipleDatePicker } from '../../components/MultiDatePicker';
 import { getSessions } from '@/actions/getSessions';
 import { addSession } from '@/actions/addSession';
 import { deleteSession } from '@/actions/deleteSession'
 import { format } from 'date-fns';
-import { TrashIcon } from '@radix-ui/react-icons';
+import { TrashIcon, CaretDownIcon, MagnifyingGlassIcon, CalendarIcon } from '@radix-ui/react-icons';
+import { useThrottle } from '@/hooks/useThrottle';
 
 export function SessionSelector() {
   const [selectedDates, onDatesChange] = useState([]);
   const [sessions, setSessions] = useState([]);
+  const [searchSession, setSearchSession] = useState("")
 
   const handleFetch = useCallback(
-    async () => {
-      await getSessions().then(
+    async (search_param) => {
+      await getSessions({ search_query: search_param }).then(
         (values) => {
           setSessions(values);
         }
@@ -22,10 +26,15 @@ export function SessionSelector() {
     [],
   )
 
-
   useEffect(() => {
     handleFetch()
   }, [])
+  const searchDebounced = useThrottle(searchSession, 300);
+  useEffect(
+    () => {
+      handleFetch(searchSession);
+    }, [searchDebounced]
+  );
 
   const handleUnselectDate = (index) => {
     const newDates = selectedDates.filter((_, i) => i !== index);
@@ -48,8 +57,8 @@ export function SessionSelector() {
   }
 
   return (
-    <Flex direction={{ initial: "column", sm: "row" }} align="center" justify="center" gap="8" style={{ position: "relative", height: 450 }}>
-      <Flex direction="column" gap="4" width="max-content" style={{ position: "sticky", top: "0" }}>
+    <Flex direction={{ initial: "column", sm: "row" }} align={{ initial: "center", sm: "start" }} justify="center" gap="8">
+      <Flex direction="column" gap="4" width="max-content">
         <MultipleDatePicker
           selectedDates={selectedDates}
           onDatesChange={onDatesChange}
@@ -60,9 +69,13 @@ export function SessionSelector() {
         </Button>
       </Flex>
       <Separator orientation="vertical" size="4" />
-      <ScrollArea type='auto' scrollbars="vertical">
-        <Flex direction="column" gap="2">
-          <Heading size="3" style={{ marginBottom: ".5rem" }}>Sessions à venir</Heading>
+      <ScrollArea type='auto' scrollbars="vertical" style={{ maxHeight: "100vh" }}>
+        <Flex direction="column" gap="4">
+          <Heading size="3" style={{ margin: ".5rem 0" }}>Sessions à venir</Heading>
+          <TextField.Root style={{ maxWidth: 240 }}>
+            <TextField.Input type="date" placeholder="Rechercher une session..." value={searchSession} onChange={(e) => e ? setSearchSession(e.target.value) : setSearchSession("")} />
+          </TextField.Root>
+
           {sessions.length > 0 ? sessions
             .sort((a, b) => {
               return a.session_date > b.session_date ? 1 : -1;
@@ -78,7 +91,7 @@ export function SessionSelector() {
                   </Flex>
                 </Card>
               )
-            }) : <Text size="1">Aucune session à venir</Text>}
+            }) : <Text size="1">Aucun résultat</Text>}
         </Flex>
       </ScrollArea>
     </Flex>
