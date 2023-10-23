@@ -36,7 +36,8 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
         <Box>
           <ComboboxList style={{ listStyle: 'none' }}>
             {results.map((data) => (
-              <ComboboxOption key={data.id} value={data.username} />
+              
+              <ComboboxOption key={data.id} value={data.username} data-id={data.id} class={data.username}>{data.username}</ComboboxOption>
             ))}
           </ComboboxList>
         </Box>
@@ -47,20 +48,23 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
 
 export function CreateMatch() {
   const [DisableButton, setDisableButton] = useState(true);
+  const [CurrentUserID, setCurrentUserID] = useState("");
 
   const handleSelect = (selection) => {
     if (selection == '') {
       setDisableButton(true);
     } else {
-      setDisableButton(false);
+      setCurrentUserID(document.querySelector("."+selection).dataset.id)
+      console.log("id",CurrentUserID)
+       setDisableButton(false);
     }
-    console.log(selection);
+    
   };
   const handleAddMatch = () => {
     (async () => {
-      const creator_id = 3;
+      const creator_id = 2;
 
-      const player_id = 5;
+      const player_id = CurrentUserID;
 
       let { error } = await supabase
         .from('Match')
@@ -77,7 +81,7 @@ export function CreateMatch() {
       } else {
         console.log('match créer');
       }
-      window.location.replace('http://localhost:4321');
+      
     })();
   };
   return (
