@@ -28,6 +28,7 @@ export function Dashboard() {
             y: 'score',
             stroke: 'username',
             r: 5,
+            tip: true,
           }}
         />
         <Plot.line
