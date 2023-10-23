@@ -1,4 +1,4 @@
-import { Flex, Box, Button, Separator, Heading } from '@radix-ui/themes';
+import { Flex, Box, Button, Separator, Heading, Grid } from '@radix-ui/themes';
 import Logo from './Logo.jsx';
 
 export function Footer() {
@@ -6,7 +6,7 @@ export function Footer() {
 
     <Box width="100%">
       <Separator style={{ width: '100%' }} />
-        <Flex direction="row" gap="9" align="center" justify="between" columns={{ initial: '1', xs: '3' }} style={{ padding: '10px', marginLeft: '20vw', marginRight: '20vw' }}>
+        <Grid gap="9" align="center" justify="between" columns={{ initial: '1', xs: '3' }} style={{ padding: '10px', marginLeft: '20vw', marginRight: '20vw' }}>
           <Box>
             <Button asChild variant="ghost" style={{ color: 'grey' }}>
               <a href="/">
@@ -32,7 +32,7 @@ export function Footer() {
             </Button>
           </Flex>
 
-        </Flex>
+        </Grid>
     </Box>
   );
 }
