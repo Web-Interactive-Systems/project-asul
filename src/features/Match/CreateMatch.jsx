@@ -34,9 +34,9 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
         }}
       >
         <Box>
-          <ComboboxList style={{ listStyle: 'none' }}>
+          <ComboboxList style={{ listStyle: 'none'}}>
             {results.map((data) => (
-              <ComboboxOption onClick={onSelect.bind(null, data.id)} key={data.id} value={data.username} >{data.username}</ComboboxOption>
+              <ComboboxOption onClick={onSelect.bind(null, data.id)} key={data.id} value={data.username} style={{color:"blue", padding:"10px"}}>{data.username} </ComboboxOption>
             ))}
           </ComboboxList>
         </Box>
