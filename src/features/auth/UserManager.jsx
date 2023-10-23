@@ -1,8 +1,17 @@
 import { supabase, postgres } from '@/lib/supabase';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { $userSession } from '@/store/store';
+import GoogleOneTap from './GoogleOneTap';
+import { useGoogleOneTapLogin } from 'react-google-one-tap-login';
 
 export default function UserManager() {
+  useGoogleOneTapLogin({
+    onSuccess: (response) => console.log('success', response),
+    onError: (response) => console.log('failure', response),
+    googleAccountConfigs: {
+      client_id: import.meta.env.PUBLIC_GOOGLE_CLIENTID,
+    },
+  });
   useEffect(() => {
     let postgresListener = null;
     const { data: Listener } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -51,5 +60,5 @@ export default function UserManager() {
     };
   }, []);
 
-  return null;
+  // return <GoogleOneTap googleAccountConfigs={{}} />;
 }
