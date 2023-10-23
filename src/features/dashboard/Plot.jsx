@@ -1,11 +1,26 @@
 import * as Plot from '@observablehq/plot';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 
 const MarksContext = createContext([[], () => {}]);
 const DataContext = createContext([[], () => {}]);
 
 export function root({ children, plotOptions, data }) {
   const [marks, setMarks] = useState([]);
+  const divElem = useRef(null);
+
+  useEffect(() => {
+    if (divElem.current) {
+      const plot = Plot.plot({
+        ...plotOptions,
+        marks,
+      });
+
+      divElem.current.append(plot);
+      return () => {
+        plot.remove();
+      };
+    }
+  }, [marks, data]);
 
   if (marks.length === 0) {
     return (
@@ -15,23 +30,16 @@ export function root({ children, plotOptions, data }) {
     );
   }
 
-  const plot = Plot.plot({
-    ...plotOptions,
-    marks,
-  });
-
   return (
     <MarksContext.Provider value={[marks, setMarks]}>
       <DataContext.Provider value={data}>
         {children}
-        {plot && (
-          <div
-            style={{
-              color: 'black',
-            }}
-            dangerouslySetInnerHTML={{ __html: plot.outerHTML }}
-          ></div>
-        )}
+        <div
+          style={{
+            color: 'black',
+          }}
+          ref={divElem}
+        ></div>
       </DataContext.Provider>
     </MarksContext.Provider>
   );
