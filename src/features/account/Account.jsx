@@ -6,12 +6,18 @@ import { useState } from 'react';
 import { useStore } from '@nanostores/react';
 
 import { $matchContent, $matchSession } from '@/store/store';
+import { Dashboard } from '../dashboard/dashboard';
+import { BadmintonMatchesPlot, generateRandomMatch, BadmintonMatchesHistory } from '../dashboard/BadmintonCharts';
 
 export function Account() {
   const matchContent = useStore($matchContent);
   const [session, setSession] = useState(null);
 
   console.log('matchContent', matchContent);
+
+  const matches = [
+    ...Array.from({ length: 5 }, generateRandomMatch)
+  ];
 
   return (
     <Tabs.Root defaultValue="match">
@@ -36,7 +42,8 @@ export function Account() {
         </Tabs.Content>
 
         <Tabs.Content value="dashboard">
-          <Text size="2">Access and update your documents.</Text>
+          <BadmintonMatchesPlot matches={matches} />
+          <BadmintonMatchesHistory matches={matches} />
         </Tabs.Content>
 
         <Tabs.Content value="profile">

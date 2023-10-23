@@ -1,6 +1,6 @@
 import { Flex, Box, Button, DropdownMenu, IconButton, Separator } from '@radix-ui/themes';
 import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon } from '@radix-ui/react-icons';
-import ThemeToggle from '@/features/theme/ThemeToggle.jsx';
+import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
 
 import styles from './Header.module.css';
@@ -31,12 +31,6 @@ export function Header() {
           <Button asChild variant="soft">
             <a href="/dashboard">
               Dashboard
-              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
-            </a>
-          </Button>
-          <Button asChild variant="soft">
-            <a href="/barem">
-              Barem
               <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
             </a>
           </Button>
@@ -76,12 +70,6 @@ export function Header() {
                 <a href="/dashboard" className={styles.HeaderLink}>
                   <ArrowRightIcon style={{ marginRight: 4 }} />
                   Dashboard
-                </a>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <a href="/barem" className={styles.HeaderLink}>
-                  <ArrowRightIcon style={{ marginRight: 4 }} />
-                  Barem
                 </a>
               </DropdownMenu.Item>
               </DropdownMenu.Content>
