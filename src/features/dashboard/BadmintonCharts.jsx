@@ -1,14 +1,6 @@
 import Plot from '@/features/dashboard/Plot';
 import { Table, TextArea, Box, TextFieldInput } from '@radix-ui/themes';
 
-// Représentation d'un match
-// {
-//   winner_score : Number,
-//   loser_score : Number,
-//   winner_name : String,
-//   loser_name : String,
-// }
-
 export function BadmintonMatchesPlot({ matches }) {
   const data = matches.flatMap((match, index) => ([
     
@@ -114,5 +106,42 @@ export function generateRandomMatch() {
 
 
 
+// Représentation d'un match
+// {
+//   winner_score : Number,
+//   loser_score : Number,
+//   winner_name : String,
+//   loser_name : String, 
+// }
+
+
+
 
 // faire fonction pour récupérer les données depuis la BDD
+
+// 1 - me reco à la BDD
+
+// 2 - mettre ma fonction 
+
+// 3 - voir si plot arrive à exploiter 
+
+
+/**
+ * 
+ * //import { getScores } from '@/actions/getScores';
+
+export function BadmintonMatchesPlot() {
+    const[matches, setScores] = useState([]);
+
+    useEffect(async () => {
+        const response = await getScores();
+        setScores(response.data);
+    }, [])
+        
+
+    return (
+
+
+
+
+ */
