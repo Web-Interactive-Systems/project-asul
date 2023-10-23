@@ -49,7 +49,12 @@ export default new Proxy(
         const data = useContext(DataContext);
 
         useEffect(() => {
-          setMarks((prev) => [...prev, Plot[name](data, options)]);
+          if (name === "ruleY") {
+            setMarks((prev) => [...prev, Plot[name](options)])
+          }
+          else{
+            setMarks((prev) => [...prev, Plot[name](data, options)]);
+          }
         }, [data]);
 
         return null;
