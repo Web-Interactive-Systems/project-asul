@@ -7,9 +7,7 @@ export function Barem() {
     const[grades, setGrades] = useState([]);
 
     useEffect(async () => {
-      console.log('useEffect Barem start')
         const response = await getGrades();
-        console.log('useEffect Barem start', response)
         setGrades(response.data);
     }, [])
         
