@@ -10,31 +10,30 @@ import { format, formatDistanceToNow } from 'date-fns';
 import { postgres } from '@/lib/supabase';
 import { MatchCardDialog } from '../MatchCard/MatchCardDialog';
 
-import { $matchSession } from '@/store/store';
+import { $matchContent, $matchSession, $players } from '@/store/store';
+import { getMatchesBySession } from '@/actions/getMatchesBySession';
 
-export function MatchList({ onClose }) {
+export function MatchList() {
   const matchSession = useStore($matchSession);
-
-  console.log('matchsession', matchSession);
-
   const [matches, setMatches] = useState([]);
+  const players = useStore($players);
 
   useEffect(() => {
-    const matchInsertHandler = (data) => {
-      setMatches((matches) => [data.new, ...matches]);
-    };
+    // const matchInsertHandler = (data) => {
+    //   setMatches((matches) => [data.new, ...matches]);
+    // };
 
-    postgres.match.on('INSERT', matchInsertHandler);
+    // postgres.match.on('INSERT', matchInsertHandler);
 
     const fetchData = async () => {
-      const data = await getUserMatchs();
+      const data = await getMatchesBySession(matchSession.id);
       setMatches(data);
     };
 
     fetchData();
 
     return () => {
-      postgres.match.off('INSERT', matchInsertHandler);
+      // postgres.match.off('INSERT', matchInsertHandler);
     };
   }, []);
 
@@ -47,10 +46,12 @@ export function MatchList({ onClose }) {
   return (
     <Box>
       <Heading style={{ fontSize: '1rem', marginBottom: 'var(--space-3)' }}>
-        Session du {format(new Date(matchSession.created_at), 'dd/LL/Y')}
+        Session du {format(new Date(matchSession.session_date), 'dd/LL/Y')}
       </Heading>
       <Flex align={'center'} style={{ marginBottom: 'var(--space-3)' }} gap="3">
-        <Button variant="soft" onClick={onClose} style={{ cursor: 'pointer' }}>
+        <Button variant="soft" onClick={() => {
+          $matchContent.set('session');
+        }} style={{ cursor: 'pointer' }}>
           <Flex justify={'center'} align={'center'} gap="2">
             <ArrowLeftIcon />
             <Text>Précédent</Text>
@@ -67,20 +68,28 @@ export function MatchList({ onClose }) {
           </Flex>
         </Card>
 
-        {matches.map((match, i) => {
+        {matches.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((match, i) => {
+          const player = players.find(player => player.id === match.player_id);
+
           return (
             <MatchCardDialog key={match.id}>
               <Card>
                 <Flex justify={'center'} align="center" direction="column" height="100%">
-                  <Text>Il y a</Text>
+                  <Text>Il y a {formatDistanceToNow(new Date(match.created_at), { locale: fr })}</Text>
                   <Flex justify={'center'} align={'center'} gap="2">
                     <SewingPinIcon />
                     <Text>
-                      Match contre <Strong>{'Adversaire'}</Strong>
+                      Match contre <Strong>{player.username}</Strong>
                     </Text>
                   </Flex>
                   <Strong>
-                    {'2'} - {'0'}
+                    { (() => {
+                      if (match.status === 'finished') {
+                        return match.winer_id === player.id ? `${match.winer_score} - ${match.loser_score}` : `${match.loser_score} - ${match.winer_score}`
+                      } else {
+                        return '_ - _'
+                      }
+                    })() }
                   </Strong>
                 </Flex>
               </Card>

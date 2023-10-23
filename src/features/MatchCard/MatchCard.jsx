@@ -30,7 +30,7 @@ export function MatchCard({ match = { status: 'created' }, J2 = { name: 'J2', sc
           radius="large"
           color="green"
           style={{ width: '60%', maxWidth: 240 }}
-          onClick={() => setMatchStatus('Finished')}
+          onClick={() => setMatchStatus('finished')}
         >
           Terminer
         </Button>

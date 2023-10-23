@@ -2,10 +2,11 @@ import { Grid, Box, Card, Flex, Text, Strong, Dialog } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { postgres } from '@/lib/supabase';
+import { getSessions } from '@/actions/getSessions';
 
 import { $matchSession } from '@/store/store';
 
-export function SessionCalendar({ open, onSelect }) {
+export function SessionCalendar({ onSelect }) {
   const [sessions, setSessions] = useState([]);
 
   useEffect(() => {
@@ -16,16 +17,8 @@ export function SessionCalendar({ open, onSelect }) {
     postgres.session.on('INSERT', sessionInsertHandler);
 
     const fetchData = async () => {
-      const data = await Promise.resolve([
-        { id: 1, created_at: new Date() },
-        { id: 2, created_at: new Date() },
-        { id: 3, created_at: new Date() },
-        { id: 4, created_at: new Date() },
-        { id: 5, created_at: new Date() },
-        { id: 6, created_at: new Date() },
-        { id: 7, created_at: new Date() },
-        { id: 8, created_at: new Date() },
-      ]);
+      const data = await getSessions();
+
       setSessions(data);
     };
 
@@ -37,7 +30,6 @@ export function SessionCalendar({ open, onSelect }) {
   }, []);
 
   const handleSelectSession = (session) => {
-    console.log('matchSession.set', session);
     $matchSession.set(session);
 
     onSelect();
@@ -54,7 +46,7 @@ export function SessionCalendar({ open, onSelect }) {
           >
             <Flex height="9" justify={'center'} align={'center'}>
               <Text>
-                Session du <Strong>{format(new Date(session.created_at), 'dd/LL/Y')}</Strong>
+                Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
               </Text>
             </Flex>
           </Card>

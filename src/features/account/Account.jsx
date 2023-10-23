@@ -9,7 +9,6 @@ import { $matchContent, $userSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
 
 export function Account() {
-  const [session, setSession] = useState(null);
   const matchContent = useStore($matchContent);
   const userSession = useStore($userSession);
   const params = new URLSearchParams(window.location.search);
@@ -35,15 +34,7 @@ export function Account() {
       <Box px="4" pt="3" pb="2">
         <Tabs.Content value="match">
           {matchContent === 'session' && <SessionList />}
-
-          {matchContent === 'match' && (
-            <MatchList
-              onClose={() => {
-                //
-              }}
-              session={session}
-            />
-          )}
+          {matchContent === 'match' && <MatchList />}
         </Tabs.Content>
 
         <Tabs.Content value="dashboard">

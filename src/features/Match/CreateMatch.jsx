@@ -9,14 +9,14 @@ import {
 } from '@reach/combobox';
 import { usePlayerMatch } from '@/hooks/usePlayerMatch';
 
-import { supabase } from '@/lib/supabase.js';
+import { broadcast, supabase } from '@/lib/supabase.js';
 
-import { $matchContent } from '@/store/store';
-import { addMatch } from '@/actions/addMatch';
+import { $matchContent, $matchSession } from '@/store/store';
+import { getAuthUser } from '@/actions';
+import { useStore } from '@nanostores/react';
 
 function InuputSelect({ placeholder = 'input select', onSelect }) {
   const [term, setTerm] = useState('');
-
   const results = usePlayerMatch(term);
 
   const handleChange = (event) => setTerm(event.target.value);
@@ -47,6 +47,7 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
 
 export function CreateMatch() {
   const [CurrentUserID, setCurrentUserID] = useState("");
+  const matchSession = useStore($matchSession);
 
   const handleSelect = (id) => {
 
@@ -55,10 +56,10 @@ export function CreateMatch() {
     setCurrentUserID(id);
     
   };
-  const handleAddMatch = () => {
-    (async () => {
-      const creator_id = 2;
-
+  const handleAddMatch = async () => {
+      const authUser = await getAuthUser();
+      
+      const creator_id = authUser.id;
       const player_id = CurrentUserID;
 
       let { error } = await supabase
@@ -69,6 +70,7 @@ export function CreateMatch() {
           creator_id,
           player_id,
           status: 'en attente',
+          session_id: matchSession.id,
         });
 
       if (error) {
@@ -76,8 +78,10 @@ export function CreateMatch() {
       } else {
         console.log('match créer');
       }
+
+      broadcast.notifications.send('match', '*');
       
-    })();
+      $matchContent.set('match');
   };
   return (
     <Flex direction="column" align="center" gap="3">

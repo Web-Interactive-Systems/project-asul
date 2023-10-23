@@ -139,15 +139,17 @@ class BroadcastChannel {
    * @param {any} data - The data payload to send with the message.
    * @returns {Promise} A Promise that resolves when the message is sent.
    */
-  async send(event, recipient, data) {
+  async send(event, recipient, data = null) {
     const authUser = await getAuthUser();
-    if (!authUser.data) {
+
+    if (!authUser) {
       return Promise.reject(new Error('User needs to be authenticated to send a message'));
     }
-    return await this.channel.send({
+
+    return this.channel.send({
       type: 'broadcast',
       event,
-      payload: { sender: getAuthUser(), recipient, data },
+      payload: { sender: authUser, recipient, data },
     });
   }
 }
