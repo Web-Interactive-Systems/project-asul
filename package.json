@@ -17,6 +17,7 @@
     "@radix-ui/themes": "^2.0.0",
     "@reach/combobox": "^0.18.0",
     "@rehookify/datepicker": "^6.2.0",
+    "@stitches/react": "^1.2.8",
     "@supabase/supabase-js": "^2.36.0",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",

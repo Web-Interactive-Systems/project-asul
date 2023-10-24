@@ -3,6 +3,7 @@ import { Button, Flex, Heading, Text, Box } from '@radix-ui/themes';
 import { useState } from 'react';
 import { $userSession } from '@/store/store';
 import { useStore } from '@nanostores/react';
+import { GoogleSvg } from '@/components/GoogleSvg';
 
 export default function LoginForm() {
   const [err, setErr] = useState(null);
@@ -46,7 +47,7 @@ export default function LoginForm() {
           <Heading size={{ initial: '2', xs: '4', md: '6' }}>Se connecter à ASUL</Heading>
 
           <Button size="3" onClick={signin}>
-            Seconnecter avec Google
+            <GoogleSvg /> Google
           </Button>
         </Flex>
       ) : (

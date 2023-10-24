@@ -10,7 +10,7 @@ export function LayoutTheme({ children }) {
       <Box pb="8">
         <Header />
       </Box>
-      <Box p="8" m="4">
+      <Box m="4">
         {children}
         <MatchAskPopup />
       </Box>

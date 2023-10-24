@@ -14,7 +14,7 @@ export function CreateMatchDialog({ open, onCancel, children }) {
             position: 'relative',
           }}
         >
-          Choisir votre adversaire
+          Créer un match
           <IconButton
             variant="soft"
             color="gray"

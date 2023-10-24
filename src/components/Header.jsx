@@ -5,8 +5,12 @@ import Logo from './Logo.jsx';
 
 import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
+import { useStore } from '@nanostores/react';
+import { $userSession } from '@/store/store.js';
 
 export function Header() {
+  const session = useStore($userSession);
+
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
       <Flex direction="row" width="100%" align="center" className={styles.HeaderList}>
@@ -58,6 +62,14 @@ export function Header() {
               </IconButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
+              {session && (
+                <DropdownMenu.Item>
+                  <a href="/auth" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Se déconnecter
+                  </a>
+                </DropdownMenu.Item>
+              )}
               <NeedAuth
                 fallback={
                   <DropdownMenu.Item>
