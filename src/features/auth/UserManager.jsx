@@ -1,13 +1,22 @@
 import { supabase, postgres } from '@/lib/supabase';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { $userSession } from '@/store/store';
+import GoogleOneTap from './GoogleOneTap';
 
 export default function UserManager() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [verified, setVerified] = useState(false);
+
   useEffect(() => {
-    let postgresListener = null;
+    let postgresListeners = [];
     const { data: Listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'INITIAL_SESSION') {
+        setLoggedIn(!!session);
+        setVerified(true);
+      }
       if (session) {
-        if (event === 'SIGNED_IN') {
+        let currentSession = $userSession.get();
+        if (event === 'SIGNED_IN' && !currentSession) {
           location.href = '/account?init=true';
           return;
         }
@@ -37,8 +46,7 @@ export default function UserManager() {
             }
           }
 
-          postgresListener = postgres.player.on('UPDATE', sessionHandler);
-
+          postgresListeners.push(postgres.player.on('UPDATE', sessionHandler));
           session.player = data[0];
         }
       }
@@ -46,10 +54,16 @@ export default function UserManager() {
     });
 
     return () => {
-      postgresListener.unsubscribe('*');
+      if (postgresListeners.length > 0) {
+        postgresListeners.forEach((listener) => {
+          listener.unsubscribe('*');
+        });
+      }
       Listener.subscription.unsubscribe();
     };
   }, []);
 
-  return null;
+  if (verified && !loggedIn) {
+    return <GoogleOneTap />;
+  }
 }
