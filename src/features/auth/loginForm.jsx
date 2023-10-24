@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Button } from '@radix-ui/themes';
+import { Button, Flex, Heading, Text, Box } from '@radix-ui/themes';
 import { useState } from 'react';
 import { $userSession } from '@/store/store';
 import { useStore } from '@nanostores/react';
@@ -35,22 +35,34 @@ export default function LoginForm() {
   }
 
   return (
-    <>
-      <Button onClick={signin}>Login</Button>
-      <Button onClick={logout}>Logout</Button>
+    <Flex
+      direction="column"
+      gap="4"
+      align="center"
+      style={{ width: '50vw', marginLeft: 'auto', marginRight: 'auto' }}
+    >
+      {!session ? (
+        <Flex direction="column" gap="4" align="center">
+          <Heading size={{ initial: '2', xs: '4', md: '6' }}>Se connecter à ASUL</Heading>
+
+          <Button size="3" onClick={signin}>
+            Seconnecter avec Google
+          </Button>
+        </Flex>
+      ) : (
+        <Flex direction="column" gap="4" align="center">
+          <Heading size={{ initial: '2', xs: '4', md: '6' }}>
+            Salut {session?.player?.username} 👋
+          </Heading>
+
+          <Button size="3" onClick={logout}>
+            Logout
+          </Button>
+        </Flex>
+      )}
+
       {err && <p>{err.message}</p>}
-      {session && (
-        <>
-          <p>{session?.player?.username}</p>
-          <p>{session.user.email}</p>
-          <p>{session.user.id}</p>
-        </>
-      )}
-      {!session && (
-        <>
-          <p>Not signed in</p>
-        </>
-      )}
-    </>
+      {session && <Text size="2">{session.user.email}</Text>}
+    </Flex>
   );
 }

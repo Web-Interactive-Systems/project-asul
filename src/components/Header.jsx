@@ -40,9 +40,9 @@ export function Header() {
               </a>
             </Button>
             <Button asChild variant="soft">
-              <a href="/barem">
-                Barem
-                <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+              <a href="/admin">
+                <ArrowRightIcon style={{ opacity: 1, marginRight: -3 }} />
+                Admin
               </a>
             </Button>
           </NeedAuth>
