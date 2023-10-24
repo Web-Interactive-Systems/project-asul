@@ -4,11 +4,14 @@ export function useNonce() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/data/nonce')
-      .then((res) => res.json())
-      .then((data) => setNonce(data.nonce))
-      .catch((err) => console.warn(err))
-      .finally(() => setLoading(false));
+    (async () => {
+      const rand = crypto.getRandomValues(new Uint8Array(32));
+      const nonce = btoa(String.fromCharCode(...rand));
+      const hashed = await crypto.subtle.digest('SHA-256', rand);
+      console.log('nonce', nonce);
+      setNonce({ nonce, hashed });
+      setLoading(false);
+    })();
   }, []);
 
   return [nonce, loading];
