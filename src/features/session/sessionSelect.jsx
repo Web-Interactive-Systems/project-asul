@@ -9,6 +9,7 @@ import { deleteSession } from '@/actions/deleteSession'
 import { format } from 'date-fns';
 import { TrashIcon, CaretDownIcon, MagnifyingGlassIcon, CalendarIcon } from '@radix-ui/react-icons';
 import { useThrottle } from '@/hooks/useThrottle';
+import { postgres } from '@/lib/supabase';
 
 export function SessionSelector() {
   const [selectedDates, onDatesChange] = useState([]);
@@ -42,18 +43,27 @@ export function SessionSelector() {
   };
   const handleAddSessions = async (sessions) => {
     sessions = sessions.map(session_date => ({ session_date: format(session_date, 'yyyy-MM-dd', { local: { code: 'fr-FR' } }) }));
-    const { data, error } = await addSession({ sessions });
+    const { data, error } = await addSession({ sessions }).then(
+      async (values) => {
+        await handleFetch();
+        return values
+      }
+    );
     if (error) {
       console.error(error);
     }
     onDatesChange([]);
   }
   const handleDeleteSession = async (session_id) => {
-    const { data, error } = await deleteSession({ session_id });
+    const { data, error } = await deleteSession({ session_id }).then(
+      async (values) => {
+        await handleFetch();
+        return values;
+      }
+    );
     if (error) {
       console.error(error);
     } else console.info(data);
-    await handleFetch();
   }
 
   return (
