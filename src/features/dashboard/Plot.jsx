@@ -36,7 +36,7 @@ export function root({ children, plotOptions, data }) {
         {children}
         <div
           style={{
-            color: 'black',
+            color: '#303030',
           }}
           ref={divElem}
         ></div>
