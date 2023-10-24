@@ -1,7 +1,6 @@
   import { Grid } from '@radix-ui/themes';
   import Plot from '@/features/dashboard/Plot';
   import mockData from '@/features/dashboard/data.json';
-  import * as Plott from "@observablehq/plot";
   import {getCumulPointsDashboard} from '../../actions/getCumulPointsDashboard.js';
 
   const Data = mockData.map((d) => {
@@ -18,24 +17,7 @@
   console.log(dt)
 
   export function Dashboard() {
-    const tes = Plott.plot({
-      marks: [
-        Plott.ruleY([0]),
-        Plott.lineY(dt, {x: "match_date", y: "score", stroke: "userid", tip: true}),
-        Plott.dot(dt, {x: "match_date", y: "score", stroke: "userid", r: 3,  tip: true})
-      ],
-      tooltip: {
-        fill: "red",
-        stroke: "blue",
-        r: 8
-      }
-    })
     return (
-      <>
-      <div
-        dangerouslySetInnerHTML={{__html:tes.outerHTML}}
-      >
-      </div>
       <Grid rows="2" columns="2" gap="2">
         <Plot.root
           data={dt}
@@ -56,11 +38,9 @@
               y: 'score',
               stroke: 'userid',
               r: 3,
-              tip: true
             }}
           />
-          <Plot.ruleY options={[100]}/>
-          <Plot.lineY
+          <Plot.line
             options={{
               x: 'match_date',
               y: 'score',
@@ -122,6 +102,5 @@
           />
         </Plot.root>
       </Grid>
-      </>
     );
   }
