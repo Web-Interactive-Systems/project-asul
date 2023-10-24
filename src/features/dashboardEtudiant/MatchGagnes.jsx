@@ -1,31 +1,28 @@
 import { Card } from '@radix-ui/themes';
 import { getNbMatchGagneById } from '@/actions/getNbMatchGagneById';
 import { useEffect, useState } from 'react';
-
-// const matches = await getMatches();
+import { useStore } from '@nanostores/react';
+import { $userSession } from '@/store/store';
 
 export function NbMatchGagnes() {
   const [nbMatchGagnes, setNbMatchGagnes] = useState(0);
-  const {count, error} = getNbMatchGagneById();
+  const { count, error } = getNbMatchGagneById();
+  const session = useStore($userSession);
   // console.log("nb matchs", nbMatchGagnes)
 
   useEffect(() => {
-
-    const fetchData = async () =>{
-      const {count, error} = await getNbMatchGagneById();
-      setNbMatchGagnes(count);
-    };
-
-    fetchData();
-
-    // count ? setNbMatchGagnes(count) : null;
-    // console.log("error", error)
-    // console.log("count", count)
-  }, []);
+    (async () => {
+      if (session){
+        const { count, error } = await getNbMatchGagneById(session.user.id);
+        setNbMatchGagnes(count);
+      }
+      
+    })();
+  }, [session]);
 
   return (
-      <Card>
-        Nombre de match gagnés : {nbMatchGagnes}
-      </Card>
+    <Card>
+      Nombre de victoires : {nbMatchGagnes}
+    </Card>
   );
 }

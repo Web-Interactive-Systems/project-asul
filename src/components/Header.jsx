@@ -1,7 +1,6 @@
 import { Flex, Box, Button, DropdownMenu, IconButton, Separator } from '@radix-ui/themes';
 import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon } from '@radix-ui/react-icons';
 import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
-import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
 
 import styles from './Header.module.css';

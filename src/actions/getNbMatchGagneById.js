@@ -1,7 +1,7 @@
 
 import { supabase } from "@/lib/supabase.js";
 
-export async function getNbMatchGagneById(winer_id = 41) {
+export async function getNbMatchGagneById(winer_id) {
     
     const { data: score, error } = await supabase
     .from('Score')
