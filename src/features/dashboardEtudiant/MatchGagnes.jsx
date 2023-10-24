@@ -6,6 +6,7 @@ import { $userSession } from '@/store/store';
 
 export function NbMatchGagnes() {
   const [nbMatchGagnes, setNbMatchGagnes] = useState(0);
+  const { count, error } = getNbMatchGagneById();
   const session = useStore($userSession);
   // console.log("nb matchs", nbMatchGagnes)
 
