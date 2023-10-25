@@ -29,7 +29,9 @@
             y: {
               label:'Score'
             },
-            
+            style: {
+              pointerEvents: "all"
+            },
           }}
         >
           <Plot.dot
@@ -40,7 +42,6 @@
               r: 3,
               channels: {Adversaire:"adversaire",Status: "result", Résultat: "match"},
               tip:{
-                fill:"victory"?'white':'red',
                 format: {
                   x: (d) => d.toLocaleDateString("fr")
                 }
@@ -49,6 +50,7 @@
           />
           <Plot.ruleY options={[100]}/>
           <Plot.lineY
+            className="line-of-chart"
             options={{
               x: 'match_date',
               y: 'score',
