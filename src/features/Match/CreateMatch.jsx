@@ -35,7 +35,7 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
         }}
       >
         <Box>
-          <ComboboxList style={{ listStyle: 'none' }}>
+          <ComboboxList style={{ listStyle: 'none', maxHeight: '35vh', overflowY: 'scroll' }}>
             {results.map((data) => (
               <ComboboxOption
                 onClick={onSelect.bind(null, data.id)}
