@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 import { format } from 'date-fns';
 
-export async function getSessions({ search_query }) {
+export async function getSessions(search_query) {
   // console.log('search date', search_query);
 
   let query = supabase

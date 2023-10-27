@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 
 import { useEffect, useState, useCallback } from 'react';
 import { Button, Flex, Separator, Box, Text, Card, Heading, IconButton, ScrollArea, DropdownMenu, TextField } from '@radix-ui/themes';
@@ -14,11 +14,11 @@ import { postgres } from '@/lib/supabase';
 export function SessionSelector() {
   const [selectedDates, onDatesChange] = useState([]);
   const [sessions, setSessions] = useState([]);
-  const [searchSession, setSearchSession] = useState("")
+  const [searchSession, setSearchSession] = useState("");
 
   const handleFetch = useCallback(
     async (search_param) => {
-      await getSessions({ search_query: search_param }).then(
+      await getSessions(search_param).then(
         (values) => {
           setSessions(values);
         }
@@ -30,11 +30,10 @@ export function SessionSelector() {
   useEffect(() => {
     handleFetch()
   }, [])
-  const searchDebounced = useThrottle(searchSession, 300);
-  useEffect(
+  useLayoutEffect(
     () => {
       handleFetch(searchSession);
-    }, [searchDebounced]
+    }, [searchSession]
   );
 
   const handleUnselectDate = (index) => {
@@ -79,31 +78,29 @@ export function SessionSelector() {
         </Button>
       </Flex>
       <Separator orientation="vertical" size="4" />
-      <ScrollArea type='auto' scrollbars="vertical" style={{ maxHeight: "100vh" }}>
-        <Flex direction="column" gap="4">
-          <Heading size="3" style={{ margin: ".5rem 0" }}>Sessions à venir</Heading>
-          <TextField.Root style={{ maxWidth: 240 }}>
-            <TextField.Input type="date" placeholder="Rechercher une session..." value={searchSession} onChange={(e) => e ? setSearchSession(e.target.value) : setSearchSession("")} />
-          </TextField.Root>
+      <Flex direction="column" gap="4">
+        <Heading size="3" style={{ margin: ".5rem 0" }}>Sessions à venir</Heading>
+        <TextField.Root style={{ maxWidth: 240, padding: "0 2.5rem" }}>
+          <TextField.Input type="date" placeholder="Rechercher une session..." value={searchSession} onChange={(e) => e ? setSearchSession(e.target.value) : setSearchSession("")} />
+        </TextField.Root>
 
-          {sessions.length > 0 ? sessions
-            .sort((a, b) => {
-              return a.session_date > b.session_date ? 1 : -1;
-            })
-            .map((el, key) => {
-              return (
-                <Card key={key} style={{ maxWidth: 240 }}>
-                  <Flex gap="3" justify="center" align="center">
-                    <Text size="2">{format(new Date(el.session_date), 'dd MMM. yyyy')}</Text>
-                    <IconButton radius='large' color="crimson" size="1" onClick={() => handleDeleteSession(el.id)}>
-                      <TrashIcon />
-                    </IconButton>
-                  </Flex>
-                </Card>
-              )
-            }) : <Text size="1">Aucun résultat</Text>}
-        </Flex>
-      </ScrollArea>
+        {sessions.length > 0 ? sessions
+          .sort((a, b) => {
+            return a.session_date > b.session_date ? 1 : -1;
+          })
+          .map((el, key) => {
+            return (
+              <Card key={key} style={{ maxWidth: 240 }}>
+                <Flex gap="3" justify="center" align="center">
+                  <Text size="2">{format(new Date(el.session_date), 'dd MMM. yyyy')}</Text>
+                  <IconButton radius='large' color="crimson" size="1" onClick={() => handleDeleteSession(el.id)}>
+                    <TrashIcon />
+                  </IconButton>
+                </Flex>
+              </Card>
+            )
+          }) : <Text size="1">Aucun résultat</Text>}
+      </Flex>
     </Flex>
   );
 }
