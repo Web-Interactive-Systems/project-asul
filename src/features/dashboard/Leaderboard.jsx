@@ -6,8 +6,7 @@ import { $players } from '@/store/store';
 export function Leaderboard({ col = 2, style }) {
   const players = useStore($players);
   console.log(players);
-
-  if (players.length === 0) return null;
+  if (!players || players.length === 0) return null;
   const playerArrays = [];
   const middle = Math.ceil(players.length / col);
   for (let i = 0; i < col; i++) {
@@ -15,11 +14,12 @@ export function Leaderboard({ col = 2, style }) {
   }
 
   console.log(playerArrays);
+  let rank = 1;
   return (
     <Grid
       rows={((players.length - 1) / col).toFixed()}
       columns={col.toFixed()}
-      gap="2"
+      gap="3"
       style={style}
     >
       {playerArrays.map((playerArray, i) => (
@@ -40,7 +40,7 @@ export function Leaderboard({ col = 2, style }) {
             {playerArray.map((player, i) => (
               <Table.Row key={player.id}>
                 <Table.RowHeaderCell>
-                  {i + 1}{' '}
+                  {rank++}{' '}
                   <Avatar
                     src={player.avatar}
                     alt={player.username.charAt(0)}

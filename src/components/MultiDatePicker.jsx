@@ -10,12 +10,20 @@ import { Cross1Icon, EyeOpenIcon, TrashIcon } from '@radix-ui/react-icons';
 import clsx from 'clsx';
 import './Multiple.css';
 
-const getDayClassName = (className, { selected }) => clsx('dayNumber', { 'active-date': selected });
+const getDayClassName = (className, { selected, disabled }) =>
+  clsx('dayNumber', { 'active-date': selected, 'disabled-date': disabled });
 
-const DatePicker = ({ prevButton, nextButton, calendar }) => {
+const DatePicker = ({ prevButton, nextButton, calendar, include }) => {
   const { weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
   const { month, year, days } = calendar;
+
+  if (include.length !== 0) {
+    days.map((day) => {
+      day.disabled =
+        day.disabled || !include.find((date) => date.toDateString() === day.$date.toDateString());
+    });
+  }
 
   weekDays.forEach((element, index) => {
     switch (element) {
@@ -81,7 +89,7 @@ const DatePicker = ({ prevButton, nextButton, calendar }) => {
               justify="center"
               key={dpDay.$date.toDateString()}
               className={getDayClassName('dateCase', dpDay)}
-              {...dayButton(dpDay)}
+              {...dayButton(dpDay, { disabled: dpDay.disabled })}
             >
               {dpDay.day}
             </Flex>
@@ -92,7 +100,7 @@ const DatePicker = ({ prevButton, nextButton, calendar }) => {
   );
 };
 
-const Root = () => {
+const Root = ({ include }) => {
   const { subtractOffset, addOffset } = useContextDatePickerOffsetPropGetters();
   const { calendars } = useContextCalendars();
 
@@ -109,60 +117,77 @@ const Root = () => {
         </Button>
       }
       calendar={calendars[0]}
+      include={include}
     />
   );
 };
 
-export const MultipleDatePicker = ({ selectedDates, onDatesChange, handleSupprClick }) => {
+export const MultipleDatePicker = ({
+  selectedDates,
+  onDatesChange,
+  handleSupprClick,
+  mode = 'multiple',
+  include = [],
+}) => {
+  //get the excluded dates from the included ones
+
   return (
     <DatePickerStateProvider
       config={{
         selectedDates,
         onDatesChange,
-        dates: { mode: 'multiple', toggle: true },
+        dates: { mode, toggle: true },
       }}
     >
       <Flex direction="column" gap="4" width="max-content">
-        <Root />
+        <Root include={include} />
+        {mode === 'multiple' && (
+          <Dialog.Root>
+            <Dialog.Trigger>
+              <Button size="2" variant="outline">
+                <EyeOpenIcon /> Date(s) sélectionnée(s){' '}
+              </Button>
+            </Dialog.Trigger>
 
-        <Dialog.Root>
-          <Dialog.Trigger>
-            <Button size="2" variant='outline'><EyeOpenIcon /> Date(s) sélectionnée(s) </Button>
-          </Dialog.Trigger>
+            <Dialog.Content style={{ maxWidth: 450, position: 'relative' }}>
+              <Flex justify="between">
+                <Dialog.Title>Date(s) sélectionnée(s)</Dialog.Title>
+                <Dialog.Close>
+                  <IconButton variant="ghost" color="gray">
+                    <Cross1Icon />
+                  </IconButton>
+                </Dialog.Close>
+              </Flex>
 
-          <Dialog.Content style={{ maxWidth: 450, position: "relative" }}>
-            <Flex justify="between">
-              <Dialog.Title>Date(s) sélectionnée(s)</Dialog.Title>
-              <Dialog.Close>
-                <IconButton variant='ghost' color='gray'>
-                  <Cross1Icon />
-                </IconButton>
-              </Dialog.Close>
-            </Flex>
-
-            <Flex direction="column" gap="3" style={{ maxHeight: 450 }}>
-              {selectedDates
-                .sort((a, b) => {
-                  return a - b;
-                })
-                .map((date, index) => (
-                  <Button
-                    style={{ position: "relative" }}
-                    color="indigo"
-                    variant="soft"
-                    key={index}
-                    onClick={() => {
-                      handleSupprClick(index);
-                    }}
-                  >
-                    {format(date, 'dd MMM. yyyy')}
-                    <IconButton color="crimson" size="1" style={{ position: "absolute", right: "5px" }}>{<TrashIcon />}</IconButton>
-                  </Button>
-                ))}
-            </Flex>
-
-          </Dialog.Content>
-        </Dialog.Root>
+              <Flex direction="column" gap="3" style={{ maxHeight: 450 }}>
+                {selectedDates
+                  .sort((a, b) => {
+                    return a - b;
+                  })
+                  .map((date, index) => (
+                    <Button
+                      style={{ position: 'relative' }}
+                      color="indigo"
+                      variant="soft"
+                      key={index}
+                      onClick={() => {
+                        handleSupprClick(index);
+                      }}
+                    >
+                      {format(date, 'dd MMM. yyyy')}
+                      <IconButton
+                        color="crimson"
+                        size="1"
+                        style={{ position: 'absolute', right: '5px' }}
+                      >
+                        {<TrashIcon />}
+                      </IconButton>
+                    </Button>
+                  ))}
+              </Flex>
+            </Dialog.Content>
+          </Dialog.Root>
+        )}
       </Flex>
     </DatePickerStateProvider>
   );

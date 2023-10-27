@@ -2,6 +2,10 @@
   background-color: #2ac6f1;
   color: white;
 }
+.disabled-date {
+  background-color: #6c6c6c78;
+  color: #8c8c8c;
+}
 .dayNumber {
   height: 30px;
   width: 30px;
@@ -12,6 +16,10 @@
 .dayNumber:hover {
   background-color: #3eccef83;
   color: white;
+}
+.disabled-date:hover {
+  background-color: #6c6c6c78;
+  color: #8c8c8c;
 }
 .calendarPopup {
   /* box-shadow: 3px 5px 7px #bcbcbc; */

@@ -20,5 +20,5 @@ export async function getSessions(search_query) {
 
   // console.log("success", data);
 
-  return data;
+  return { data, error };
 }

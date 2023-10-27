@@ -10,6 +10,7 @@ export const supabase = createClient(
     },
   }
 );
+globalThis.supabase = supabase;
 
 const POSTGRES_CHANNEL = supabase.channel('schema-db-changes');
 const subscribers = {};
