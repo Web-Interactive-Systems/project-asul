@@ -4,11 +4,12 @@ import { matchSorter } from 'match-sorter';
 import { useThrottle } from './useThrottle';
 import { $players } from '@/store/store';
 import { useStore } from '@nanostores/react';
-
-// const players = $players; //[{name:"Toto"},{name:"Foo"},{name:"Bar"}]
+import { $userSession } from '@/store/store';
 
 export function usePlayerMatch(term) {
-  let players = useStore($players);
+  const players = useStore($players);
+  const userSession = useStore($userSession);
+  const filteredPlayers = players.filter((player) => player.id !== userSession.player.id);
   let throttledTerm = useThrottle(term, 100);
 
   console.log('pplayers __', players, $players.get());
@@ -16,11 +17,10 @@ export function usePlayerMatch(term) {
   return React.useMemo(
     () =>
       term.trim() === ''
-        ? players
-        : matchSorter(players, term, {
+        ? filteredPlayers
+        : matchSorter(filteredPlayers, term, {
             keys: ['username'],
           }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [throttledTerm, players]
   );
 }
