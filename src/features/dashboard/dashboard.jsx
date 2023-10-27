@@ -1,6 +1,7 @@
 import { Grid } from '@radix-ui/themes';
 import Plot from '@/features/dashboard/Plot';
 import mockData from '@/features/dashboard/data.json';
+import { getCumulPointsDashboard } from '../../actions/getCumulPointsDashboard.js';
 
 const Data = mockData.map((d) => {
   return {
@@ -9,33 +10,48 @@ const Data = mockData.map((d) => {
   };
 });
 
+const dt = await getCumulPointsDashboard();
+dt.forEach((item) => {
+  item.match_date = new Date(item.match_date);
+});
+
 export function Dashboard() {
   return (
     <Grid rows="2" columns="2" gap="2">
       <Plot.root
-        data={Data}
+        data={dt}
         plotOptions={{
-          color: { scheme: 'burd' },
+          grid: true,
           x: {
             tickFormat: '%d/%m/%Y',
-            ticks: 5,
+            label: 'Date',
+          },
+          y: {
+            label: 'Score',
           },
         }}
       >
         <Plot.dot
           options={{
-            x: 'date',
+            x: 'match_date',
             y: 'score',
-            stroke: 'username',
-            r: 5,
-            tip: true,
+            stroke: 'Joueur',
+            r: 3,
+            channels: { Adversaire: 'adversaire', Status: 'result', Résultat: 'match' },
+            tip: {
+              format: {
+                x: (d) => d.toLocaleDateString('fr'),
+              },
+            },
           }}
         />
-        <Plot.line
+        <Plot.ruleY options={[100]} />
+        <Plot.lineY
+          className="line-of-chart"
           options={{
-            x: 'date',
+            x: 'match_date',
             y: 'score',
-            stroke: 'username',
+            stroke: 'Joueur',
           }}
         />
       </Plot.root>

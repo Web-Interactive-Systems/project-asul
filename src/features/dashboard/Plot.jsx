@@ -36,7 +36,7 @@ export function root({ children, plotOptions, data }) {
         {children}
         <div
           style={{
-            color: 'black',
+            color: '#303030',
           }}
           ref={divElem}
         ></div>
@@ -57,7 +57,12 @@ export default new Proxy(
         const data = useContext(DataContext);
 
         useEffect(() => {
-          setMarks((prev) => [...prev, Plot[name](data, options)]);
+          if (name === "ruleY") {
+            setMarks((prev) => [...prev, Plot[name](options)])
+          }
+          else{
+            setMarks((prev) => [...prev, Plot[name](data, options)]);
+          }
         }, [data]);
 
         return null;
