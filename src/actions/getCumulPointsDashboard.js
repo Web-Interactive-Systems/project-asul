@@ -19,7 +19,7 @@ function getBonus(delta) {
   return Math.round(bonus * 100) / 100;
 }
 
-export async function getCumulPointsDashboard() {
+export async function getCumulPointsDashboard(player_id) {
   const { data, error } = await getScores();
   const { data: datap, error: errorp } = await getPlayers();
 
@@ -68,5 +68,10 @@ export async function getCumulPointsDashboard() {
       });
     });
   }
-  return score;
+  if(player_id){
+    return score.filter((element)=>{return element.Joueur == player_id})
+  }
+  else{
+    return score;
+  }
 }

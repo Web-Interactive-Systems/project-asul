@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { $matchContent, $userSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
+import { DashboardEtudiant } from '../dashboard/DashboardEtudiant';
 
 export function Account() {
   const matchContent = useStore($matchContent);
@@ -39,6 +40,7 @@ export function Account() {
 
         <Tabs.Content value="dashboard">
           <Text size="2">Access and update your documents.</Text>
+          <DashboardEtudiant/>
         </Tabs.Content>
 
         <Tabs.Content value="profile">
