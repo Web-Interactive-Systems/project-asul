@@ -1,39 +1,59 @@
 import { Grid } from '@radix-ui/themes';
 import Plot from '@/features/dashboard/Plot';
+import { getCumulPointsDashboard } from '../../actions/getCumulPointsDashboard.js';
+import { useMemo, useState } from 'react';
+import { useStore } from '@nanostores/react';
+import { $userSession } from '@/store/store';
 
-export function Dashboard() {
+let dt = await getCumulPointsDashboard();
+dt.forEach((item) => {
+  item.match_date = new Date(item.match_date);
+});
 
-  const [timeline, setTimeline] = useState(null);
+export function DashboardEtudiant() {
+  const session = useStore($userSession);
 
-
-  useEffect(() => {
-    fetch("localhost:3000/api/data/timeline/user/6").then((data) =>{
-      return data.json();
-    }).then((data) => {setTimeline(data)});
-    }, []);
+  dt = dt.filter((element) => {
+    return element.Joueur == session.player.username;
+  });
 
   return (
-    <Grid rows="2" columns="2" gap="2">
-
-      <Plot.root
-        data={timeline.Score}
-        plotOptions={{
-          color: { scheme: 'burd' },
-          x: {
-            tickFormat: '%d/%m/%Y',
-            ticks: 5,
+    <Plot.root
+      data={dt}
+      plotOptions={{
+        grid: true,
+        x: {
+          tickFormat: '%d/%m/%Y',
+          label: 'Date',
+        },
+        y: {
+          label: 'Score',
+        },
+      }}
+    >
+      <Plot.dot
+        options={{
+          x: 'match_date',
+          y: 'score',
+          stroke: 'Joueur',
+          r: 3,
+          channels: { Adversaire: 'adversaire', Status: 'result', Résultat: 'match' },
+          tip: {
+            format: {
+              x: (d) => d.toLocaleDateString('fr'),
+            },
           },
         }}
-      >
-        <Plot.line
-          options={{
-            //Mettre à la place des x et y les clés de l'objet json
-            x: 'winer_score',
-            y: 'loser_score',
-          }}
-        />
-      </Plot.root>
-
-    </Grid>
+      />
+      <Plot.ruleY options={[100]} />
+      <Plot.lineY
+        className="line-of-chart"
+        options={{
+          x: 'match_date',
+          y: 'score',
+          stroke: 'Joueur',
+        }}
+      />
+    </Plot.root>
   );
 }
