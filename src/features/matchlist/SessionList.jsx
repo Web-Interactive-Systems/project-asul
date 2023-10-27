@@ -6,28 +6,29 @@ import { postgres } from '@/lib/supabase';
 import { SessionCalendar } from './SessionCalender';
 import { CreateMatchDialog } from '../match/CreateMatchDialog';
 
-import { $matchContent, $matchSession } from '@/store/store';
+import { $matchContent, $matchSession, $sessions } from '@/store/store';
 import { getSessions } from '@/actions/getSessions';
+import { useStore } from '@nanostores/react';
 
 export function SessionList() {
   const [open, setOpen] = useState(false);
   const [openMatch, setOpenMatch] = useState(false);
-  const [sessions, setSessions] = useState([]);
+  const sessions = useStore($sessions)
 
   useEffect(() => {
     const sessionInsertHandler = (data) => {
-      setSessions((sessions) => [data.new, ...sessions]);
+      $sessions.set((sessions) => [data.new, ...sessions]);
     };
 
     postgres.session.on('INSERT', sessionInsertHandler);
 
-    const fetchData = async () => {
-      const data = await getSessions();
+    // const fetchData = async () => {
+    //   const {data} = await getSessions();
 
-      setSessions(data);
-    };
+    //   $sessions.set(data);
+    // };
 
-    fetchData();
+    // fetchData();
 
     return () => {
       postgres.session.off('INSERT', sessionInsertHandler);

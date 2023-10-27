@@ -1,7 +1,7 @@
 import { Button, Flex, Dialog } from '@radix-ui/themes';
 import { MatchCard } from './MatchCard';
 
-export function MatchCardDialog({ children }) {
+export function MatchCardDialog({ children, match }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>{children}</Dialog.Trigger>
@@ -10,7 +10,7 @@ export function MatchCardDialog({ children }) {
         <Dialog.Title>Info Match</Dialog.Title>
 
         <Flex direction="column" gap="3">
-          <MatchCard />
+          <MatchCard match={match} />
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

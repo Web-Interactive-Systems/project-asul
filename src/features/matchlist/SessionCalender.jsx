@@ -2,27 +2,29 @@ import { Grid, Box, Card, Flex, Text, Strong, Dialog } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { postgres } from '@/lib/supabase';
+// import { getSessions } from '@/actions/getSessions';
+
+import { $matchSession, $sessions } from '@/store/store';
+import { useStore } from '@nanostores/react';
 import { getSessions } from '@/actions/getSessions';
 
-import { $matchSession } from '@/store/store';
-
 export function SessionCalendar({ onSelect }) {
-  const [sessions, setSessions] = useState([]);
+  const sessions = useStore($sessions);
 
   useEffect(() => {
     const sessionInsertHandler = (data) => {
-      setSessions((sessions) => [data.new, ...sessions]);
+      $sessions.set((sessions) => [data.new, ...sessions]);
     };
 
     postgres.session.on('INSERT', sessionInsertHandler);
 
-    const fetchData = async () => {
-      const data = await getSessions();
+    // const fetchData = async () => {
+    //   const {data} = await getSessions();
 
-      setSessions(data);
-    };
+    //   $sessions.set(data);
+    // };
 
-    fetchData();
+    // fetchData();
 
     return () => {
       postgres.session.off('INSERT', sessionInsertHandler);
