@@ -1,7 +1,9 @@
 import { Grid } from '@radix-ui/themes';
+import { useEffect } from 'react';
 import Plot from '@/features/dashboard/Plot';
 import mockData from '@/features/dashboard/data.json';
 import { getCumulPointsDashboard } from '../../actions/getCumulPointsDashboard.js';
+import { getMatchesStatsBySessionId } from '@actions/getMatchesStatsBySession.js';
 
 const Data = mockData.map((d) => {
   return {
@@ -16,6 +18,16 @@ dt.forEach((item) => {
 });
 
 export function Dashboard() {
+
+  useEffect(() => {
+    (async () => {
+      const { nb_matchs, average_score, error } = await getMatchesStatsBySessionId(48);
+      console.log("average_score", average_score);
+      console.log("nb_matchs", nb_matchs);
+    }
+    )()
+  }, []);
+
   return (
     <Grid rows="2" columns="2" gap="2">
       <Plot.root
