@@ -1,39 +1,34 @@
 import { getScores } from './getScore';
 import { getPlayers } from './getPlayers';
-
-function getBonus(delta) {
-  let bonus = delta / 10;
-  if (delta <= -12) {
-    bonus += -0.4;
-  } else if (delta <= -7) {
-    bonus += -0.2;
-  } else if (delta <= -1) {
-    bonus += 0;
-  } else if (delta <= 6) {
-    bonus += 0.7;
-  } else if (delta <= 11) {
-    bonus += 1.3;
-  } else if (delta <= 20) {
-    bonus += 1.6;
-  }
-  return Math.round(bonus * 100) / 100;
-}
+import { getGrades} from '@/actions/getGrades';
 
 export async function getCumulPointsDashboard() {
-  const { data, error } = await getScores();
-  const { data: datap, error: errorp } = await getPlayers();
+
+  const { data: dataScores, error: errorScore } = await getScores();
+  const { data: dataPlayers, error: errorPlayer } = await getPlayers();
+  const { data: dataGrades, error: errorGrade} = await getGrades();
+  
+  function getBonus(delta) {
+    let bonus = delta / 10;
+    dataGrades.forEach((grade) => {
+      if (delta >= grade.min && delta <= grade.max ) {
+        bonus += grade.coef; 
+      }  
+    });
+    return Math.round(bonus * 100) / 100; 
+  }
 
   let last_score = {};
   let score = [];
 
-  if (!error && !errorp) {
+  if (!errorScore && !errorPlayer) {
     
-    data.map((score) => {
-      (score.winer_id = datap.find((x) => x.id === score.winer_id).username),
-        (score.loser_id = datap.find((x) => x.id === score.loser_id).username);
+    dataScores.map((score) => {
+      (score.winer_id = dataPlayers.find((x) => x.id === score.winer_id).username),
+        (score.loser_id = dataPlayers.find((x) => x.id === score.loser_id).username);
     });
 
-    data.forEach((el) => {
+    dataScores.forEach((el) => {
       if (el != {}) {
         if (!last_score[el['winer_id']]) {
           last_score[el['winer_id']] = 100;
@@ -44,7 +39,7 @@ export async function getCumulPointsDashboard() {
       }
     });
 
-    data.forEach((el) => {
+    dataScores.forEach((el) => {
 
       let delta = el['winer_score'] - el['loser_score'];
       last_score[el['winer_id']] = last_score[el['winer_id']] + getBonus(delta);
@@ -61,7 +56,7 @@ export async function getCumulPointsDashboard() {
       {
         Joueur: el['loser_id'],
         adversaire: el['winer_id'],
-        result: 'Victoire (↘' + getBonus(-delta) + ')',
+        result: 'Défaite (↘' + getBonus(-delta) + ')',
         score: last_score[el['loser_id']],
         match_date: el['created_at'],
         match: el['loser_score'] + ' - ' + el['winer_score'],
