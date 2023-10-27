@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 
-export async function timelineJoueur(id) {
+export async function getPointsSessionById(id) {
 
 
     let { data: Score, error } = await supabase
@@ -58,10 +58,8 @@ export async function timelineJoueur(id) {
     return score
 
     });
-  
-    console.log("Somme des computedScore par date:", computedScoreByDate);
 
-    return {Score};
+    return {computedScoreByDate};
 
     
 };
