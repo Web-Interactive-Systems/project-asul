@@ -24,34 +24,45 @@ export function NbMatch() {
           setNbMatch(data['length']);
 
           setMatchPerdu(nbMatch - nbMatchGagnes)
-          console.log('perdu',perdu);
+          
 
-        }
+        };
 
         
+      //   const myChart = new Chart({
+      //     type: 'doughnut',
+      //     data: {
+      //         labels: '',
+      //         datasets: [{
+      //             label: '',
+      //             data: [{nbMatch}-{nbMatchGagnes},{nbMatch}],
+      //             backgroundColor: [
+      //               'rgb(255, 99, 132)',
+      //               'rgb(54, 162, 235)',
+      //             ],
+      //             borderWidth: 1
+      //         }]
+      //     },
+      //    options: {
+      //         scales: {
+      //             yAxes: [{
+      //                 ticks: {
+      //                     beginAtZero: true
+      //                 }
+      //             }]
+      //         }
+      //     }
+      // });
+     
 
-        const chart = new Chart({
-            type: 'doughnut',
-            data: {
-                labels: [
-                  'Red',
-                  'Blue'
-                ],
-                datasets: [{
-                  label: 'Matchs',
-                  data: [],
-                  backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                  ],
-                  hoverOffset: 4
-                }]
-              }
-        });
         
       })();
     }, [session]);
   
+    console.log('perdu',MatchPerdu);
+    console.log('gagné',nbMatchGagnes);
+    console.log('nombre de match gagné',nbMatch);
+
     return (
       <Card>
         Nombre de victoires : {nbMatchGagnes}
