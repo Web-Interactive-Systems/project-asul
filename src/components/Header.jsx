@@ -8,6 +8,7 @@ import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
 import { useStore } from '@nanostores/react';
 import { $notifs, $userSession } from '@/store/store.js';
+import { Suspense } from 'react';
 
 export function Header() {
   const session = useStore($userSession);
@@ -87,7 +88,9 @@ export function Header() {
               }}
             >
               {notifs.map((data, i) => (
-                <Notification key={i} id={data} title={data.title} />
+                <Suspense fallback={<div>Loading...</div>} key={i}>
+                  <Notification match={data} />
+                </Suspense>
               ))}
             </Popover.Content>
           </Popover.Root>
