@@ -27,7 +27,6 @@ export async function getCumulPointsDashboard() {
   let score = [];
 
   if (!error && !errorp) {
-    
     data.map((score) => {
       (score.winer_id = datap.find((x) => x.id === score.winer_id).username),
         (score.loser_id = datap.find((x) => x.id === score.loser_id).username);
@@ -45,27 +44,28 @@ export async function getCumulPointsDashboard() {
     });
 
     data.forEach((el) => {
-
       let delta = el['winer_score'] - el['loser_score'];
       last_score[el['winer_id']] = last_score[el['winer_id']] + getBonus(delta);
       last_score[el['loser_id']] = last_score[el['loser_id']] + getBonus(-delta);
-      
-      score.push({
-        Joueur: el['winer_id'],
-        adversaire: el['loser_id'],
-        result: 'Victoire (↗' + getBonus(delta) + ')',
-        score: last_score[el['winer_id']],
-        match_date: el['created_at'],
-        match: el['winer_score'] + ' - ' + el['loser_score'],
-      },
-      {
-        Joueur: el['loser_id'],
-        adversaire: el['winer_id'],
-        result: 'Victoire (↘' + getBonus(-delta) + ')',
-        score: last_score[el['loser_id']],
-        match_date: el['created_at'],
-        match: el['loser_score'] + ' - ' + el['winer_score'],
-      });
+
+      score.push(
+        {
+          Joueur: el['winer_id'],
+          adversaire: el['loser_id'],
+          result: 'Victoire (↗' + getBonus(delta) + ')',
+          score: last_score[el['winer_id']],
+          match_date: el['created_at'],
+          match: el['winer_score'] + ' - ' + el['loser_score'],
+        },
+        {
+          Joueur: el['loser_id'],
+          adversaire: el['winer_id'],
+          result: 'Défaite (↘' + getBonus(-delta) + ')',
+          score: last_score[el['loser_id']],
+          match_date: el['created_at'],
+          match: el['loser_score'] + ' - ' + el['winer_score'],
+        }
+      );
     });
   }
   return score;

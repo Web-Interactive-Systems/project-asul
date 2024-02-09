@@ -39,9 +39,10 @@ export function Dashboard() {
             r: 3,
             channels: { Adversaire: 'adversaire', Status: 'result', Résultat: 'match' },
             tip: {
-              format: {
-                x: (d) => d.toLocaleDateString('fr'),
-              },
+              fill: 'white',
+              stroke: 'white',
+              fontSize: '12px',
+              class: 'testToolTip',
             },
           }}
         />
@@ -55,7 +56,7 @@ export function Dashboard() {
           }}
         />
       </Plot.root>
-      <Plot.root
+      {/* <Plot.root
         data={Data}
         plotOptions={{
           color: { scheme: 'burd' },
@@ -105,7 +106,7 @@ export function Dashboard() {
             stroke: 'username',
           }}
         />
-      </Plot.root>
+      </Plot.root> */}
     </Grid>
   );
 }
