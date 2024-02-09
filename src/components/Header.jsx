@@ -1,7 +1,8 @@
-import { Flex, Box, Button, DropdownMenu, IconButton, Separator } from '@radix-ui/themes';
-import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon } from '@radix-ui/react-icons';
+import { Flex, Box, Button, DropdownMenu, IconButton, Separator, Popover } from '@radix-ui/themes';
+import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon, BellIcon } from '@radix-ui/react-icons';
 import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
+import Notification from './Notification.jsx';
 
 import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
@@ -27,6 +28,21 @@ export function Header() {
               </Button>
             }
           >
+            <Popover.Root>
+              <Popover.Trigger>
+                <Button asChild variant="soft">
+                  <span>
+                    Notifications
+                    <BellIcon style={{ opacity: 1, marginRight: -3 }} />
+                  </span>
+                </Button>
+              </Popover.Trigger>
+              <Popover.Content>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Notification key={i} />
+                ))}
+              </Popover.Content>
+            </Popover.Root>
             <Button asChild variant="soft">
               <a href="/account">
                 Mon Espace
