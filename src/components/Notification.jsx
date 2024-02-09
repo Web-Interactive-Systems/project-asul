@@ -1,11 +1,10 @@
 import { Flex } from '@radix-ui/themes';
 import styles from './Notification.module.css';
 
-export default function Notification() {
+export default function Notification({ title }) {
   return (
     <div className={styles.notification}>
-      <h2>test notif</h2>
-      <p>test notif content</p>
+      <h5>{title}</h5>
     </div>
   );
 }
