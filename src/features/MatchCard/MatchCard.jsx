@@ -2,11 +2,16 @@ import { Button, Flex, Heading, Separator, Strong } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 
 import { PlayerCard } from './PlayerCard';
+import { postgres } from '@/lib/supabase';
 
 export function MatchCard({ match = { status: 'created' }, J2 = { name: 'J2', score: 120 } }) {
   const [matchStatus, setMatchStatus] = useState(match.status);
 
   useEffect(() => {
+    postgres.match.on('UPDATE', (data) => {
+      console.log('match update', data);
+    });
+
     setMatchStatus(match.status);
   }, []);
 

@@ -180,6 +180,9 @@ POSTGRES_CHANNEL.on(
     subscribers['schema-db-changes']?.forEach((subscriber) => {
       getAuthUser()
         .then((authUser) => {
+          console.log('auth postgre', authUser);
+          console.log('data postgre event', data);
+          console.log('subscriber postgre event', subscriber);
           if (
             authUser &&
             subscriber.table === data.table &&
@@ -207,9 +210,9 @@ for (const chname in broadcast) {
             if (
               authUser &&
               (data.payload.recipient === '*' ||
-                data.payload.recipient === authUser ||
+                data.payload.recipient === authUser.id ||
                 (Array.isArray(data.payload.recipient) &&
-                  data.payload.recipient.includes(authUser))) &&
+                  data.payload.recipient.includes(authUser.id))) &&
               (subscriber.event === '*' || subscriber.event === data.event)
             ) {
               subscriber.callback(data);
