@@ -80,9 +80,14 @@ export function Header() {
                 </span>
               </Button>
             </Popover.Trigger>
-            <Popover.Content>
+            <Popover.Content
+              style={{
+                overflow: 'scroll',
+                maxHeight: '50vh',
+              }}
+            >
               {notifs.map((data, i) => (
-                <Notification key={i} title={data.title} />
+                <Notification key={i} id={data} title={data.title} />
               ))}
             </Popover.Content>
           </Popover.Root>
