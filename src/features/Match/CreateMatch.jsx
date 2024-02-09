@@ -117,7 +117,7 @@ export function CreateMatch() {
       console.log('match créer');
     }
 
-    broadcast.notifications.send('match', '*');
+    broadcast.notifications.send('match', creator_id);
 
     $matchContent.set('match');
   };
