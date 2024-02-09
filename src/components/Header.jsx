@@ -7,10 +7,12 @@ import Notification from './Notification.jsx';
 import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
 import { useStore } from '@nanostores/react';
-import { $userSession } from '@/store/store.js';
+import { $notifs, $userSession } from '@/store/store.js';
 
 export function Header() {
   const session = useStore($userSession);
+  const notifs = useStore($notifs);
+  console.log('notifs', notifs);
 
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
@@ -42,8 +44,8 @@ export function Header() {
                 </Button>
               </Popover.Trigger>
               <Popover.Content>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Notification key={i} />
+                {notifs.map((data, i) => (
+                  <Notification key={i} title={data.title} />
                 ))}
               </Popover.Content>
             </Popover.Root>
@@ -70,6 +72,20 @@ export function Header() {
         </Flex>
 
         <Flex align="center" gap="5" display={{ md: 'none' }}>
+          <Popover.Root>
+            <Popover.Trigger>
+              <Button asChild variant="soft">
+                <span>
+                  <BellIcon style={{ opacity: 1, marginRight: -3 }} />
+                </span>
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content>
+              {notifs.map((data, i) => (
+                <Notification key={i} title={data.title} />
+              ))}
+            </Popover.Content>
+          </Popover.Root>
           <ThemeToggle />
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
