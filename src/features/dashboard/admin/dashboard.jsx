@@ -33,7 +33,7 @@ export function Dashboard() {
         mode="single"
         include={includeDates}
       />
-      <Leaderboard />
+      <Leaderboard session={selectedDates} />
     </>
   );
 }

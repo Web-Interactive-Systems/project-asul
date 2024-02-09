@@ -1,17 +1,23 @@
 import { Avatar, Box, Flex, Grid, Table } from '@radix-ui/themes';
 // import { usePlayers } from '@/hooks/usePlayers';
 import { useStore } from '@nanostores/react';
-import { $players } from '@/store/store';
+import { $matchContent, $matchSession, $players } from '@/store/store';
+import { usePlayerMatch } from '@/hooks/usePlayerMatch';
+import { getMatchesBySession } from '@/actions/getMatchesBySession';
 
-export function Leaderboard({ col = 2, style }) {
+export function Leaderboard({ col = 2, style, session }) {
   const players = useStore($players);
-  console.log(players);
+
   if (!players || players.length === 0) return null;
   const playerArrays = [];
   const middle = Math.ceil(players.length / col);
   for (let i = 0; i < col; i++) {
     playerArrays.push(players.slice(i * middle, (i + 1) * middle));
   }
+
+  getMatchesBySession(1).then((data) => {
+    console.log(data);
+  });
 
   console.log(playerArrays);
   let rank = 1;
