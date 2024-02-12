@@ -8,27 +8,40 @@ import { Chart } from "chart.js";
 
 
 export function NbMatch() {
-    const [nbMatchGagnes, setNbMatchGagnes] = useState(0);
-    const [nbMatch, setNbMatch] = useState(0);
-    const [MatchPerdu, setMatchPerdu] = useState(0);
-    const session = useStore($userSession);
-    // console.log("nb matchs", nbMatchGagnes)
-  
-    useEffect(() => {
-      (async () => {
-        if (session){
-          const { count, error } = await getNbMatchGagneById(session.user.id);
-          setNbMatchGagnes(count);
+  const [nbMatchGagnes, setNbMatchGagnes] = useState(0);
+  const [nbMatch, setNbMatch] = useState(0);
+  const [MatchPerdu, setMatchPerdu] = useState(0);
+  const session = useStore($userSession);
+  // console.log("nb matchs", nbMatchGagnes)
 
-          const { data } = await getNbMatchById(session.user.id);
-          setNbMatch(data['length']);
+  useEffect(() => {
+    let totalMatch;
+    (async () => {
+      if (session) {
+        await getNbMatchById(session.user.id).then(
+          async (values) => {
+            await setNbMatch(values.data['length']);
+            totalMatch = values.data['length']
+            console.log(values.data['length']);
+            return values;
+          }, (reason) => {
+            console.error(reason)
+            return reason
+          }
+        );
+        await getNbMatchGagneById(session.user.id).then(
+          async (values) => {
+            await setNbMatchGagnes(values.count);
+            await setMatchPerdu(totalMatch - values.count)
+            console.log(totalMatch - values.count)
+          }, (reason) => {
+            console.error(reason)
+            return reason
+          }
+        );
+      };
 
-          setMatchPerdu(nbMatch - nbMatchGagnes)
-          
 
-        };
-
-        
       //   const myChart = new Chart({
       //     type: 'doughnut',
       //     data: {
@@ -53,23 +66,15 @@ export function NbMatch() {
       //         }
       //     }
       // });
-     
+    })();
+  }, [session]);
 
-        
-      })();
-    }, [session]);
-  
-    console.log('perdu',MatchPerdu);
-    console.log('gagné',nbMatchGagnes);
-    console.log('nombre de match gagné',nbMatch);
+  return (
+    <Card>
+      Nombre de victoires : {nbMatchGagnes}
+      Nombre de match : {nbMatch}
+    </Card>
+  );
+}
 
-    return (
-      <Card>
-        Nombre de victoires : {nbMatchGagnes}
-        Nombre de match : {nbMatch}
-      </Card>
-    );
-  }
-  
-  
-  
+
