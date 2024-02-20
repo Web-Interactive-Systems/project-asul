@@ -97,9 +97,10 @@ class BroadcastChannel {
    * Subscribe to events on this broadcast channel.
    * @param {string} event - The event name to subscribe to (e.g., 'message', 'notification').
    * @param {function} callback - The callback function to execute when an event is received.
+   * @param {boolean} once - True if the callback should only be executed once; otherwise, false.
    * @returns {void}
    */
-  on(event, callback) {
+  on(event, callback, once = false) {
     if (!subscribers.hasOwnProperty(this.name)) {
       subscribers[this.name] = [];
     }
@@ -107,6 +108,7 @@ class BroadcastChannel {
     subscribers[this.name].push({
       event,
       callback,
+      once
     });
   }
 
@@ -135,11 +137,11 @@ class BroadcastChannel {
   /**
    * Send a message through the broadcast channel.
    * @param {string} event - The event name for the message (e.g., 'message', 'notification').
-   * @param {string|string[]} recipient - The recipient of the message (e.g., '*', 'user-id', ['user-id-1', 'user-id-2']).
+   * @param {string|string[]} recipientId - The ID of the recipient user(s) to send the message to (or '*' for all users).
    * @param {any} data - The data payload to send with the message.
    * @returns {Promise} A Promise that resolves when the message is sent.
    */
-  async send(event, recipient, data = null) {
+  async send(event, recipientId, data = null) {
     const authUser = await getAuthUser();
 
     if (!authUser) {
@@ -149,7 +151,7 @@ class BroadcastChannel {
     return this.channel.send({
       type: 'broadcast',
       event,
-      payload: { sender: authUser, recipient, data },
+      payload: { senderId: authUser.id, recipientId, data },
     });
   }
 }
@@ -206,13 +208,17 @@ for (const chname in broadcast) {
           .then((authUser) => {
             if (
               authUser &&
-              (data.payload.recipient === '*' ||
-                data.payload.recipient === authUser ||
-                (Array.isArray(data.payload.recipient) &&
-                  data.payload.recipient.includes(authUser))) &&
+              (data.payload.recipientId === '*' ||
+                data.payload.recipientId === authUser.id ||
+                (Array.isArray(data.payload.recipientId) &&
+                  data.payload.recipientId.includes(authUser.id))) &&
               (subscriber.event === '*' || subscriber.event === data.event)
             ) {
               subscriber.callback(data);
+
+              if (subscriber.once) {
+                broadcast[chname].off(subscriber.event, subscriber.callback);
+              }
             }
           })
           .catch((err) => {

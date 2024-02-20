@@ -100,24 +100,28 @@ export function CreateMatch() {
     const creator_id = authUser.id;
     const player_id = currentUserID;
 
-    let { error } = await supabase
+    let { data, error } = await supabase
       .from('Match')
 
       .insert({
         title: 'match test match creator Louen',
         creator_id,
         player_id,
-        status: 'en attente',
+        status: 'created',
         session_id: matchSession.id,
-      });
+      }).select();
 
-    if (error) {
-      console.error('ahhh match ', error);
-    } else {
-      console.log('match créer');
-    }
+      if (error) {
+        console.error('ahhh match ', error);
+      } else {
+        console.log('match créer');
+      }
 
-    broadcast.notifications.send('match', '*');
+      broadcast.notifications.on('match-res', (e) => {
+        console.log('match response', e.payload.data.accepted);
+      }, true);
+
+      broadcast.notifications.send('match', player_id, { sessionId: matchSession.id, matchId: data[0].id });
 
     $matchContent.set('match');
   };

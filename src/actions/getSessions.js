@@ -14,11 +14,10 @@ export async function getSessions(search_query) {
   // console.log("getMatches", data, error);
 
   if (error) {
-    console.error('error', error);
-    throw Error(error.message);
+  return {error}
   }
 
   // console.log("success", data);
 
-  return data;
+  return {data};
 }

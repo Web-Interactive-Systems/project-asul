@@ -1,5 +1,5 @@
 import { getUserMatchs } from '@/actions/getUserMatchs';
-import { Box, Grid, Card, Flex, Text, Strong, Link, Button, Heading } from '@radix-ui/themes';
+import { Box, Grid, Card, Flex, Text, Strong, Link, Button, Heading, Badge } from '@radix-ui/themes';
 import { SewingPinIcon, PlusCircledIcon, ArrowLeftIcon, PlusIcon } from '@radix-ui/react-icons';
 import { useState, useEffect } from 'react';
 
@@ -72,9 +72,16 @@ export function MatchList() {
           const player = players.find(player => player.id === match.player_id);
 
           return (
-            <MatchCardDialog key={match.id}>
+            <MatchCardDialog key={match.id} match={match}>
               <Card>
                 <Flex justify={'center'} align="center" direction="column" height="100%">
+                  {match.status}
+                  {match.status === 'created' && <Badge color="amber" >Créé</Badge>}
+                  {match.status === 'validated' && <Badge color="lime" >Validé</Badge>}
+                  {match.status === 'started' && <Badge color="blue" >Commencé</Badge>}
+                  {match.status === 'declined' && <Badge color="purple" >Refusé</Badge>}
+                  {match.status === 'canceled' && <Badge color="red" >Annulé</Badge>}
+                  {match.status === 'finished' && <Badge color="green" >Terminé</Badge>}
                   <Text>Il y a {formatDistanceToNow(new Date(match.created_at), { locale: fr })}</Text>
                   <Flex justify={'center'} align={'center'} gap="2">
                     <SewingPinIcon />
