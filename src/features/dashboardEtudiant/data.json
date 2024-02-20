@@ -1,0 +1,62 @@
+[
+  {
+    "userid": 1,
+    "username": "admin",
+    "score": 100,
+    "date": "2018-01-01"
+  },
+  {
+    "userid": 1,
+    "username": "admin",
+    "score": 200,
+    "date": "2018-01-02"
+  },
+  {
+    "userid": 1,
+    "username": "admin",
+    "score": 300,
+    "date": "2018-01-03"
+  },
+  {
+    "userid": 1,
+    "username": "admin",
+    "score": 400,
+    "date": "2018-01-04"
+  },
+  {
+    "userid": 1,
+    "username": "admin",
+    "score": 500,
+    "date": "2018-01-05"
+  },
+  {
+    "userid": "2",
+    "username": "user",
+    "score": 50,
+    "date": "2018-01-01"
+  },
+  {
+    "userid": "2",
+    "username": "user",
+    "score": 150,
+    "date": "2018-01-02"
+  },
+  {
+    "userid": "2",
+    "username": "user",
+    "score": 250,
+    "date": "2018-01-03"
+  },
+  {
+    "userid": "2",
+    "username": "user",
+    "score": 350,
+    "date": "2018-01-04"
+  },
+  {
+    "userid": "2",
+    "username": "user",
+    "score": 450,
+    "date": "2018-01-05"
+  }
+]
