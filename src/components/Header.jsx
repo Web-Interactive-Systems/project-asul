@@ -1,15 +1,18 @@
-import { Flex, Box, Button, DropdownMenu, IconButton, Separator } from '@radix-ui/themes';
-import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon } from '@radix-ui/react-icons';
+import { Flex, Box, Button, DropdownMenu, IconButton, Separator, Popover } from '@radix-ui/themes';
+import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon, BellIcon } from '@radix-ui/react-icons';
 import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
+import Notification from './Notification.jsx';
 
 import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
 import { useStore } from '@nanostores/react';
-import { $userSession } from '@/store/store.js';
+import { $notifs, $userSession } from '@/store/store.js';
 
 export function Header() {
   const session = useStore($userSession);
+  const notifs = useStore($notifs);
+  console.log('notifs', notifs);
 
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
@@ -31,6 +34,21 @@ export function Header() {
               </Button>
             }
           >
+            <Popover.Root>
+              <Popover.Trigger>
+                <Button asChild variant="soft">
+                  <span>
+                    Notifications
+                    <BellIcon style={{ opacity: 1, marginRight: -3 }} />
+                  </span>
+                </Button>
+              </Popover.Trigger>
+              <Popover.Content>
+                {notifs.map((data, i) => (
+                  <Notification key={i} title={data.title} />
+                ))}
+              </Popover.Content>
+            </Popover.Root>
             <Button asChild variant="soft">
               <a href="/account">
                 Mon Espace
@@ -54,6 +72,25 @@ export function Header() {
         </Flex>
 
         <Flex align="center" gap="5" display={{ md: 'none' }}>
+          <Popover.Root>
+            <Popover.Trigger>
+              <Button asChild variant="soft">
+                <span>
+                  <BellIcon style={{ opacity: 1, marginRight: -3 }} />
+                </span>
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content
+              style={{
+                overflow: 'scroll',
+                maxHeight: '50vh',
+              }}
+            >
+              {notifs.map((data, i) => (
+                <Notification key={i} id={data} title={data.title} />
+              ))}
+            </Popover.Content>
+          </Popover.Root>
           <ThemeToggle />
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
