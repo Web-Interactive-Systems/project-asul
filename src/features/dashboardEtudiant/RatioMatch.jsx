@@ -49,11 +49,11 @@ export function NbMatch() {
       >
         <Plot.barY
           options={{
-            x: 'libelle',
+            x: 'Match gagné/perdu',
             y: 'score',
           }}
         />
-        <Plot.ruleY options={[100]} />
+        <Plot.ruleY options={[70]} />
       </Plot.root>
     </Card>
   );
