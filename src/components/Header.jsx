@@ -1,4 +1,13 @@
-import { Flex, Box, Button, DropdownMenu, IconButton, Separator, Popover } from '@radix-ui/themes';
+import {
+  Flex,
+  Box,
+  Button,
+  DropdownMenu,
+  IconButton,
+  Separator,
+  Popover,
+  Text,
+} from '@radix-ui/themes';
 import { HamburgerMenuIcon, ArrowRightIcon, RocketIcon, BellIcon } from '@radix-ui/react-icons';
 import ThemeToggle from '@/features/Theme/ThemeToggle.jsx';
 import Logo from './Logo.jsx';
@@ -8,11 +17,15 @@ import styles from './Header.module.css';
 import NeedAuth from './NeedAuth.jsx';
 import { useStore } from '@nanostores/react';
 import { $notifs, $userSession } from '@/store/store.js';
+import { logger } from '@/lib/logger.js';
+
+const log = logger('Header');
 
 export function Header() {
   const session = useStore($userSession);
   const notifs = useStore($notifs);
-  console.log('notifs', notifs);
+
+  log.debug('notifs', notifs);
 
   return (
     <Box style={{ zIndex: 9999 }} width="100%" position="fixed">
@@ -43,10 +56,12 @@ export function Header() {
                   </span>
                 </Button>
               </Popover.Trigger>
-              <Popover.Content>
-                {notifs.map((data, i) => (
-                  <Notification key={i} title={data.title} />
-                ))}
+              <Popover.Content style={{ maxHeight: 500 }}>
+                {notifs?.length > 0 ? (
+                  notifs.map((data, i) => <Notification key={i} data={data} />)
+                ) : (
+                  <Text>Pas de notification</Text>
+                )}
               </Popover.Content>
             </Popover.Root>
             <Button asChild variant="soft">
@@ -65,6 +80,12 @@ export function Header() {
               <a href="/admin">
                 <ArrowRightIcon style={{ opacity: 1, marginRight: -3 }} />
                 Admin
+              </a>
+            </Button>
+            <Button asChild variant="soft">
+              <a href="/auth" className={styles.HeaderLink}>
+                <RocketIcon style={{ marginRight: 4 }} />
+                Se connecter
               </a>
             </Button>
           </NeedAuth>
@@ -99,14 +120,6 @@ export function Header() {
               </IconButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
-              {session && (
-                <DropdownMenu.Item>
-                  <a href="/auth" className={styles.HeaderLink}>
-                    <ArrowRightIcon style={{ marginRight: 4 }} />
-                    Se déconnecter
-                  </a>
-                </DropdownMenu.Item>
-              )}
               <NeedAuth
                 fallback={
                   <DropdownMenu.Item>
@@ -137,14 +150,16 @@ export function Header() {
                     Dashboard
                   </a>
                 </DropdownMenu.Item>
+              </NeedAuth>
 
+              {session && (
                 <DropdownMenu.Item>
-                  <a href="/barem" className={styles.HeaderLink}>
+                  <a href="/auth" className={styles.HeaderLink}>
                     <ArrowRightIcon style={{ marginRight: 4 }} />
-                    Barem
+                    Se déconnecter
                   </a>
                 </DropdownMenu.Item>
-              </NeedAuth>
+              )}
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </Flex>

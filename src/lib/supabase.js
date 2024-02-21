@@ -197,7 +197,7 @@ POSTGRES_CHANNEL.on(
   }
 ).subscribe((status, err) => {
   if (err) console.error(err);
-  console.log(`PostgreSQL channel status: ${status}`);
+  console.log(`PostgreSQL channel status: ${status}`, err);
 });
 
 for (const chname in broadcast) {

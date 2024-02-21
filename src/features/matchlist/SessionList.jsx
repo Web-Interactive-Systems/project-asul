@@ -9,11 +9,16 @@ import { CreateMatchDialog } from '../match/CreateMatchDialog';
 import { $matchContent, $matchSession, $sessions } from '@/store/store';
 import { getSessions } from '@/actions/getSessions';
 import { useStore } from '@nanostores/react';
+import { logger } from '@/lib/logger';
+
+const log = logger('SessionList');
 
 export function SessionList() {
   const [open, setOpen] = useState(false);
   const [openMatch, setOpenMatch] = useState(false);
-  const sessions = useStore($sessions)
+  const sessions = useStore($sessions);
+
+  log.debug('sessions', sessions);
 
   useEffect(() => {
     const sessionInsertHandler = (data) => {
@@ -29,6 +34,8 @@ export function SessionList() {
     // };
 
     // fetchData();
+
+    postgres.session.on('INSERT', sessionInsertHandler);
 
     return () => {
       postgres.session.off('INSERT', sessionInsertHandler);
@@ -78,7 +85,7 @@ export function SessionList() {
                   </IconButton>
                 </Dialog.Title>
                 <Dialog.Description size="2" mb="4">
-                  Make changes to your profile.
+                  Choisir une session pour le match
                 </Dialog.Description>
 
                 <Flex direction="column" gap="3">
@@ -91,24 +98,34 @@ export function SessionList() {
             <CreateMatchDialog open={openMatch} onCancel={() => setOpenMatch(false)} />
           </Flex>
         </Card>
-        {sessions.sort((a, b) => new Date(b.session_date) - new Date(a.session_date)).map((session, i) => {
-          return <Card
-            key={i}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              $matchSession.set(session);
-            }}
-          >
-            <Flex height="9" justify={'center'} align={'center'} onClick={() => {
-              $matchSession.set(session);
-              $matchContent.set('match');
-            }}>
-              <Text>
-                Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
-              </Text>
-            </Flex>
-          </Card>
-        })}
+
+        {sessions
+          .sort((a, b) => new Date(b.session_date) - new Date(a.session_date))
+          .map((session, i) => {
+            return (
+              <Card
+                key={i}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  $matchSession.set(session);
+                }}
+              >
+                <Flex
+                  height="9"
+                  justify={'center'}
+                  align={'center'}
+                  onClick={() => {
+                    $matchSession.set(session);
+                    $matchContent.set('match');
+                  }}
+                >
+                  <Text>
+                    Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
+                  </Text>
+                </Flex>
+              </Card>
+            );
+          })}
       </Grid>
     </Box>
   );

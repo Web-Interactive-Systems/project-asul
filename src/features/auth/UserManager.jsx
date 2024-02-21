@@ -2,24 +2,41 @@ import { supabase, postgres } from '@/lib/supabase';
 import { useEffect, useState } from 'react';
 import { $userSession } from '@/store/store';
 import GoogleOneTap from './GoogleOneTap';
+import { useStore } from '@nanostores/react';
+import { logger } from '@/lib/logger';
+
+const log = logger('UserManager');
 
 export default function UserManager() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [verified, setVerified] = useState(false);
+  const currentSession = useStore($userSession);
+
+  log.debug('Render');
 
   useEffect(() => {
+    log.debug('Render useEffect');
     let postgresListeners = [];
+
     const { data: Listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'INITIAL_SESSION') {
         setLoggedIn(!!session);
         setVerified(true);
       }
+
       if (session) {
-        let currentSession = $userSession.get();
+        // let currentSession = $userSession.get();
+
+        log.debug('event', event, location.href);
+
         if (event === 'SIGNED_IN' && !currentSession) {
-          location.href = '/account?init=true';
+          const redirected = location.href?.includes('/account?init=true');
+          // if (!redirected) {
+          //   location.href = '/account?init=true';
+          // }
           return;
         }
+
         const { data } = await supabase.from('Player').select('*').eq('id', session.user.id);
 
         if (data.length === 0) {
@@ -35,12 +52,12 @@ export default function UserManager() {
           session.player = player[0];
         } else {
           function sessionHandler(payload) {
-            const currSess = $userSession.get();
-            if (currSess.player.id === payload.new.id) {
+            // const currSess = $userSession.get();
+            if (currentSession.player.id === payload.new.id) {
               console.log('new session', payload.new);
 
               $userSession.set({
-                ...currSess,
+                ...currentSession,
                 player: payload.new,
               });
             }
@@ -66,4 +83,6 @@ export default function UserManager() {
   if (verified && !loggedIn) {
     return <GoogleOneTap />;
   }
+
+  return null;
 }

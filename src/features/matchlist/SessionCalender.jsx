@@ -39,17 +39,19 @@ export function SessionCalendar({ onSelect }) {
 
   return (
     <Box>
-      <Grid columns={{ initial: '1', xs: '2', sm: '3', md: '4', lg: '5' }} gap="3">
+      <Grid columns="3" gap="3" width="auto">
         {sessions.map((session, i) => (
           <Card
             key={i}
             style={{ cursor: 'pointer' }}
             onClick={handleSelectSession.bind(null, session)}
           >
-            <Flex height="9" justify={'center'} align={'center'}>
-              <Text>
-                Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
-              </Text>
+            <Flex gap="3" align="center">
+              <Box>
+                <Text>
+                  Session du <Strong>{format(new Date(session.session_date), 'dd/LL/Y')}</Strong>
+                </Text>
+              </Box>
             </Flex>
           </Card>
         ))}

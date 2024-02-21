@@ -8,6 +8,6 @@ export async function getInitialNotifications() {
   return await supabase
     .from('Match')
     .select('*')
-    .eq('status', 'en attente')
+    .eq('status', 'created')
     .or(`player_id.eq.${user.id},creator_id.eq.${user.id}`);
 }

@@ -8,6 +8,9 @@ import { supabase } from '@/lib/supabase';
 import { $matchContent, $userSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
 import { DashboardEtudiant } from '../dashboard/DashboardEtudiant';
+import { logger } from '@/lib/logger';
+
+const log = logger('Account');
 
 export function Account() {
   const matchContent = useStore($matchContent);
@@ -15,7 +18,7 @@ export function Account() {
   const params = new URLSearchParams(window.location.search);
   const throttled = useMemo(() => throttle(handleNameChange, 500), []);
 
-  console.log('matchContent', matchContent);
+  log.debug('matchContent', matchContent);
 
   async function handleNameChange(e) {
     await supabase
@@ -40,7 +43,7 @@ export function Account() {
 
         <Tabs.Content value="dashboard">
           <Text size="2">Access and update your documents.</Text>
-          <DashboardEtudiant/>
+          <DashboardEtudiant />
         </Tabs.Content>
 
         <Tabs.Content value="profile">

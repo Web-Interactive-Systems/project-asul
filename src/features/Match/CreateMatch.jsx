@@ -8,7 +8,16 @@ import {
   ComboboxList,
   ComboboxOption,
 } from '@reach/combobox';
+import { broadcast, supabase } from '@/lib/supabase.js';
+
+import { $matchContent, $matchSession } from '@/store/store';
+import { getAuthUser } from '@/actions';
+import { useStore } from '@nanostores/react';
+import { $userSession } from '@/store/store';
+import { styled } from '@/lib/stitches';
+
 import { usePlayerMatch } from '@/hooks/usePlayerMatch';
+import { logger } from '@/lib/logger';
 
 const StyledComboboxInput = styled(ComboboxInput, {
   width: 280,
@@ -36,13 +45,79 @@ const StyledComboboxList = styled(ComboboxList, {
   maxHeight: 300,
 });
 
-import { broadcast, supabase } from '@/lib/supabase.js';
+const log = logger('CreateMatch');
 
-import { $matchContent, $matchSession } from '@/store/store';
-import { getAuthUser } from '@/actions';
-import { useStore } from '@nanostores/react';
-import { $userSession } from '@/store/store';
-import { styled } from '@/lib/stitches';
+export function CreateMatch() {
+  const [playerInfo, setPlayerInfo] = useState('');
+  const matchSession = useStore($matchSession);
+  const userSession = useStore($userSession);
+
+  const handleSelect = (id, username) => {
+    log.debug('id user', id, username);
+    setPlayerInfo({ id, username });
+  };
+  const handleAddMatch = async () => {
+    const authUser = await getAuthUser();
+
+    let { data, error } = await supabase
+      .from('Match')
+      .insert({
+        title: `🏸 vs. ${playerInfo.username}`,
+        creator_id: authUser.id,
+        player_id: playerInfo.id,
+        status: 'created',
+        session_id: matchSession.id,
+      })
+      .select();
+
+    if (error) {
+      log.error('ahhh match ', error);
+    } else {
+      log.debug('match créer');
+    }
+
+    broadcast.notifications.on(
+      'match-res',
+      (e) => {
+        log.debug('match response', e.payload.data.accepted);
+      },
+      true
+    );
+
+    broadcast.notifications.send('match', playerInfo.id, {
+      sessionId: matchSession.id,
+      matchId: data[0].id,
+    });
+
+    $matchContent.set('match');
+  };
+
+  return (
+    <Flex direction="column" align="center" gap="8">
+      <Flex direction="column" align="center" gap="4">
+        <Text as="span">
+          {' '}
+          <Strong>{userSession.player.username} </Strong>{' '}
+        </Text>
+        <Flex direction="row" align="center">
+          <Separator orientation="horizontal" size="3" /> <Text as="span"> Contre </Text>
+          <Separator orientation="horizontal" size="3" />
+        </Flex>
+        <InuputSelect placeholder="Choisir votre adversaire..." onSelect={handleSelect} />
+      </Flex>
+      <Button
+        radius="full"
+        variant="solid"
+        size="3"
+        onClick={handleAddMatch}
+        disabled={!!!playerInfo?.id}
+      >
+        <PaperPlaneIcon />
+        Envoyer une demande de Match
+      </Button>
+    </Flex>
+  );
+}
 
 function InuputSelect({ placeholder = 'input select', onSelect }) {
   const [term, setTerm] = useState('');
@@ -71,7 +146,7 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
           <StyledComboboxList>
             {results.map((data) => (
               <StyledComboboxOption
-                onClick={onSelect.bind(null, data.id)}
+                onClick={onSelect.bind(null, data.id, data.username)}
                 key={data.id}
                 value={data.username}
               >
@@ -82,72 +157,5 @@ function InuputSelect({ placeholder = 'input select', onSelect }) {
         </Box>
       </ComboboxPopover>
     </Combobox>
-  );
-}
-
-export function CreateMatch() {
-  const [currentUserID, setCurrentUserID] = useState('');
-  const matchSession = useStore($matchSession);
-  const userSession = useStore($userSession);
-
-  const handleSelect = (id) => {
-    console.log('id user', id);
-    setCurrentUserID(id);
-  };
-  const handleAddMatch = async () => {
-    const authUser = await getAuthUser();
-
-    const creator_id = authUser.id;
-    const player_id = currentUserID;
-
-    let { data, error } = await supabase
-      .from('Match')
-
-      .insert({
-        title: 'match test match creator Louen',
-        creator_id,
-        player_id,
-        status: 'created',
-        session_id: matchSession.id,
-      }).select();
-
-      if (error) {
-        console.error('ahhh match ', error);
-      } else {
-        console.log('match créer');
-      }
-
-      broadcast.notifications.on('match-res', (e) => {
-        console.log('match response', e.payload.data.accepted);
-      }, true);
-
-      broadcast.notifications.send('match', player_id, { sessionId: matchSession.id, matchId: data[0].id });
-
-    $matchContent.set('match');
-  };
-  return (
-    <Flex direction="column" align="center" gap="8">
-      <Flex direction="column" align="center" gap="4">
-        <Text as="span">
-          {' '}
-          <Strong>{userSession.player.username} </Strong>{' '}
-        </Text>
-        <Flex direction="row" align="center">
-          <Separator orientation="horizontal" size="3" /> <Text as="span"> Contre </Text>
-          <Separator orientation="horizontal" size="3" />
-        </Flex>
-        <InuputSelect placeholder="Choisir votre adversaire..." onSelect={handleSelect} />
-      </Flex>
-      <Button
-        radius="full"
-        variant="solid"
-        size="3"
-        onClick={handleAddMatch}
-        disabled={!!!currentUserID}
-      >
-        <PaperPlaneIcon />
-        Envoyer une demande de Match
-      </Button>
-    </Flex>
   );
 }
