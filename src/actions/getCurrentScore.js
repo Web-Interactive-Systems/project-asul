@@ -1,5 +1,6 @@
 import { getScores } from './getScore';
 import { getPlayers } from './getPlayers';
+import { format } from 'date-fns/esm/fp';
 
 function getBonus(delta) {
   let bonus = delta / 10;
@@ -24,16 +25,16 @@ export async function getCurrentScore() {
   const { data: datap, error: errorp } = await getPlayers();
 
   let last_score = {};
-  //init score
-  let score = [];
+  
+  let scoreList = [];
+  let playerList = [];
+  let finalList = [];
 
   if (!error && !errorp) {
     //mapping de tout les score
     data.map((score) => {
-        
         (score.winer_id = datap.find((x) => x.id === score.winer_id).username),
-        (score.loser_id = datap.find((x) => x.id === score.loser_id).username),
-        (score.creator_id = datap.find((x) => x.id === score.creator_id).username);
+        (score.loser_id = datap.find((x) => x.id === score.loser_id).username)
     });
 //pas sur de l'utilité
     data.forEach((el) => {
@@ -49,35 +50,40 @@ export async function getCurrentScore() {
         }
       }
     });
-
-    data.forEach((el,index) => {
-
+    let compteMatch = [];
+    datap.forEach((ele) => {
+      playerList.push(ele["username"])
+      compteMatch.push(0);
+    });
+    
+    data.forEach((el) => {
       let delta = el['winer_score'] - el['loser_score'];
       last_score[el['winer_id']] = last_score[el['winer_id']] + getBonus(delta);
       last_score[el['loser_id']] = last_score[el['loser_id']] + getBonus(-delta);
-      if (el['creator_id']==el['winer_id']){
-        last_score[el['creator_id']] = last_score[el['winer_id']] + getBonus(delta);
-        score[index]={
-          Joueur: el['winer_id'],
-          adversaire: el['loser_id'],
-          result: 'Victoire (↗' + getBonus(delta) + ')',
-          score: last_score[el['winer_id']],
-          match_date: el['created_at'],
-          match: el['winer_score'] + ' - ' + el['loser_score']
+      playerList.forEach((username, index) => {
+        if (username==el['winer_id']){
+          compteMatch[index]++;
+          scoreList[index]={
+            Joueur: el['winer_id'],
+            score: last_score[el['winer_id']],
+            nb_match : compteMatch[index],
+            last_match: el['created_at'],
+            position: 1,
+          }
         }
-      }
-      else if(el['creator_id']==el['loser_id']){
-        last_score[el['creator_id']] = last_score[el['loser_id']] + getBonus(-delta);
-        score[index]={
-          Joueur: el['loser_id'],
-          adversaire: el['winer_id'],
-          result: 'Victoire (↘' + getBonus(-delta) + ')',
-          score: last_score[el['loser_id']],
-          match_date: el['created_at'],
-          match: el['loser_score'] + ' - ' + el['winer_score']
+        if (username==el['loser_id']){
+          compteMatch[index]++;
+          scoreList[index]={
+            Joueur: el['loser_id'],
+            score: last_score[el['loser_id']],
+            nb_match : compteMatch[index],
+            last_match: el['created_at'],
+          }
         }
-      } 
-    });
+      });
+      });
   }
-  return score;
+  console.log("ppppppppppp",playerList);
+  console.log("dddddd",scoreList);
+  return scoreList;
 }

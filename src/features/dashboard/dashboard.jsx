@@ -2,6 +2,7 @@ import { Grid } from '@radix-ui/themes';
 import Plot from '@/features/dashboard/Plot';
 import mockData from '@/features/dashboard/data.json';
 import { getCumulPointsDashboard } from '../../actions/getCumulPointsDashboard.js';
+import { getCurrentScore } from '../../actions/getCurrentScore.js';
 
 const Data = mockData.map((d) => {
   return {
@@ -14,6 +15,8 @@ const dt = await getCumulPointsDashboard();
 dt.forEach((item) => {
   item.match_date = new Date(item.match_date);
 });
+
+const Data_CS = await getCurrentScore();
 
 export function Dashboard() {
   return (
@@ -96,13 +99,15 @@ export function Dashboard() {
         plotOptions={{
           color: { scheme: 'burd' },
         }}
-        data={Data}
+        data={Data_CS}
       >
         <Plot.auto
           options={{
-            x: 'date',
+            x: 'nb_match',
             y: 'score',
-            stroke: 'username',
+            stroke: 'Joueur',
+            r: 2,
+            channels: { Joueur: 'Joueur', last_match: 'last_match' },
           }}
         />
       </Plot.root>
