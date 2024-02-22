@@ -1,20 +1,18 @@
 
-import { supabase } from "../lib/supabase";
+import { supabase } from "@/lib/supabase.js";
 
-export async function getNbMatchById(winer_id) {
+export async function getNbMatchById(user_id) {
     
-    let { data: score, error } = await supabase
+    const { data,  error } = await supabase
     .from('Score')
-    .select('winer_score, winer_id')
-    .eq('winer_id', winer_id)
-
-    let count = score.length;
-
+    .select('winer_score, loser_score', {count: "exact"})
+    .or(`winer_id.eq.${user_id},loser_id.eq.${user_id}`)
+    
     if (error) {
         return error;
     }
     
-    return {count}
+    return {data}
 
 }
 

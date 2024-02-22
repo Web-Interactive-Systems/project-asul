@@ -68,7 +68,25 @@ export function Header() {
               </a>
             </Button>
           </NeedAuth>
-          <ThemeToggle />
+          <Button asChild variant="soft">
+            <a href="/dashboardEtudiant">
+              Dashboard Étudiant
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
+          <Button asChild variant="soft">
+            <a href="/dashboard">
+              Dashboard
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
+          <Button asChild variant="soft">
+            <a href="/dashboardEtudiant">
+              Dashboard Étudiant
+              <RocketIcon style={{ opacity: 1, marginRight: -3 }} />
+            </a>
+          </Button>
+          <ThemeToggle client:load />
         </Flex>
 
         <Flex align="center" gap="5" display={{ md: 'none' }}>
@@ -135,6 +153,13 @@ export function Header() {
                   <a href="/dashboard" className={styles.HeaderLink}>
                     <ArrowRightIcon style={{ marginRight: 4 }} />
                     Dashboard
+                  </a>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item>
+                  <a href="/dashboardEtudiant" className={styles.HeaderLink}>
+                    <ArrowRightIcon style={{ marginRight: 4 }} />
+                    Dashboard Étudiant
                   </a>
                 </DropdownMenu.Item>
 

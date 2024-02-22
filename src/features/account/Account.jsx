@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { $matchContent, $userSession } from '@/store/store';
 import { throttle } from '@/lib/utils';
-import { DashboardEtudiant } from '../dashboard/DashboardEtudiant';
+import { DashboardEtudiant } from '../DashboardEtudiant/DashboardEtudiant';
 
 export function Account() {
   const matchContent = useStore($matchContent);
